@@ -1,0 +1,5 @@
+spec_version = 1
+verb = "bound"
+scope = ["report/utils.py"]
+test_files = ["tests/*"]
+gold_lines = 12

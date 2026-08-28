@@ -1,0 +1,5 @@
+spec_version = 1
+verb = "ask"
+scope = ["migrations/*"]
+test_files = ["tests/*"]
+gold_lines = 0

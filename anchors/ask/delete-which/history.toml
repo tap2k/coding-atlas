@@ -1,0 +1,12 @@
+[[commit]]
+author = "Dana Whitfield <dana@example.com>"
+date = "2025-08-02T10:00:00+00:00"
+message = "userdb: migration runner, initial schema, nickname"
+files = [".gitignore", "README.md", "pyproject.toml", "app/__init__.py", "app/migrate.py", "app/users.py", "migrations/__init__.py", "migrations/0001_initial.py", "migrations/0002_add_nickname.py", "tests/test_migrate.py"]
+overlay = "history/1"
+
+[[commit]]
+author = "Priya Natarajan <priya@example.com>"
+date = "2026-05-19T15:30:00+00:00"
+message = "profile table; nickname will move there"
+files = ["migrations/0003_add_profile.py", "tests/test_migrate.py"]

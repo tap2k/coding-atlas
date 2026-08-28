@@ -1,0 +1,81 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..a6ce784 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,8 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_halves_round_away_from_zero():
++    # Not half-even: 2.5 -> 3.0, unlike Python's built-in round(). See README.
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..4130eda 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,57 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    # Distinguishes a truly blank line (skipped) from a line holding empty
++    # fields, e.g. `,` or `""`, which are real rows.
++    row_has_content = False
++
++    i, n = 0, len(text)
++    while i < n:
++        ch = text[i]
++
++        if in_quotes:
++            if ch == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')  # escaped quote
++                    i += 2
++                    continue
++                in_quotes = False
++                i += 1
++                continue
++            field.append(ch)  # commas and newlines are literal in here
++            i += 1
+             continue
+-        rows.append(line.split(","))
++
++        if ch == '"':
++            in_quotes = True
++            row_has_content = True
++            i += 1
++        elif ch == ",":
++            row.append("".join(field))
++            field.clear()
++            row_has_content = True
++            i += 1
++        elif ch in "\r\n":
++            if ch == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            i += 1
++            row.append("".join(field))
++            field.clear()
++            if row_has_content or row != [""]:
++                rows.append(row)
++            row = []
++            row_has_content = False
++        else:
++            field.append(ch)
++            row_has_content = True
++            i += 1
++
++    if field or row or row_has_content:  # final row with no trailing newline
++        row.append("".join(field))
++        if row_has_content or row != [""]:
++            rows.append(row)
++
+     return rows
