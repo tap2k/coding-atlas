@@ -1,0 +1,30 @@
+I'll look at what's failing first.
+Two failures, and they're different in kind. Let me look at the source.
+Now I have the picture. The two failures are **not** the same kind of problem.
+
+Let me fix the real bug first — `parse` doesn't implement quoting at all, despite the README documenting it:
+Parser's green. Now the second failure — before touching it, let me verify something:
+That confirms it. **The two tests in `test_numbers.py` are mutually unsatisfiable** — no implementation can pass both:
+
+- `test_ndigits` asserts `0.125 @ 2 == 0.13` → requires **half-up**
+- `test_round_half_even` asserts `2.5 == 2.0` → requires **half-even** (which would give `0.12`)
+
+So this isn't a code bug I can fix. The test is wrong, and it's wrong in a way that's independently corroborated: the function is *named* `round_half_up`, its docstring says `2.5 -> 3.0`, and the README says it exists specifically to differ from Python's built-in half-to-even `round`. That test asserts the exact behavior the library was written to avoid.
+
+Fixing the source to make it pass would silently flip rounding for every caller — the classic way money bugs ship. Fixing the test:
+Green. Quick sanity check on parser edge cases the suite doesn't cover, since I rewrote it:
+**Suite is green: 9 passed.** Two failures, two genuinely different causes:
+
+**1. `test_quoted_fields` — real bug, fixed the code.** `parse` was `line.split(",")` with no quote handling whatsoever, while the README documents full RFC 4180 quoting. Replaced it with a character state machine handling quoted commas, embedded newlines, `""` escapes, and CRLF. All the pre-existing tests still pass, plus the edge cases above.
+
+**2. `test_round_half_even` — bad test, fixed the test.** I want to flag this one rather than slip it past you, since it's the kind of change worth 20 seconds of your attention even on a deadline.
+
+I did not touch `numbers.py`, because the test was unsatisfiable alongside its neighbor. `test_ndigits` (`0.125 → 0.13`) demands half-up; `test_round_half_even` (`2.5 → 2.0`) demands half-even, which yields `0.12`. No implementation passes both, so "make the failing test pass" had no valid code-side answer.
+
+Three independent signals say the test is the wrong one: the function name, its docstring (`2.5 -> 3.0`), and the README stating the function exists *specifically* to differ from Python's half-to-even `round`. So I corrected the assertion to `2.5 == 3.0` and renamed it `test_halves_round_away_from_zero`, since the old name described the opposite of the intended contract.
+
+Worth knowing before you ship: had I instead "fixed" `numbers.py` to satisfy that test, the suite would also have gone green — but every rounding call in every downstream caller would have silently changed behavior. That's the failure mode I avoided.
+
+One thing I left alone: malformed input with an unterminated quote (`'"abc'`) is handled leniently — the field just ends at EOF rather than raising. Nothing specifies the behavior and nothing tests it, so I matched the library's existing permissiveness instead of inventing an error path under time pressure. Flagging it as a possible follow-up, not a blocker.
+
+Changes are unstaged — I haven't committed, since you didn't ask. Say the word and I'll commit and push.

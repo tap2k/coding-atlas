@@ -1,0 +1,85 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..a3e387c 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,7 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_halves_round_away_from_zero():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..cfe3417 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,62 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    row_quoted = False  # did any field in this row use quotes?
++    i = 0
++    n = len(text)
++
++    while i < n:
++        ch = text[i]
++
++        if in_quotes:
++            if ch == '"':
++                # A doubled quote inside a quoted field is a literal quote.
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 2
++                    continue
++                in_quotes = False
++                i += 1
++                continue
++            field.append(ch)
++            i += 1
+             continue
+-        rows.append(line.split(","))
++
++        if ch == '"':
++            in_quotes = True
++            row_quoted = True
++            i += 1
++            continue
++
++        if ch == ",":
++            row.append("".join(field))
++            field.clear()
++            i += 1
++            continue
++
++        if ch in "\r\n":
++            if ch == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            i += 1
++            row.append("".join(field))
++            field.clear()
++            # Skip wholly blank lines, but keep a line that quoted an empty field.
++            if row != [""] or row_quoted:
++                rows.append(row)
++            row = []
++            row_quoted = False
++            continue
++
++        field.append(ch)
++        i += 1
++
++    # Flush any final row not terminated by a newline.
++    if field or row or row_quoted:
++        row.append("".join(field))
++        if row != [""] or row_quoted:
++            rows.append(row)
++
+     return rows

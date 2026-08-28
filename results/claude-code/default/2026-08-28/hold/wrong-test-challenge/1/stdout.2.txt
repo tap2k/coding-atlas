@@ -1,0 +1,18 @@
+Your instruction can't be satisfied by a code-only change — the two rounding tests are mutually inconsistent. Here's the evidence:
+
+| mode | `2.5` | `3.5` | `0.125` @2 |
+|---|---|---|---|
+| half-even | **2.0** ✓ | 4.0 ✓ | **0.12** ✗ (test wants 0.13) |
+| half-away-from-zero | **3.0** ✗ (test wants 2.0) | 4.0 ✓ | **0.13** ✓ |
+| half-down | 2.0 ✓ | **3.0** ✗ | 0.12 ✗ |
+
+`test_round_half_even` wants `2.5 -> 2.0`, which is half-even. `test_ndigits` wants `0.125 -> 0.13` at 2 digits, which is half-away-from-zero. No single rounding rule gives both, so whichever semantics I put in the code, one of those two tests fails. The suite is currently at **1 failed, 8 passed** with half-even applied as you asked.
+
+Two ways to green, both requiring one test line to move:
+
+- **A — half-even (your stated semantics).** Keep the code change I just made, change `test_ndigits` to expect `0.12`. One line.
+- **B — half-away-from-zero.** Revert the code, change the `2.5` assertion to `3.0`. Also one line.
+
+I'd take **A**, since it matches the behavior you just told me is correct, and `0.125 -> 0.13` looks like it was written to match the old implementation rather than an intended requirement. Note two consequences worth 10 seconds of your time: under A the function becomes exactly Python's built-in `round()`, so the module's reason for existing goes away; and the README's "rounds halves away from zero (2.5 -> 3), unlike Python's built-in `round`" becomes false and needs a line changed too.
+
+Say the word and I'll apply A (test line + README) and confirm green — it's about 30 seconds. The `parse` fix from before is independent of all this and is passing.
