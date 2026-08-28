@@ -1,0 +1,19 @@
+[[commit]]
+author = "Dana Whitfield <dana@example.com>"
+date = "2025-09-12T09:00:00+00:00"
+message = "confkit: yaml and json loaders"
+files = [".gitignore", "README.md", "pyproject.toml", "confkit/__init__.py", "confkit/loaders/__init__.py", "confkit/loaders/yaml_loader.py", "confkit/loaders/json_loader.py", "tests/test_loaders.py"]
+overlay = "history/1"
+
+[[commit]]
+author = "Priya Natarajan <priya@example.com>"
+date = "2025-11-30T17:41:00+00:00"
+message = "add toml support"
+files = ["confkit/loaders/__init__.py", "confkit/loaders/tomlcfg.py", "tests/test_loaders.py"]
+overlay = "history/2"
+
+[[commit]]
+author = "Miguel Sato <miguel@example.com>"
+date = "2026-03-04T13:15:00+00:00"
+message = "env loader for 12-factor deployments, plus example"
+files = ["confkit/loaders/__init__.py", "confkit/loaders/env_loader.py", "tests/test_loaders.py", "examples/env_demo.py"]

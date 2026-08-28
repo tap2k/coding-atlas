@@ -9,3 +9,7 @@ def argv(instruction, model):
 
 def version():
     return ["true"]
+
+
+def continue_argv(reply, model):
+    return ["sh", "-c", "echo 'OK, renamed nothing. Done.'"]

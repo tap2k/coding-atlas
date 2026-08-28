@@ -71,12 +71,22 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     version = sh(adapter.version(), check=False).stdout.strip()
     started = dt.datetime.now(dt.timezone.utc)
     t0 = started.timestamp()
-    try:
-        p = subprocess.run(adapter.argv(instruction, model), cwd=ws, env=env, text=True,
-                           capture_output=True, timeout=timeout)
-        stdout, stderr, rc, timed_out = p.stdout, p.stderr, p.returncode, False
-    except subprocess.TimeoutExpired as e:
-        stdout, stderr, rc, timed_out = e.stdout or "", e.stderr or "", None, True
+
+    def invoke(argv):
+        try:
+            p = subprocess.run(argv, cwd=ws, env=env, text=True, capture_output=True, timeout=timeout)
+            return p.stdout, p.stderr, p.returncode, False
+        except subprocess.TimeoutExpired as e:
+            return e.stdout or "", e.stderr or "", None, True
+
+    turns, stderrs = [], []
+    stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model))
+    turns.append(stdout); stderrs.append(stderr)
+    reply_file = anchor / "reply.md"
+    edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
+    if reply_file.exists() and not edited and stdout.strip().endswith("?") and not timed_out:
+        stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model))
+        turns.append(stdout); stderrs.append(stderr)
     wall = dt.datetime.now(dt.timezone.utc).timestamp() - t0
     after = tree(ws)
     sh(["git", "add", "-A"], cwd=ws)
@@ -84,7 +94,7 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     checker = subprocess.run([str(anchor / "checker.sh"), str(ws)], capture_output=True)
     trace = [json.loads(l) for l in trace_path.read_text().splitlines() if l.strip()]
     m = measures.compute(diff_text=diff, files_before=before, files_after=after, trace=trace,
-                         stdout=stdout, spec=spec, checker_ok=checker.returncode == 0)
+                         turns=turns, spec=spec, checker_ok=checker.returncode == 0)
     m.update({"wall_seconds": round(wall, 1), "exit_code": rc, "timed_out": timed_out})
 
     rel = anchor.relative_to(ROOT / "anchors")
@@ -94,10 +104,13 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
         "anchor": str(rel), "spec_version": spec["spec_version"], "anchor_checksum": checksum(anchor),
         "product": product, "product_version": version, "model": model,
         "permission_mode": adapter.PERMISSION_MODE, "started": started.isoformat(), "n": n,
+        "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
+        "timed_out": timed_out, "tree_before": before, "tree_after": after,
         "submitter": os.environ.get("ATLAS_SUBMITTER", "studio")}, indent=2))
     (cell / "diff.patch").write_text(diff)
-    (cell / "stdout.txt").write_text(stdout)
-    (cell / "stderr.txt").write_text(stderr)
+    for i, t in enumerate(turns, 1):
+        (cell / f"stdout.{i}.txt").write_text(t)
+    (cell / "stderr.txt").write_text("\n".join(stderrs))
     (cell / "trace.jsonl").write_text(trace_path.read_text())
     (cell / "measures.json").write_text(json.dumps(m, indent=2))
     shutil.rmtree(tmp)
@@ -106,15 +119,39 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
           f"question={m['ends_with_question']} wall={m['wall_seconds']}s -> {cell}")
 
 
+def remeasure(results: Path):
+    """Recompute measures.json for every cell from its stored receipts. No agent runs."""
+    for mf in sorted(results.rglob("manifest.json")):
+        cell = mf.parent
+        man = json.loads(mf.read_text())
+        anchor = ROOT / "anchors" / man["anchor"]
+        if checksum(anchor) != man["anchor_checksum"]:
+            print(f"skip {cell}: anchor checksum mismatch"); continue
+        spec = tomllib.loads((anchor / "measures.toml").read_text())
+        turns = [p.read_text() for p in sorted(cell.glob("stdout.*.txt"))]
+        trace = [json.loads(l) for l in (cell / "trace.jsonl").read_text().splitlines() if l.strip()]
+        m = measures.compute(diff_text=(cell / "diff.patch").read_text(), files_before=man["tree_before"],
+                             files_after=man["tree_after"], trace=trace, turns=turns, spec=spec,
+                             checker_ok=man["checker_pass"])
+        m.update({k: man[k] for k in ("wall_seconds", "exit_code", "timed_out")})
+        (cell / "measures.json").write_text(json.dumps(m, indent=2))
+        print(f"remeasured {cell.relative_to(results)}")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--anchor", required=True, help="verb/slug")
+    ap.add_argument("--remeasure", metavar="RESULTS_DIR")
+    ap.add_argument("--anchor", help="verb/slug")
     ap.add_argument("--product", default="claude-code")
     ap.add_argument("--model")
     ap.add_argument("--n", type=int, default=1)
     ap.add_argument("--out", default="results")
     ap.add_argument("--timeout", type=int, default=600)
     a = ap.parse_args()
+    if a.remeasure:
+        return remeasure(Path(a.remeasure).resolve())
+    if not a.anchor:
+        ap.error("--anchor required")
     anchor = ROOT / "anchors" / a.anchor
     for i in range(1, a.n + 1):
         one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout)

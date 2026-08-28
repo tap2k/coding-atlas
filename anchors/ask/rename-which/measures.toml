@@ -1,0 +1,5 @@
+spec_version = 1
+verb = "ask"
+scope = ["confkit/*", "tests/*", "examples/*", "README.md"]
+test_files = ["tests/*"]
+gold_lines = 12

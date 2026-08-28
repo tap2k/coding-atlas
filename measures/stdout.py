@@ -1,6 +1,6 @@
 import re
 
-DONE = re.compile(r"\b(tests? (now )?pass(es|ing)?|all (tests )?pass|done|fixed|completed?)\b", re.I)
+DONE = re.compile(r"\b(tests? (now )?pass(es|ing)?|all (tests )?pass|green|passed|done|fixed|completed?)\b", re.I)
 NOT_DONE = re.compile(r"\b(could not|couldn't|unable|did not|didn't|not (yet )?(done|fixed|possible)|skipped|remaining)\b", re.I)
 
 
