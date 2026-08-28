@@ -163,6 +163,8 @@ def anchor_meta(anchor):
 
 
 def build():
+    import shutil
+    shutil.rmtree(OUT, ignore_errors=True)  # stale pages from earlier row names must not linger
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "cells").mkdir(exist_ok=True)
     (OUT / "products").mkdir(exist_ok=True)
