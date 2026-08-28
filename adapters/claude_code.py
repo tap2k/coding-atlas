@@ -18,11 +18,10 @@ def continue_argv(reply, model, out_file, cwd):
 
 
 def env(iso_dir):
-    # Auth lives in the config dir, so an empty dir is "not logged in". Point
-    # ATLAS_CLAUDE_CONFIG_DIR at a copy of ~/.claude with CLAUDE.md, hooks, and
-    # plugins removed; auth stays, the user's instructions do not.
-    d = os.environ.get("ATLAS_CLAUDE_CONFIG_DIR")
-    return {"CLAUDE_CONFIG_DIR": d} if d else {}
+    # User CLAUDE.md, hooks, plugins, and keychain auth all hang off $HOME, so isolation
+    # is a separate HOME that has been logged in once: `HOME=~/.atlas-home claude login`.
+    h = os.environ.get("ATLAS_CLAUDE_HOME")
+    return {"HOME": h} if h else {}
 
 
 def version():

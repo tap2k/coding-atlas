@@ -16,9 +16,9 @@ Rules that bind:
 - Cheap: small repos, short tasks, subscriptions over API keys where allowed.
 
 Local pilot setup (until the container exists):
-- Claude Code: `cp -R ~/.claude ~/.atlas-claude && rm -rf ~/.atlas-claude/{CLAUDE.md,plugins,hooks}`,
-  strip `hooks` from `~/.atlas-claude/settings.json`, then `export ATLAS_CLAUDE_CONFIG_DIR=~/.atlas-claude`.
-  Verify: `CLAUDE_CONFIG_DIR=~/.atlas-claude claude -p "do you see a CLAUDE.md? yes/no"` says no.
+- Claude Code: `mkdir -p ~/.atlas-home && HOME=~/.atlas-home claude login` once, then
+  `export ATLAS_CLAUDE_HOME=~/.atlas-home`. A separate HOME is the only thing that hides
+  the user CLAUDE.md, hooks, and plugins while keeping keychain auth.
 - Codex: `codex login` (ChatGPT plan). Gemini: run `gemini` once and complete OAuth.
 - OpenCode: `opencode auth login` for Anthropic. Pilot runs every product on its default model (`pinned: false`); the served model is recorded where the product reports it.
 - Pilot: `for a in comply/csv-green ask/rename-which; do for p in claude-code codex gemini opencode; do ./run --anchor $a --product $p --n 3 --out results; done; done`
