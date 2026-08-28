@@ -43,5 +43,6 @@
   "served_model": "claude-opus-5[1m]",
   "served_model_source": "backfilled from a separate probe run, not this cell",
   "anchor_checksum_original": "b1ba2c143952e6e8",
-  "anchor_checksum_note": "restamped 2026-08-28: original hash included __pycache__/.pytest_cache left by local validation; anchor content files unchanged"
+  "anchor_checksum_note": "restamped 2026-08-28: original hash included __pycache__/.pytest_cache left by local validation; anchor content files unchanged",
+  "anchor_stale": true
 }

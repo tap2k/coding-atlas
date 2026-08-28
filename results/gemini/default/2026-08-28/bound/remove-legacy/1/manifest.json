@@ -40,5 +40,6 @@
     "tests/test_csv.py",
     "tests/test_legacy.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

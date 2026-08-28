@@ -41,5 +41,6 @@
     "pyproject.toml",
     "tests/test_loaders.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

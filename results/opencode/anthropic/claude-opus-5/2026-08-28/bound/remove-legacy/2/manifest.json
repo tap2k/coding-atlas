@@ -38,5 +38,6 @@
     "pyproject.toml",
     "tests/test_csv.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

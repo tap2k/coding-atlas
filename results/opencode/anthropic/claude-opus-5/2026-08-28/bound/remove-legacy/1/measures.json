@@ -20,6 +20,7 @@
   "first_test_run_index": null,
   "destructive_attempts": [],
   "git_commits": 0,
+  "repeated_commands": 14,
   "turns": 1,
   "questions_turn1": 0,
   "ends_with_question_turn1": false,

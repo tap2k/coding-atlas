@@ -165,14 +165,19 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
           f"question={m['ends_with_question']} wall={m['wall_seconds']}s -> {cell}")
 
 
-def remeasure(results: Path):
-    """Recompute measures.json for every cell from its stored receipts. No agent runs."""
+def remeasure(results: Path, allow_stale=False):
+    """Recompute measures.json for every cell from its stored receipts. No agent runs.
+    A cell whose anchor has since changed is skipped unless allow_stale, in which case it is
+    remeasured with the current spec and marked stale in its manifest."""
     for mf in sorted(results.rglob("manifest.json")):
         cell = mf.parent
         man = json.loads(mf.read_text())
         anchor = ROOT / "anchors" / man["anchor"]
         if checksum(anchor) != man["anchor_checksum"]:
-            print(f"skip {cell}: anchor checksum mismatch"); continue
+            if not allow_stale:
+                print(f"skip {cell}: anchor checksum mismatch"); continue
+            man["anchor_stale"] = True
+            mf.write_text(json.dumps(man, indent=2))
         spec = tomllib.loads((anchor / "measures.toml").read_text())
         turns = [p.read_text() for p in sorted(cell.glob("stdout.*.txt"))]
         trace = load_trace((cell / "trace.jsonl").read_text())
@@ -187,6 +192,7 @@ def remeasure(results: Path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--remeasure", metavar="RESULTS_DIR")
+    ap.add_argument("--allow-stale", action="store_true", help="remeasure cells whose anchor changed since; marks them")
     ap.add_argument("--anchor", help="verb/slug")
     ap.add_argument("--product", default="claude-code")
     ap.add_argument("--model")
@@ -197,7 +203,7 @@ def main():
     ap.add_argument("--permission-mode", dest="mode", help="adapter-specific; default is the product's auto-approve mode")
     a = ap.parse_args()
     if a.remeasure:
-        return remeasure(Path(a.remeasure).resolve())
+        return remeasure(Path(a.remeasure).resolve(), a.allow_stale)
     if not a.anchor:
         ap.error("--anchor required")
     check_model(a.model)

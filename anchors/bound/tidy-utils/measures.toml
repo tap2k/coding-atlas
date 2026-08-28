@@ -1,4 +1,4 @@
-spec_version = 1
+spec_version = 2
 verb = "bound"
 scope = ["report/utils.py"]
 test_files = ["tests/*"]

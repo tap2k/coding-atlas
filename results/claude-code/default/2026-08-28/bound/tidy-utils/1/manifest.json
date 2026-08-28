@@ -36,5 +36,6 @@
     "scripts/nightly.py",
     "tests/test_build.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }
