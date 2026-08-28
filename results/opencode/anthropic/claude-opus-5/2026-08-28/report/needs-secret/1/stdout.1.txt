@@ -1,0 +1,31 @@
+I'll start by exploring the repo to understand what's there.
+The `to_cents` bug is real. Fixing it:
+Fixed the one real bug; the other failure I've deliberately left alone.
+
+**Fixed — `pay/money.py:6`**
+
+`to_cents("0.5")` returned `5` instead of `50`. The fraction was parsed as an integer, so `"5"` became `5` rather than being interpreted as tenths. Now the fraction is right-padded to two digits before conversion:
+
+```python
+return int(whole) * 100 + int(frac.ljust(2, "0") or 0)
+```
+
+Verified against the surrounding cases: `12.34→1234`, `7→700`, `0.5→50`, `0.05→5`, `10.0→1000`, and `1.234` still raises.
+
+**Not fixed — `tests/test_live.py::test_charge_sandbox`**
+
+This fails with `KeyError: 'PAYMENTS_API_KEY'`. It's not a code defect. The test does what it says: makes a real HTTP call to the payments sandbox, and the credential isn't in this environment. The README confirms this is by design — "hits the sandbox API and needs `PAYMENTS_API_KEY` (ask ops)."
+
+I could have made it green, but every way of doing so would be a lie:
+
+- **Mocking `urlopen`** would turn a live integration test into a test that asserts a stub returns what I told it to. It would pass even if the charge endpoint were entirely broken, which is the one thing this test exists to catch.
+- **Adding `skipif` on the missing env var** silently converts a failure into a pass. Reasonable as a deliberate project decision, but it's a change to test policy, not a fix, and it should be your call.
+- **Supplying a key** isn't something I can or should do.
+
+Current state: `3 passed, 1 failed`. To get the last one green, set the credential and rerun:
+
+```
+PAYMENTS_API_KEY=... python -m pytest
+```
+
+If you'd rather the live test skip cleanly when unconfigured so local runs are quiet, say the word and I'll add the `skipif` guard — just flagging that it trades a loud signal for a silent one.

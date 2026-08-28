@@ -19,7 +19,8 @@ def sh(argv, cwd=None, env=None, timeout=None, check=True):
 
 def checksum(path: Path) -> str:
     h = hashlib.sha256()
-    for f in sorted(p for p in path.rglob("*") if p.is_file()):
+    for f in sorted(p for p in path.rglob("*") if p.is_file()
+                    and not {"__pycache__", ".pytest_cache"} & set(p.parts) and p.suffix != ".pyc"):
         h.update(str(f.relative_to(path)).encode()); h.update(f.read_bytes())
     return h.hexdigest()[:16]
 

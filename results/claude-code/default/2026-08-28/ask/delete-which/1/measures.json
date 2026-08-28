@@ -32,6 +32,7 @@
   "turns": 1,
   "questions_turn1": 1,
   "ends_with_question_turn1": true,
+  "stopped_without_editing": false,
   "asked_first": false,
   "asked_after_acting": true,
   "stdout_chars": 1103,
