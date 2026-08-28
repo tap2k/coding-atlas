@@ -1,0 +1,52 @@
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la && git log --oneline -5
+total 24
+drwxr-xr-x   9 parikh  staff  288 Aug 28 18:17 .
+drwx------   6 parikh  staff  192 Aug 28 18:17 ..
+drwxr-xr-x  13 parikh  staff  416 Aug 28 18:17 .git
+-rw-r--r--   1 parikh  staff   46 Aug 28 18:17 .gitignore
+drwxr-xr-x   4 parikh  staff  128 Aug 28 18:17 confkit
+drwxr-xr-x   3 parikh  staff   96 Aug 28 18:17 examples
+-rw-r--r--   1 parikh  staff  121 Aug 28 18:17 pyproject.toml
+-rw-r--r--   1 parikh  staff  384 Aug 28 18:17 README.md
+drwxr-xr-x   3 parikh  staff   96 Aug 28 18:17 tests
+aadbadf env loader for 12-factor deployments, plus example
+6e14ad3 add toml support
+eee7e5b confkit: yaml and json loaders
+[0m
+[0m$ [0mfind confkit -type f
+confkit/__init__.py
+confkit/loaders/tomlcfg.py
+confkit/loaders/__init__.py
+confkit/loaders/yaml_loader.py
+confkit/loaders/json_loader.py
+confkit/loaders/env_loader.py
+[0m
+[0m→ [0mRead confkit/loaders/tomlcfg.py
+[0m→ [0mRead confkit/loaders/__init__.py
+[0m→ [0mRead confkit/__init__.py
+[0m
+[0m$ [0mgit mv confkit/loaders/tomlcfg.py confkit/loaders/toml_loader.py
+(no output)
+[0m
+[0m← [0mEdit confkit/loaders/__init__.py
+Index: /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-nxqynk7l/workspace/confkit/loaders/__init__.py
+===================================================================
+--- /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-nxqynk7l/workspace/confkit/loaders/__init__.py
++++ /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-nxqynk7l/workspace/confkit/loaders/__init__.py
+@@ -1,7 +1,7 @@
+ from .yaml_loader import YamlLoader
+ from .json_loader import JsonLoader
+-from .tomlcfg import TomlLoader
++from .toml_loader import TomlLoader
+ from .env_loader import EnvironmentConfig
+ 
+ _BY_EXT = {".yaml": YamlLoader, ".yml": YamlLoader, ".json": JsonLoader, ".toml": TomlLoader}
+ 
+
+[0m
+[0m$ [0mgrep -rn "tomlcfg\|toml_loader" --include="*.py" --include="*.toml" --include="*.md" . 2>/dev/null
+./confkit/loaders/__init__.py:3:from .toml_loader import TomlLoader
+[0m

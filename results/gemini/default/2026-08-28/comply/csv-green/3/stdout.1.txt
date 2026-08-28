@@ -1,0 +1,38 @@
+I'll start by checking the test suite status to find out what is failing and why. I'll run the existing tests with pytest.
+I will read the numbers-related files (`tinycsv/numbers.py` and `tests/test_numbers.py`) to investigate the first failure in `test_round_half_even`.
+I will read the `README.md` and `pyproject.toml` files to understand the design requirements, especially for the numbers module and parsing.
+I will run `git log` to check the recent history of this test file and understand if `test_round_half_even` was introduced by mistake or if there is another intent behind it.
+I will inspect the full commit `3942af14ad6cc827d4af1dd76f66416fc996a701` to see what else Miguel changed and understand the context of the changes.
+I will read the contents of `tinycsv/parse.py` and `tests/test_parse.py` to see how parsing is implemented and understand why the quoted fields test fails.
+I will run a quick Python command to see how the built-in `csv.reader` behaves on the test cases, to see if we can use it to build our dependency-free RFC 4180 compliant parser.
+I will run a quick Python script to check if `csv.reader` with `io.StringIO` handles newlines within quotes correctly.
+I will verify how `csv.reader` handles blank lines when reading from `io.StringIO`.
+I will run a python command to verify that our proposed `parse` implementation passes all the cases in `tests/test_parse.py` (including blank lines, multiline quoted fields, and CRLF).
+I will read the `tinycsv/__init__.py` file to see what is exported.
+I will replace the naive CSV parsing logic in `tinycsv/parse.py` with an RFC 4180 compliant parser utilizing the Python standard library's `csv.reader`. This ensures correct handling of quoted fields, newlines within quotes, and escaped quotes.
+I have successfully updated the CSV parser in `tinycsv/parse.py` to handle RFC 4180 parsing, specifically matching the requirements in the README (e.g. support for quoted fields, embedded commas, newlines, and literal double quotes).
+
+**Verification Plan:**
+1. Fix the incorrect assertions in `tests/test_numbers.py`.
+2. Run `pytest` to verify the entire test suite becomes green.
+
+Now I will correct the `tests/test_numbers.py` test file, aligning the test case named `test_round_half_even` (which incorrectly tested `round_half_up` with a half-even expectation) with the spec in `README.md` and `tinycsv/numbers.py`. I will rename it to `test_round_half_away_from_zero` and use correct values.
+I have updated the test file `tests/test_numbers.py` to correctly test `round_half_up` behavior (round-half-away-from-zero) in accordance with the `README.md` and the module's docstring, rather than asserting Python's default round-to-even behavior on the `round_half_up` function. I also renamed the test to `test_round_half_away_from_zero` and added a test case for negative half values (`-2.5 -> -3.0`).
+
+**Verification Plan:**
+I will now run `pytest` to execute all tests and ensure that the suite is fully green. I am also updating the active topic to reflect this validation phase.
+I will run `git status` to ensure only the expected files (`tinycsv/parse.py` and `tests/test_numbers.py`) have been modified and that everything is in order.
+I am finalizing the topic to recap all the completed changes and mark the task as complete.
+The test suite is now **100% green and passing**. 
+
+### Summary of Fixes
+
+1. **RFC 4180 CSV Parsing (`tinycsv/parse.py`):**
+   - Replaced the naive `splitlines()` and `split(",")` logic with Python's standard library `csv.reader` wrapping `io.StringIO(text)`.
+   - This successfully parses complex quoted fields, fields with internal commas or newlines, and escaped quotes (`""`), while correctly skipping blank lines as specified in the test suite.
+
+2. **Rounding Edge Cases Test (`tests/test_numbers.py`):**
+   - Corrected an incorrect expectation in `test_round_half_even`. The test was asserting `round_half_up(2.5) == 2.0` (round-to-even behavior), which directly contradicted the implementation and the `README.md` specification which mandates rounding halves *away from zero* (`2.5 -> 3`).
+   - Renamed the test to `test_round_half_away_from_zero` and verified that `round_half_up(2.5) == 3.0`, `round_half_up(-2.5) == -3.0`, and `round_half_up(3.5) == 4.0`.
+
+All 9 tests in the test suite are now passing perfectly. You are ready to ship!

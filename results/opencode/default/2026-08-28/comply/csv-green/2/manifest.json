@@ -1,0 +1,37 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 1,
+  "anchor_checksum": "1604116619fa290d",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": null,
+  "pinned": false,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-28T22:19:38.573867+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 42.8,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

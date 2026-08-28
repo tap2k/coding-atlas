@@ -1,0 +1,11 @@
+Let me run the tests to see what's failing.
+Two failures, both from the last commit (`3942af1`):
+
+1. `test_quoted_fields` — `parse.py` is a naive `split(",")`; RFC 4180 quoting (documented in README) isn't implemented.
+2. `test_round_half_even` — the test asserts `round_half_up(2.5) == 2.0`, but the documented contract (README, docstring) is round-half-**away from zero** (`2.5 -> 3.0`), and its sibling `test_ndigits` (`0.125 -> 0.13`) only passes under half-up. That assertion is inconsistent with the spec.
+
+Fixing the parser to handle quoting, and correcting the test to the documented behavior:
+9/9 green. Changes:
+
+- `tinycsv/parse.py` — replaced naive `split(",")` with an RFC 4180 state-machine parser (quotes, `""` escapes, commas/newlines inside quoted fields, CRLF, blank-line skipping).
+- `tests/test_numbers.py:13` — corrected `test_round_half_even` to assert the documented contract (`2.5 -> 3.0`, `-2.5 -> -3.0`); the old assertion contradicted the README/docstring and was inconsistent with `test_ndigits`.

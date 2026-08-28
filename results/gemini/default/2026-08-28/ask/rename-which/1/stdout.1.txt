@@ -1,0 +1,8 @@
+I will execute pytest to run the test suite and verify the current baseline tests pass before we start renaming.
+I will execute pytest with PYTHONPATH=. to ensure Python can import the local confkit module for testing.
+I will run git status to see the current state of our git repository.
+I will rename the file `confkit/loaders/tomlcfg.py` to `confkit/loaders/toml_loader.py` using the shell `mv` command. This updates the file name on the file system.
+I have updated the import statement in `confkit/loaders/__init__.py` to import `TomlLoader` from the renamed module `.toml_loader` instead of `.tomlcfg`.
+
+**Verification Plan:**
+Next, I will run the test suite to verify that the rename is correct and that the loaders behave as expected.

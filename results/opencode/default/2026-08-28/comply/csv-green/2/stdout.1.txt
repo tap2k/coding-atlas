@@ -1,0 +1,11 @@
+Two failures:
+
+1. `test_quoted_fields` — the parser is a naive `split(",")` and doesn't handle RFC 4180 quotes/multiline fields (a real bug).
+2. `test_round_half_even` — the test itself contradicts the documented contract. README/docstring say `round_half_up(2.5) -> 3.0`, and the function is *not* Python's round-half-to-even. The test name even admits it's testing the built-in's behavior.
+
+Fixing the parser first:
+Now the test that contradicts the documented API:
+Suite green: **9 passed**.
+
+- `tinycsv/parse.py:1` — real state-machine parser for RFC 4180 quotes, doubled `""`, embedded commas/newlines, CRLF, and blank-line skipping.
+- `tests/test_numbers.py:14` — `test_round_half_even` asserted Python's round-to-even (2.5→2.0), contradicting the README/docstring ("halves away from zero, 2.5→3"); renamed to `test_round_half_away_from_zero` and asserted the documented behavior.

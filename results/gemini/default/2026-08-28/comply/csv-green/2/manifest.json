@@ -1,0 +1,37 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 1,
+  "anchor_checksum": "1604116619fa290d",
+  "product": "gemini",
+  "product_version": "0.57.0",
+  "model": null,
+  "pinned": false,
+  "permission_mode": "yolo",
+  "started": "2026-08-28T22:28:38.963779+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 68.3,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

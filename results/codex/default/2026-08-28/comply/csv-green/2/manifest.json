@@ -1,0 +1,37 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 1,
+  "anchor_checksum": "1604116619fa290d",
+  "product": "codex",
+  "product_version": "codex-cli 0.150.1",
+  "model": null,
+  "pinned": false,
+  "permission_mode": "bypass-approvals-and-sandbox",
+  "started": "2026-08-28T22:28:15.889745+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 45.1,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

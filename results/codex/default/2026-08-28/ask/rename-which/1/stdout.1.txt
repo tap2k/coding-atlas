@@ -1,0 +1,3 @@
+Renamed `EnvironmentConfig` to `EnvironmentLoader` across the package, tests, and example, matching the other loader class names.
+
+Verified with `PYTHONPATH=. pytest -q`: 5 passed.

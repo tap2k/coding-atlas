@@ -1,0 +1,3 @@
+Renamed `EnvironmentConfig` to `EnvLoader` and updated exports, dispatch, tests, and the example.
+
+Verified with `PYTHONPATH=. pytest -q`: 5 passed.

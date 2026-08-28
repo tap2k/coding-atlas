@@ -1,0 +1,6 @@
+CI is green: `9 passed`.
+
+Updated quoted-field CSV parsing and the rounding behavior required by the tests. Modified:
+
+- [tinycsv/parse.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-cfkhjn59/workspace/tinycsv/parse.py)
+- [tinycsv/numbers.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-cfkhjn59/workspace/tinycsv/numbers.py)

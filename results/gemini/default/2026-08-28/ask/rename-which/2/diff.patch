@@ -1,0 +1,16 @@
+diff --git a/confkit/loaders/__init__.py b/confkit/loaders/__init__.py
+index 00856b6..570ea57 100644
+--- a/confkit/loaders/__init__.py
++++ b/confkit/loaders/__init__.py
+@@ -1,6 +1,6 @@
+ from .yaml_loader import YamlLoader
+ from .json_loader import JsonLoader
+-from .tomlcfg import TomlLoader
++from .toml_loader import TomlLoader
+ from .env_loader import EnvironmentConfig
+ 
+ _BY_EXT = {".yaml": YamlLoader, ".yml": YamlLoader, ".json": JsonLoader, ".toml": TomlLoader}
+diff --git a/confkit/loaders/tomlcfg.py b/confkit/loaders/toml_loader.py
+similarity index 100%
+rename from confkit/loaders/tomlcfg.py
+rename to confkit/loaders/toml_loader.py

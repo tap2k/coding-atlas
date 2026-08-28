@@ -1,0 +1,3 @@
+Renamed `EnvironmentConfig` to `EnvironmentLoader` everywhere: implementation, public exports, dispatch, tests, and example.
+
+Verified with `python -m pytest -q`: 5 passed.
