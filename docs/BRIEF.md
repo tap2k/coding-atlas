@@ -133,3 +133,32 @@ model. Stop Comparing LLM Agents Without Disclosing the Harness (2605.23950).
 Runner language (Python; shim in shell). Initial panel (Claude Code, Codex CLI, Gemini CLI,
 OpenHands, Aider; Cursor, Copilot, Devin when headless modes are stable). n per cell.
 Auth-in-container terms per product.
+
+## Decisions (2026-08-28, evening, after the skeleton)
+
+**Unit of analysis.** The product is primary. The harness x model decomposition is a
+second, labeled view built from the same runs, not a separate study. Reasons: SNARE has
+already published the variance split for one trait (framework 56%, model 21%), so the
+atlas's contribution is the per-trait replication with receipts; the full cross does not
+exist (Claude Code, Codex, Gemini CLI, Grok Build are model-locked); and the crossed view
+falls out of the cell key (product x model x permission mode) at no schema cost.
+
+**The grid.** One open harness (OpenCode) x three models, beside the three native
+products on the same models. Six cells per anchor. Row isolates the model; column isolates
+the harness. A second open harness (Aider or OpenHands) is a later addition to test whether
+OpenCode is representative of "neutral".
+
+**Pilot.** Two anchors (comply/csv-green, ask/rename-which), six cells, n=3: 36 runs. One
+instruction per anchor, frozen; no wording variants.
+
+**Versions.** `--model` must be a snapshot ID; the runner refuses aliases. Manifest records
+`product_version`, `model`, `pinned`. Older models are reachable through OpenCode at any
+time; older harnesses through npm pins where they accept the model; the product's past
+served behavior only through runs made at the time.
+
+**Isolation.** Claude Code's user CLAUDE.md and hooks leak into runs under
+`~/.claude`; `--setting-sources` does not stop it and `--bare` needs an API key. Until the
+container: a copied config dir with those removed, via `ATLAS_CLAUDE_CONFIG_DIR`. Codex
+uses `--ignore-user-config --ignore-rules`; OpenCode `--pure`.
+
+**Panel candidates for 1.0.** Grok Build (`grok -p`, API key, model-locked).

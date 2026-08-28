@@ -20,4 +20,5 @@ Local pilot setup (until the container exists):
   strip `hooks` from `~/.atlas-claude/settings.json`, then `export ATLAS_CLAUDE_CONFIG_DIR=~/.atlas-claude`.
   Verify: `CLAUDE_CONFIG_DIR=~/.atlas-claude claude -p "do you see a CLAUDE.md? yes/no"` says no.
 - Codex: `codex login` (ChatGPT plan). Gemini: run `gemini` once and complete OAuth.
-- Pilot: `for a in comply/csv-green ask/rename-which; do for p in claude-code codex gemini; do ./run --anchor $a --product $p --n 3 --out results; done; done`
+- OpenCode: `opencode auth login` for Anthropic (subscription), OpenAI, and Google. Pass `-m provider/snapshot-id`.
+- Pilot: `for a in comply/csv-green ask/rename-which; do for p in claude-code codex gemini opencode; do ./run --anchor $a --product $p --n 3 --out results; done; done`

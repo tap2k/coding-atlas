@@ -56,6 +56,18 @@ def make_shim_dir(base: Path) -> Path:
     return d
 
 
+ALIASES = {"opus", "sonnet", "haiku", "latest", "default", "auto"}
+
+
+def check_model(model):
+    """Snapshot IDs only. An alias moves silently between waves and breaks comparability."""
+    if model is None:
+        return
+    tail = model.split("/")[-1]
+    if tail in ALIASES or not any(ch.isdigit() for ch in tail):
+        sys.exit(f"--model {model!r} looks like an alias; use a dated or versioned snapshot ID")
+
+
 def one_run(anchor: Path, product, model, n, out: Path, timeout):
     spec = tomllib.loads((anchor / "measures.toml").read_text())
     adapter = adapters.load(product)
@@ -109,7 +121,7 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     cell.mkdir(parents=True, exist_ok=True)
     (cell / "manifest.json").write_text(json.dumps({
         "anchor": str(rel), "spec_version": spec["spec_version"], "anchor_checksum": checksum(anchor),
-        "product": product, "product_version": version, "model": model,
+        "product": product, "product_version": version, "model": model, "pinned": model is not None,
         "permission_mode": adapter.PERMISSION_MODE, "started": started.isoformat(), "n": n,
         "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
         "timed_out": timed_out, "tree_before": before, "tree_after": after,
@@ -159,6 +171,7 @@ def main():
         return remeasure(Path(a.remeasure).resolve())
     if not a.anchor:
         ap.error("--anchor required")
+    check_model(a.model)
     anchor = ROOT / "anchors" / a.anchor
     for i in range(1, a.n + 1):
         one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout)
