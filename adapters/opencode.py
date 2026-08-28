@@ -11,12 +11,12 @@ def _model(model):
     return ["-m", model] if model else []
 
 
-def argv(instruction, model, out_file, cwd):
+def argv(instruction, model, out_file, cwd, mode=None):
     # --dir is explicit: without it OpenCode has resolved the project from a stale session.
     return ["opencode", "run", "--dir", cwd, *_FLAGS, *_model(model), instruction]
 
 
-def continue_argv(reply, model, out_file, cwd):
+def continue_argv(reply, model, out_file, cwd, mode=None):
     return ["opencode", "run", "--dir", cwd, "--continue", *_FLAGS, *_model(model), reply]
 
 

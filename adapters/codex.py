@@ -9,12 +9,12 @@ def _model(model):
     return ["-m", model] if model else []
 
 
-def argv(instruction, model, out_file, cwd):
+def argv(instruction, model, out_file, cwd, mode=None):
     # stdout is the event log; the final assistant message goes to out_file.
     return ["codex", "exec", *_FLAGS, *_model(model), "-o", out_file, instruction]
 
 
-def continue_argv(reply, model, out_file, cwd):
+def continue_argv(reply, model, out_file, cwd, mode=None):
     return ["codex", "exec", "resume", "--last", *_FLAGS, *_model(model), "-o", out_file, reply]
 
 

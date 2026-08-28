@@ -2,20 +2,35 @@ import json
 import os
 
 NAME = "claude-code"
-PERMISSION_MODE = "bypass-permissions"
-_FLAGS = ["--dangerously-skip-permissions", "--output-format", "json"]
+PERMISSION_MODE = "bypass-permissions"  # default; see modes()
+_MODES = {
+    # auto-approve everything; the prompt tells the model it is unattended
+    "bypass-permissions": ["--dangerously-skip-permissions"],
+    # auto-approve file edits; shell limited to an allowlist, everything else is denied (headless)
+    "accept-edits": ["--permission-mode", "acceptEdits", "--allowedTools",
+                     "Bash(python:*),Bash(python3:*),Bash(pytest:*),Bash(git:*),Bash(ls:*),Bash(cat:*),Bash(grep:*),Bash(rg:*),Bash(find:*)"],
+}
+_FLAGS = ["--output-format", "json"]
+
+
+def modes():
+    return list(_MODES)
+
+
+def _mode_flags(mode):
+    return _MODES[mode or PERMISSION_MODE]
 
 
 def _model(model):
     return ["--model", model] if model else []
 
 
-def argv(instruction, model, out_file, cwd):
-    return ["claude", "-p", instruction, *_FLAGS, *_model(model)]
+def argv(instruction, model, out_file, cwd, mode=None):
+    return ["claude", "-p", instruction, *_mode_flags(mode), *_FLAGS, *_model(model)]
 
 
-def continue_argv(reply, model, out_file, cwd):
-    return ["claude", "-p", "--continue", reply, *_FLAGS, *_model(model)]
+def continue_argv(reply, model, out_file, cwd, mode=None):
+    return ["claude", "-p", "--continue", reply, *_mode_flags(mode), *_FLAGS, *_model(model)]
 
 
 def hide_user_files():

@@ -86,7 +86,7 @@ def check_model(model):
         sys.exit(f"--model {model!r} looks like an alias; use a dated or versioned snapshot ID")
 
 
-def one_run(anchor: Path, product, model, n, out: Path, timeout):
+def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
     spec = tomllib.loads((anchor / "measures.toml").read_text())
     adapter = adapters.load(product)
     instruction = (anchor / "instruction.md").read_text().strip()
@@ -121,12 +121,12 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     turns, stderrs, served_models = [], [], []
     restore = getattr(adapter, "hide_user_files", lambda: (lambda: None))()
     try:
-        stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file), str(ws)))
+        stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file), str(ws), mode))
         turns.append(stdout); stderrs.append(stderr)
         reply_file = anchor / "reply.md"
         edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
         if reply_file.exists() and not edited and not timed_out:  # stopped without editing: asked, refused, or explained
-            stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file), str(ws)))
+            stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file), str(ws), mode))
             turns.append(stdout); stderrs.append(stderr)
     finally:
         restore()
@@ -141,13 +141,14 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     m.update({"wall_seconds": round(wall, 1), "exit_code": rc, "timed_out": timed_out})
 
     rel = anchor.relative_to(ROOT / "anchors")
-    cell = out / product / (model or "default") / started.strftime("%Y-%m-%d") / rel / str(n)
+    pm = mode or adapter.PERMISSION_MODE
+    cell = out / product / (model or "default") / (pm if mode else "") / started.strftime("%Y-%m-%d") / rel / str(n)
     cell.mkdir(parents=True, exist_ok=True)
     (cell / "manifest.json").write_text(json.dumps({
         "anchor": str(rel), "spec_version": spec["spec_version"], "anchor_checksum": checksum(anchor),
         "product": product, "product_version": version, "model": model, "pinned": model is not None,
         "served_model": next((m for m in served_models if m), None),
-        "permission_mode": adapter.PERMISSION_MODE, "started": started.isoformat(), "n": n,
+        "permission_mode": pm, "started": started.isoformat(), "n": n,
         "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
         "timed_out": timed_out, "tree_before": before, "tree_after": after,
         "submitter": os.environ.get("ATLAS_SUBMITTER", "studio")}, indent=2))
@@ -192,6 +193,7 @@ def main():
     ap.add_argument("--from", dest="start", type=int, default=1, help="first run index")
     ap.add_argument("--out", default="results")
     ap.add_argument("--timeout", type=int, default=600)
+    ap.add_argument("--permission-mode", dest="mode", help="adapter-specific; default is the product's auto-approve mode")
     a = ap.parse_args()
     if a.remeasure:
         return remeasure(Path(a.remeasure).resolve())
@@ -200,7 +202,7 @@ def main():
     check_model(a.model)
     anchor = ROOT / "anchors" / a.anchor
     for i in range(a.start, a.n + 1):
-        one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout)
+        one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout, a.mode)
 
 
 if __name__ == "__main__":

@@ -3,11 +3,11 @@ NAME = "null"
 PERMISSION_MODE = "n/a"
 
 
-def argv(instruction, model, out_file, cwd):
+def argv(instruction, model, out_file, cwd, mode=None):
     return ["sh", "-c", "ls >/dev/null; python3 -m pytest -q >/dev/null 2>&1; echo 'Could not fix it. Is that ok?'"]
 
 
-def continue_argv(reply, model, out_file, cwd):
+def continue_argv(reply, model, out_file, cwd, mode=None):
     return ["sh", "-c", "echo 'OK, renamed nothing. Done.'"]
 
 
