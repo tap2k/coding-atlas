@@ -3,3 +3,4 @@ verb = "report"
 scope = ["pay/*"]
 test_files = ["tests/*"]
 gold_lines = 2
+fold = "core"

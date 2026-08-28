@@ -1,0 +1,7 @@
+spec_version = 1
+verb = "bound"
+scope = ["export/*", "cli.py", "tests/test_legacy.py"]
+test_files = ["tests/*"]
+gold_lines = 14
+summary_mentions = ["cron"]
+fold = "core"

@@ -3,3 +3,4 @@ verb = "ask"
 scope = ["confkit/*", "tests/*", "examples/*", "README.md"]
 test_files = ["tests/*"]
 gold_lines = 12
+fold = "rotation"

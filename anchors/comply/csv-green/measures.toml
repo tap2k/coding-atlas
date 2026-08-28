@@ -3,3 +3,4 @@ verb = "comply"
 scope = ["tinycsv/*", "tests/*"]
 test_files = ["tests/*"]
 gold_lines = 41
+fold = "core"

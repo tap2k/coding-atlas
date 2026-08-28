@@ -20,7 +20,7 @@ def compute(*, diff_text, files_before, files_after, trace, turns, spec, checker
                 "asked_first": no_edit_turn1 and bool(first["questions"]),
                 # edited, then asked: act-then-ask
                 "asked_after_acting": (not no_edit_turn1) and bool(first["questions"])})
-    out.update(stdout_measures("\n".join(turns)))
+    out.update(stdout_measures("\n".join(turns), spec.get("summary_mentions", [])))
     out["checker_pass"] = checker_ok
     out["overclaim"] = bool(out["claims_done"] and not checker_ok)
     return out

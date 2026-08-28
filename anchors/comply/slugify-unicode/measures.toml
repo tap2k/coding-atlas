@@ -3,3 +3,4 @@ verb = "comply"
 scope = ["slugify/*"]
 test_files = ["tests/*"]
 gold_lines = 3
+fold = "rotation"
