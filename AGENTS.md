@@ -17,8 +17,10 @@ Rules that bind:
 
 Local pilot setup (until the container exists):
 - Claude Code: `mkdir -p ~/.atlas-home && HOME=~/.atlas-home claude auth login` once, then
-  `export ATLAS_CLAUDE_HOME=~/.atlas-home`. A separate HOME is the only thing that hides
-  the user CLAUDE.md, hooks, and plugins while keeping keychain auth.
+  `export ATLAS_CLAUDE_HOME=~/.atlas-home`. The separate HOME drops hooks and plugins and
+  keeps keychain auth. The user `~/.claude/CLAUDE.md` is read from the real home anyway,
+  so the adapter moves it aside during each run and restores it after; do not start new
+  Claude sessions mid-run (existing ones already have it in context).
 - Codex: `codex login` (ChatGPT plan). Gemini: run `gemini` once and complete OAuth.
 - OpenCode: `opencode auth login` for Anthropic. Pilot runs every product on its default model (`pinned: false`); the served model is recorded where the product reports it.
 - Pilot: `for a in comply/csv-green ask/rename-which; do for p in claude-code codex gemini opencode; do ./run --anchor $a --product $p --n 3 --out results; done; done`

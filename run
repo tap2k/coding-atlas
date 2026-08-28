@@ -112,13 +112,17 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
         return out, err, rc, to
 
     turns, stderrs = [], []
-    stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file), str(ws)))
-    turns.append(stdout); stderrs.append(stderr)
-    reply_file = anchor / "reply.md"
-    edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
-    if reply_file.exists() and not edited and stdout.strip().endswith("?") and not timed_out:
-        stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file), str(ws)))
+    restore = getattr(adapter, "hide_user_files", lambda: (lambda: None))()
+    try:
+        stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file), str(ws)))
         turns.append(stdout); stderrs.append(stderr)
+        reply_file = anchor / "reply.md"
+        edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
+        if reply_file.exists() and not edited and stdout.strip().endswith("?") and not timed_out:
+            stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file), str(ws)))
+            turns.append(stdout); stderrs.append(stderr)
+    finally:
+        restore()
     wall = dt.datetime.now(dt.timezone.utc).timestamp() - t0
     after = tree(ws)
     sh(["git", "add", "-A"], cwd=ws)

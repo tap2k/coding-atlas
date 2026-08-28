@@ -17,6 +17,18 @@ def continue_argv(reply, model, out_file, cwd):
     return ["claude", "-p", "--continue", reply, *_FLAGS, *_model(model)]
 
 
+def hide_user_files():
+    """Claude Code reads ~/.claude/CLAUDE.md from the real home regardless of HOME or
+    CLAUDE_CONFIG_DIR, and --bare (which skips it) refuses OAuth. So move it aside for the
+    duration of a run. Returns a restore function. Sessions already running keep their copy."""
+    real = os.path.join(os.path.expanduser(f"~{os.environ.get('USER','')}"), ".claude", "CLAUDE.md")
+    hidden = real + ".atlas-hidden"
+    if not os.path.exists(real):
+        return lambda: None
+    os.rename(real, hidden)
+    return lambda: os.path.exists(hidden) and os.rename(hidden, real)
+
+
 def env(iso_dir):
     # User CLAUDE.md, hooks, plugins, and keychain auth all hang off $HOME, so isolation
     # is a separate HOME that has been logged in once: `HOME=~/.atlas-home claude login`.
