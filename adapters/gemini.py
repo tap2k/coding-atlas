@@ -7,11 +7,11 @@ def _model(model):
     return ["-m", model] if model else []
 
 
-def argv(instruction, model, out_file):
+def argv(instruction, model, out_file, cwd):
     return ["gemini", "-p", instruction, *_FLAGS, *_model(model)]
 
 
-def continue_argv(reply, model, out_file):
+def continue_argv(reply, model, out_file, cwd):
     return ["gemini", "-p", reply, "--resume", "latest", *_FLAGS, *_model(model)]
 
 

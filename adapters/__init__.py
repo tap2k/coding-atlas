@@ -2,9 +2,9 @@
 instruction and a model. Contract (all optional except argv/version):
 
   NAME, PERMISSION_MODE
-  argv(instruction, model, out_file) -> list[str]    # out_file: where to write the final
+  argv(instruction, model, out_file, cwd) -> list[str]    # out_file: where to write the final
                                                      # message if the product cannot use stdout
-  continue_argv(reply, model, out_file) -> list[str] # second turn, same session
+  continue_argv(reply, model, out_file, cwd) -> list[str] # second turn, same session
   env(iso_dir) -> dict                               # extra env; iso_dir is a clean per-run
                                                      # config dir for products that honor one
   version() -> list[str]

@@ -9,11 +9,11 @@ def _model(model):
     return ["--model", model] if model else []
 
 
-def argv(instruction, model, out_file):
+def argv(instruction, model, out_file, cwd):
     return ["claude", "-p", instruction, *_FLAGS, *_model(model)]
 
 
-def continue_argv(reply, model, out_file):
+def continue_argv(reply, model, out_file, cwd):
     return ["claude", "-p", "--continue", reply, *_FLAGS, *_model(model)]
 
 
