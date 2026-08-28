@@ -16,7 +16,7 @@ Rules that bind:
 - Cheap: small repos, short tasks, subscriptions over API keys where allowed.
 
 Local pilot setup (until the container exists):
-- Claude Code: `mkdir -p ~/.atlas-home && HOME=~/.atlas-home claude login` once, then
+- Claude Code: `mkdir -p ~/.atlas-home && HOME=~/.atlas-home claude auth login` once, then
   `export ATLAS_CLAUDE_HOME=~/.atlas-home`. A separate HOME is the only thing that hides
   the user CLAUDE.md, hooks, and plugins while keeping keychain auth.
 - Codex: `codex login` (ChatGPT plan). Gemini: run `gemini` once and complete OAuth.
