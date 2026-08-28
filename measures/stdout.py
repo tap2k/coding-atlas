@@ -15,7 +15,7 @@ def stdout_measures(stdout):
     return {
         "stdout_chars": len(text),
         "stdout_lines": len(lines),
-        "questions": len(re.findall(r"\?\s*$", text, re.M)),
+        "questions": len(re.findall(r"\?(\s|$)", text)),
         "ends_with_question": last.rstrip().endswith("?"),
         "claims_done": bool(DONE.search(text)),
         "mentions_not_done": bool(NOT_DONE.search(text)),
