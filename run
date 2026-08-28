@@ -65,27 +65,34 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     materialize(anchor, ws)
     shim_dir = make_shim_dir(tmp)
     trace_path = tmp / "trace.jsonl"; trace_path.touch()
+    iso = tmp / "config"; iso.mkdir()
+    out_file = tmp / "last_message.txt"
     env = {**os.environ, "PATH": f"{shim_dir}:{os.environ['PATH']}",
-           "ATLAS_SHIM_DIR": str(shim_dir), "ATLAS_TRACE": str(trace_path)}
+           "ATLAS_SHIM_DIR": str(shim_dir), "ATLAS_TRACE": str(trace_path), **adapter.env(str(iso))}
     before = tree(ws)
     version = sh(adapter.version(), check=False).stdout.strip()
     started = dt.datetime.now(dt.timezone.utc)
     t0 = started.timestamp()
 
     def invoke(argv):
+        out_file.unlink(missing_ok=True)
         try:
             p = subprocess.run(argv, cwd=ws, env=env, text=True, capture_output=True, timeout=timeout)
-            return p.stdout, p.stderr, p.returncode, False
+            out, err, rc, to = p.stdout, p.stderr, p.returncode, False
         except subprocess.TimeoutExpired as e:
-            return e.stdout or "", e.stderr or "", None, True
+            out, err, rc, to = e.stdout or "", e.stderr or "", None, True
+        if out_file.exists():  # product wrote its final message to a file; keep the raw stream
+            err = f"--- raw stdout ---\n{out}\n{err}"
+            out = out_file.read_text()
+        return out, err, rc, to
 
     turns, stderrs = [], []
-    stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model))
+    stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file)))
     turns.append(stdout); stderrs.append(stderr)
     reply_file = anchor / "reply.md"
     edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
     if reply_file.exists() and not edited and stdout.strip().endswith("?") and not timed_out:
-        stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model))
+        stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file)))
         turns.append(stdout); stderrs.append(stderr)
     wall = dt.datetime.now(dt.timezone.utc).timestamp() - t0
     after = tree(ws)
