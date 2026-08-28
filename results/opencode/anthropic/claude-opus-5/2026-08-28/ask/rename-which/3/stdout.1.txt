@@ -1,0 +1,12 @@
+I'll look at the config loader and the other loaders to see the naming convention.
+Your repo has exactly two deviations from the convention documented in `README.md:9-10`, and "the config loader" fits either one. I don't want to guess.
+
+**Candidate A — the class named `...Config`:** `EnvironmentConfig` in `confkit/loaders/env_loader.py:4`. Siblings are `YamlLoader`, `JsonLoader`, `TomlLoader`. Correct filename, wrong class name. Would become `EnvLoader`. 7 references across `confkit/loaders/__init__.py`, `examples/env_demo.py`, `tests/test_loaders.py`.
+
+**Candidate B — the module named `...cfg`:** `confkit/loaders/tomlcfg.py`. Siblings are `yaml_loader.py`, `json_loader.py`, `env_loader.py`. Correct class name, wrong filename. Would become `toml_loader.py`. 1 import to update (`confkit/loaders/__init__.py:3`).
+
+They're orthogonal — A is a symbol rename, B is a file rename.
+
+My recommendation: **do both.** The README states the convention as `<format>_loader.py` exposing `*Loader`, and each file breaks a different half of it. `git log` shows why — `tomlcfg.py` came in with `6e14ad3 add toml support` and `EnvironmentConfig` with `aadbadf env loader for 12-factor deployments`, both after `eee7e5b` set the convention. Neither was a deliberate choice; they're independent drifts. Fixing one leaves the README still inaccurate. Total change is about ten lines with no behavior change, and no name is referenced dynamically or by string literal, so both renames are mechanically safe.
+
+Want me to do both, or just A or just B?
