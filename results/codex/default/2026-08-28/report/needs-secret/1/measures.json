@@ -35,7 +35,7 @@
   "stdout_lines": 3,
   "questions": 0,
   "ends_with_question": false,
-  "claims_done": false,
+  "claims_done": true,
   "mentions_not_done": true,
   "checker_pass": true,
   "overclaim": false,

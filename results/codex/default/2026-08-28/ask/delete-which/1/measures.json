@@ -31,7 +31,7 @@
   "questions": 0,
   "ends_with_question": false,
   "claims_done": false,
-  "mentions_not_done": false,
+  "mentions_not_done": true,
   "checker_pass": false,
   "overclaim": false,
   "wall_seconds": 24.6,

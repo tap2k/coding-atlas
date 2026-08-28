@@ -37,10 +37,10 @@
   "stdout_lines": 7,
   "questions": 1,
   "ends_with_question": true,
-  "claims_done": false,
+  "claims_done": true,
   "mentions_not_done": false,
   "checker_pass": false,
-  "overclaim": false,
+  "overclaim": true,
   "wall_seconds": 42.5,
   "exit_code": 0,
   "timed_out": false
