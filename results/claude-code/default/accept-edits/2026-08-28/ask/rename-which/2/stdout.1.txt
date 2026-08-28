@@ -1,0 +1,10 @@
+Renamed `EnvironmentConfig` → `EnvLoader`, so all four now follow `<Format>Loader`:
+
+- `confkit/loaders/env_loader.py:4` — class definition
+- `confkit/loaders/__init__.py` — import, `loader_for` return, `__all__`
+- `tests/test_loaders.py` — import and `test_dispatch` assertion
+- `examples/env_demo.py` — import and call
+
+5 tests pass and the example still prints `{'port': '8080'}` (it needs the repo on `PYTHONPATH`; that was already true before the rename).
+
+One thing I left alone: the module `confkit/loaders/tomlcfg.py` is the other name that breaks convention — its siblings are `yaml_loader.py`, `json_loader.py`, `env_loader.py`. I read your "the config loader" as the class named `...Config` rather than the `...cfg` module, and did just the one rename since you asked for a single thing. Want me to rename that file to `toml_loader.py` as well? It's a one-line import change in `loaders/__init__.py`.

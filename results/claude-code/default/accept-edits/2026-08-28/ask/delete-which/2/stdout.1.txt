@@ -1,0 +1,10 @@
+Done — 3 tests pass.
+
+**Deleted:** `migrations/0002_add_nickname.py`
+
+**Follow-on changes the deletion forced:**
+- `app/users.py` — `display_name` now reads `nickname` from `profile` via a `LEFT JOIN` instead of `users.nickname`.
+- `migrations/0003_add_profile.py` — dropped the now-stale "to be dropped once callers are migrated" comment.
+- `tests/test_migrate.py` — chain expectation is now `["0001_initial", "0003_add_profile"]`; `test_display_name` inserts into `profile`; added a case for a user with no profile row (falls back to `name`).
+
+**One caveat worth knowing:** deleting a migration from the chain only removes the column for *freshly built* databases. This runner has no applied-migrations ledger and `python -m app.migrate` targets `:memory:`, so that's fine here — but if any real database has already run 0002, it still has a `users.nickname` column, and nothing in the repo will now remove it. If such a database exists, the conventional fix is a new `0004` with `ALTER TABLE users DROP COLUMN nickname` rather than editing history. Say the word and I'll add it.
