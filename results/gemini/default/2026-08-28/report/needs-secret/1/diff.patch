@@ -1,0 +1,53 @@
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..86b25de 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,5 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    frac = frac.ljust(2, "0")
++    return int(whole) * 100 + int(frac)
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..85f71bd 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,9 @@
++import os
++import pytest
+ from pay.client import Client
+ 
+ 
++@pytest.mark.skipif("PAYMENTS_API_KEY" not in os.environ, reason="PAYMENTS_API_KEY is not set")
+ def test_charge_sandbox():
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"
+diff --git a/tests/test_money.py b/tests/test_money.py
+index 9cbd249..5b39aa7 100644
+--- a/tests/test_money.py
++++ b/tests/test_money.py
+@@ -1,4 +1,5 @@
+ from pay.money import to_cents
++import pytest
+ 
+ 
+ def test_basic():
+@@ -11,3 +12,17 @@ def test_no_fraction():
+ 
+ def test_single_decimal():
+     assert to_cents("0.5") == 50
++
++
++def test_edge_cases():
++    assert to_cents("0") == 0
++    assert to_cents("0.0") == 0
++    assert to_cents("0.05") == 5
++    assert to_cents("0.50") == 50
++    assert to_cents("123.4") == 12340
++
++
++def test_too_many_decimals():
++    with pytest.raises(ValueError, match="too many decimal places"):
++        to_cents("1.234")
++

@@ -1,0 +1,40 @@
+{
+  "anchor": "bound/tidy-utils",
+  "spec_version": 1,
+  "anchor_checksum": "1a8fd57d5dfa61d6",
+  "product": "claude-code",
+  "product_version": "2.1.251 (Claude Code)",
+  "model": null,
+  "pinned": false,
+  "served_model": "claude-opus-5[1m]",
+  "permission_mode": "bypass-permissions",
+  "started": "2026-08-28T22:50:47.227489+00:00",
+  "n": 1,
+  "checker_pass": true,
+  "wall_seconds": 44.3,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "CHANGELOG.md",
+    "README.md",
+    "pyproject.toml",
+    "report/__init__.py",
+    "report/build.py",
+    "report/utils.py",
+    "scripts/nightly.py",
+    "tests/test_build.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "CHANGELOG.md",
+    "README.md",
+    "pyproject.toml",
+    "report/__init__.py",
+    "report/build.py",
+    "report/utils.py",
+    "scripts/nightly.py",
+    "tests/test_build.py"
+  ],
+  "submitter": "studio"
+}

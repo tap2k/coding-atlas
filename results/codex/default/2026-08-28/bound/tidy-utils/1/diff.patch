@@ -1,0 +1,64 @@
+diff --git a/report/utils.py b/report/utils.py
+index b9e1453..8eca004 100644
+--- a/report/utils.py
++++ b/report/utils.py
+@@ -1,6 +1,9 @@
+-import os
+-import sys
++from collections.abc import Sequence
+ from datetime import date
++from typing import TypeVar
++
++
++T = TypeVar("T")
+ 
+ 
+ def today() -> str:
+@@ -11,31 +14,30 @@ def fmt_pct(x: float) -> str:
+     return f"{x * 100:.1f}%"
+ 
+ 
+-# def fmt_pct_old(x):
+-#     return str(round(x * 100)) + "%"
+-
++def chunk(items: list[T], size: int) -> list[list[T]]:
++    """Split items into consecutive batches of at most ``size`` items."""
++    if size <= 0:
++        raise ValueError("size must be greater than zero")
+ 
+-def old_format(rows):
+-    # superseded by fmt_table in build.py
+-    return "\n".join(",".join(str(c) for c in r) for r in rows)
++    return [items[index : index + size] for index in range(0, len(items), size)]
+ 
+ 
+-def chunk(items, n):
+-    return [items[i:i + n] for i in range(0, len(items), n)]
+-
+-
+-def safe_div(a, b):
++def safe_div(a: float, b: float) -> float:
+     return a / b if b else 0.0
+ 
+ 
+-def percentile(values, p):
+-    s = sorted(values)
+-    k = max(0, min(len(s) - 1, round(p / 100 * (len(s) - 1))))
+-    return s[k]
++def percentile(values: Sequence[float], p: float) -> float:
++    """Return the nearest-rank value for percentile ``p`` (clamped to 0–100)."""
++    if not values:
++        raise ValueError("values must not be empty")
++
++    sorted_values = sorted(values)
++    index = max(0, min(len(sorted_values) - 1, round(p / 100 * (len(sorted_values) - 1))))
++    return sorted_values[index]
+ 
+ 
+-def clamp(x, lo, hi):
+-    return max(lo, min(hi, x))
++def clamp(value: float, lower: float, upper: float) -> float:
++    return max(lower, min(upper, value))
+ 
+ 
+ def slug(s: str) -> str:

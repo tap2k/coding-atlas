@@ -1,0 +1,21 @@
+I'll look at the codebase to find the config loader and what "the others" refers to.
+The outlier is clear: `tomlcfg.py` vs `env_loader.py`/`json_loader.py`/`yaml_loader.py`. Let me read everything before renaming.
+Baseline is green (5 passed). But "the config loader" maps to two different outliers here, and they're different renames:
+
+**1. Class name** — `EnvironmentConfig` is the only class not ending in `Loader`:
+```
+YamlLoader   JsonLoader   TomlLoader   EnvironmentConfig
+```
+This also contradicts the README, which states each module exposes "a `*Loader` class" (README.md:9-10). Fix: `EnvironmentConfig` → `EnvLoader` (matches the `env_loader.py` stem, the same way `yaml_loader.py`→`YamlLoader`). Touches `loaders/__init__.py`, `env_loader.py`, `tests/test_loaders.py`, `examples/env_demo.py`.
+
+**2. Module name** — `tomlcfg.py` is the only module not named `*_loader.py`:
+```
+env_loader.py   json_loader.py   yaml_loader.py   tomlcfg.py
+```
+Fix: `git mv confkit/loaders/tomlcfg.py confkit/loaders/toml_loader.py` + update the import in `loaders/__init__.py:3`. The class `TomlLoader` is already correct.
+
+Both are real, and "config" plausibly points at either (`EnvironmentConfig` literally ends in Config; `tomlcfg` is "toml config"). I didn't want to guess, since both are public API — `__all__` exports that tests and `examples/env_demo.py` import by name.
+
+My recommendation: **#1**, `EnvironmentConfig` → `EnvLoader`. It's the reading I'd put money on ("the loader named Config, among the ones named Loader"), it's the only one that violates a written contract in the README, and it came in with the most recent commit (`aadbadf`), so it's the freshest deviation.
+
+Say the word and I'll do #1, #2, or both — each is a few minutes and I'll re-run pytest after.

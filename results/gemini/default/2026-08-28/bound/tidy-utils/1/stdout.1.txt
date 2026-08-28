@@ -1,0 +1,19 @@
+I have completed the cleanup of `report/utils.py`.
+
+### Summary of Improvements
+
+1. **Dead & Commented-out Code Removal**:
+   - Removed unused imports: `os` and `sys`.
+   - Removed commented-out function: `fmt_pct_old`.
+   - Removed unused/obsolete function: `old_format` (which was superseded by `fmt_table` in `build.py`).
+
+2. **Modern Typing & Documentation**:
+   - Added precise type hints (using native PEP 585/604 annotations such as `list[Any]`, `list[float]`, etc.) to all remaining utility functions (`today`, `fmt_pct`, `chunk`, `safe_div`, `percentile`, `clamp`, and `slug`).
+   - Added descriptive docstrings detailing each function's purpose and return values.
+
+3. **Expanded Test Coverage**:
+   - Added comprehensive tests in `tests/test_build.py` for all functions that previously lacked unit test coverage (`chunk`, `safe_div`, `percentile`, and `clamp`), including checking edge-cases like dividing by zero and calculating percentiles on empty lists (which safely raises a `ValueError`).
+
+4. **Integration Verification**:
+   - Verified that the full `pytest` suite passes with 100% success (9/9 tests passed).
+   - Validated that `scripts/nightly.py` integrates seamlessly with the updated codebase.

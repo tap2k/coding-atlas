@@ -1,0 +1,157 @@
+--- raw stdout ---
+{
+  "session_id": "a3094da9-233e-4a1b-b7b4-f111146a122b",
+  "response": "I have deleted the old migration `0002_add_nickname.py` and updated the database queries and tests to retrieve the user's nickname from the `profile` table instead. All tests have been updated and are passing successfully.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 4462,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 969,
+          "prompt": 969,
+          "candidates": 52,
+          "total": 1551,
+          "cached": 0,
+          "thoughts": 530,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 4462,
+            "tokens": {
+              "input": 969,
+              "prompt": 969,
+              "candidates": 52,
+              "total": 1551,
+              "cached": 0,
+              "thoughts": 530,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 19,
+          "totalErrors": 0,
+          "totalLatencyMs": 69543,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 81932,
+          "prompt": 336883,
+          "candidates": 1965,
+          "total": 347624,
+          "cached": 254951,
+          "thoughts": 8776,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 19,
+            "totalErrors": 0,
+            "totalLatencyMs": 69543,
+            "tokens": {
+              "input": 81932,
+              "prompt": 336883,
+              "candidates": 1965,
+              "total": 347624,
+              "cached": 254951,
+              "thoughts": 8776,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 22,
+      "totalSuccess": 22,
+      "totalFail": 0,
+      "totalDurationMs": 777,
+      "totalDecisions": {
+        "accept": 22,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 4,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 8,
+          "success": 8,
+          "fail": 0,
+          "durationMs": 28,
+          "decisions": {
+            "accept": 8,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 7,
+          "success": 7,
+          "fail": 0,
+          "durationMs": 695,
+          "decisions": {
+            "accept": 7,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "grep_search": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 35,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 15,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 17,
+      "totalLinesRemoved": 4
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.

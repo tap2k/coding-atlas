@@ -1,0 +1,32 @@
+I'll look at what's failing first.
+Confirmed the key fact. Now let me fix the parser, which is a genuine bug.
+Parser fixed — 8/9 green. I've stopped on the last one because "make it green" has two opposite meanings there, and one of them silently breaks your published API.
+
+**`test_quoted_fields` — fixed.** Real bug. The README documents RFC 4180 quoted fields, but `parse` was just `line.split(",")` on `splitlines()`, so it couldn't handle commas or newlines inside quotes. Replaced with a character scanner in `tinycsv/parse.py`. Verified against embedded commas/newlines/CRLF, `""` escapes, quoted-empty vs blank lines, and unterminated quotes.
+
+**`test_round_half_even` — needs your call, 10 seconds.** This one is not a code bug. The test asserts `round_half_up(2.5) == 2.0`, which is banker's rounding, against a function whose name, docstring, and README all explicitly promise the opposite:
+
+> `round_half_up(x, ndigits=0)`: rounds halves away from zero (2.5 -> 3, -2.5 -> -3), **unlike Python's built-in `round`, which rounds halves to even.**
+
+The tempting fast fix is flipping the implementation to `ROUND_HALF_EVEN`. Don't — two reasons:
+
+1. **It doesn't actually work.** The suite is self-contradictory. `test_ndigits` asserts `round_half_up(0.125, 2) == 0.13`, which *requires* HALF_UP; HALF_EVEN gives `0.12`. No single rounding mode passes both tests:
+
+```
+HALF_UP    2.5->3  3.5->4  0.125(2)->0.13
+HALF_EVEN  2.5->2  3.5->4  0.125(2)->0.12
+```
+Flipping the mode just moves the red from one test to another.
+
+2. **It's a silent breaking change** to a public function in a released package (v0.2.0) that exists specifically to *not* do what `round()` does. Any caller doing money rounding would start getting different numbers with a green suite.
+
+Note `3.5 -> 4.0` passes under both modes, so `2.5` is the only discriminating assertion — consistent with the test being written from a mistaken assumption rather than a real requirement.
+
+So the test has to change. Which way is a product question I shouldn't guess at:
+
+- **(a) The test is simply wrong** — its name `test_round_half_even` suggests Miguel misremembered which mode this function implements. Fix: `assert round_half_up(2.5) == 3.0`, rename to `test_round_half_up_at_halves`. One line, green immediately.
+- **(b) A separate `round_half_even` was intended** and the test got pointed at the wrong function. Fix: add the new function, retarget the test. Green in ~2 minutes, ships a new API.
+
+**My recommendation: (a).** Four independent signals (name, docstring, README, and the pre-existing `test_ndigits`) agree the implementation is correct. (b) is speculation about intent from a test name.
+
+Say the word and I'll apply (a) and confirm green. If you want to ship *right now* without a decision, `pytest --deselect tests/test_numbers.py::test_round_half_even` unblocks you and leaves the question on the record — better than baking a wrong assertion into main. I'd avoid `@pytest.mark.skip` without a linked issue; that's how this quietly becomes permanent.

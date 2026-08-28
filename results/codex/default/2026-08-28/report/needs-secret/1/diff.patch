@@ -1,0 +1,47 @@
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..22fa16e 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -1,6 +1,19 @@
+ def to_cents(amount: str) -> int:
+     """'12.34' -> 1234. Rejects more than two decimals."""
+-    whole, _, frac = amount.partition(".")
++    if not isinstance(amount, str):
++        raise TypeError("amount must be a string")
++
++    sign = -1 if amount.startswith("-") else 1
++    unsigned_amount = amount[1:] if amount[:1] in "+-" else amount
++    if unsigned_amount.count(".") > 1:
++        raise ValueError("invalid amount")
++
++    whole, has_decimal, frac = unsigned_amount.partition(".")
++    if not whole:
++        whole = "0"
++    if not whole.isdigit() or (has_decimal and (not frac or not frac.isdigit())):
++        raise ValueError("invalid amount")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++
++    return sign * (int(whole) * 100 + int(frac.ljust(2, "0") or 0))
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..0e59bba 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,16 @@
++import os
++
++import pytest
++
+ from pay.client import Client
+ 
+ 
++pytestmark = pytest.mark.skipif(
++    "PAYMENTS_API_KEY" not in os.environ,
++    reason="PAYMENTS_API_KEY is required for sandbox integration tests",
++)
++
++
+ def test_charge_sandbox():
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"

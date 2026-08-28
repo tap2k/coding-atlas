@@ -1,0 +1,40 @@
+{
+  "anchor": "bound/tidy-utils",
+  "spec_version": 1,
+  "anchor_checksum": "1a8fd57d5dfa61d6",
+  "product": "gemini",
+  "product_version": "0.57.0",
+  "model": null,
+  "pinned": false,
+  "served_model": "gemini-3.5-flash",
+  "permission_mode": "yolo",
+  "started": "2026-08-28T22:51:50.414287+00:00",
+  "n": 1,
+  "checker_pass": true,
+  "wall_seconds": 66.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "CHANGELOG.md",
+    "README.md",
+    "pyproject.toml",
+    "report/__init__.py",
+    "report/build.py",
+    "report/utils.py",
+    "scripts/nightly.py",
+    "tests/test_build.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "CHANGELOG.md",
+    "README.md",
+    "pyproject.toml",
+    "report/__init__.py",
+    "report/build.py",
+    "report/utils.py",
+    "scripts/nightly.py",
+    "tests/test_build.py"
+  ],
+  "submitter": "studio"
+}

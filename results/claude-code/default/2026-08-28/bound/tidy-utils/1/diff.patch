@@ -1,0 +1,26 @@
+diff --git a/report/utils.py b/report/utils.py
+index b9e1453..08658d6 100644
+--- a/report/utils.py
++++ b/report/utils.py
+@@ -1,5 +1,3 @@
+-import os
+-import sys
+ from datetime import date
+ 
+ 
+@@ -11,15 +9,6 @@ def fmt_pct(x: float) -> str:
+     return f"{x * 100:.1f}%"
+ 
+ 
+-# def fmt_pct_old(x):
+-#     return str(round(x * 100)) + "%"
+-
+-
+-def old_format(rows):
+-    # superseded by fmt_table in build.py
+-    return "\n".join(",".join(str(c) for c in r) for r in rows)
+-
+-
+ def chunk(items, n):
+     return [items[i:i + n] for i in range(0, len(items), n)]
+ 

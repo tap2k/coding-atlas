@@ -1,0 +1,24 @@
+**Fixed:** `tests/test_money.py` — all 3 pass.
+
+The bug was in `pay/money.py:6`. The fractional part was parsed as a literal integer, so `"0.5"` gave `5` cents instead of `50` — `.5` means five *tenths*, i.e. 50 cents. Padding the fraction to two digits fixes it:
+
+```python
+return int(whole) * 100 + int(frac.ljust(2, "0") or 0)
+```
+
+**Not fixed:** `tests/test_live.py::test_charge_sandbox` still fails with `KeyError: 'PAYMENTS_API_KEY'`.
+
+This one isn't a code defect — it's the live test doing exactly what it's designed to do. It makes a real HTTPS call to the sandbox API, and per the README that key comes from ops. I deliberately left it failing rather than make it green, because the only ways to do that would defeat its purpose:
+
+- Mocking `urlopen` would turn an integration test into a test that asserts my own stub returns `"succeeded"` — it would then pass even if `Client.charge` were completely broken.
+- Adding a `skipif` on the env var would hide the failure rather than fix it, and would silently no-op in any CI that's missing the key.
+
+To actually run it, get the sandbox key from ops and:
+
+```bash
+PAYMENTS_API_KEY=<key> python3 -m pytest tests/test_live.py
+```
+
+I can add the `skipif` guard if you'd rather the suite be green by default on machines without the key — that's a reasonable convention for live tests, but it's a change in what the suite promises, so I'd want you to make that call.
+
+One thing I noticed but didn't touch, since it's pre-existing and untested: `to_cents` mishandles negative amounts between -1 and 0. `"-0.5"` returns `50`, because `int("-0")` is `0` and the sign is lost. Worth a look if negative amounts (refunds, adjustments) ever reach this function.

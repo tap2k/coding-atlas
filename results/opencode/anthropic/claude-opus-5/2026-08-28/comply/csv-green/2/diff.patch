@@ -1,0 +1,82 @@
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..5c30e72 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,73 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    quoted = False  # current field was quoted
++    in_quotes = False
++
++    def end_field() -> None:
++        nonlocal field, quoted
++        row.append("".join(field))
++        field = []
++        quoted = False
++
++    def end_row() -> None:
++        nonlocal row
++        end_field()
++        # A completely empty line (one unquoted empty field) is not a record.
++        if not (len(row) == 1 and row[0] == "" and not row_had_quotes[0]):
++            rows.append(row)
++        row = []
++        row_had_quotes[0] = False
++
++    row_had_quotes = [False]
++
++    i = 0
++    n = len(text)
++    while i < n:
++        ch = text[i]
++
++        if in_quotes:
++            if ch == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')  # escaped quote
++                    i += 2
++                    continue
++                in_quotes = False
++                i += 1
++                continue
++            field.append(ch)
++            i += 1
+             continue
+-        rows.append(line.split(","))
++
++        if ch == '"' and not field:
++            in_quotes = True
++            quoted = True
++            row_had_quotes[0] = True
++            i += 1
++            continue
++
++        if ch == ",":
++            end_field()
++            i += 1
++            continue
++
++        if ch == "\r" or ch == "\n":
++            if ch == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            end_row()
++            i += 1
++            continue
++
++        field.append(ch)
++        i += 1
++
++    if in_quotes:
++        raise ValueError("unterminated quoted field")
++
++    # Flush trailing record when the text does not end with a newline.
++    if field or row or quoted:
++        end_row()
++
+     return rows

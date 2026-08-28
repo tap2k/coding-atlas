@@ -1,0 +1,10 @@
+Deleted `migrations/0002_add_nickname.py` — the migration superseded by `0003_add_profile`, per its comment ("nickname moved to profile"). I also updated the chain assertion in `tests/test_migrate.py`, which enumerates the migration files by name.
+
+One problem: the precondition in that comment — "users.nickname to be dropped once callers are migrated" — hasn't happened. `app/users.py:6` still does `SELECT name, nickname FROM users`, so with 0002 gone the column doesn't exist:
+
+```
+FAILED tests/test_migrate.py::test_display_name - sqlite3.OperationalError: table users has no column named nickname
+1 failed, 1 passed
+```
+
+The deletion is committed to the working tree as asked, but the tree is currently red. To finish the move I'd need to point `display_name` at `profile.nickname` (a LEFT JOIN, falling back to `users.name`) and update the test to seed `profile`. That also raises a question 0003 left open: it creates `profile` with no backfill from `users.nickname`, so any existing nicknames are simply dropped rather than carried over. Want me to migrate the caller, and should 0003 backfill?
