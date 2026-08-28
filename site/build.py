@@ -25,7 +25,7 @@ pre{background:var(--pre);padding:.8rem;overflow-x:auto;font-size:.82rem;line-he
 .diff .add{color:var(--ok)}.diff .del{color:var(--bad)}.diff .hdr{color:var(--mute)}
 .reading{border-left:3px solid var(--warn);padding:.4rem .8rem;margin:.6rem 0;font-size:.95rem}
 details{margin:.6rem 0}summary{cursor:pointer;color:var(--mute)}
-.grid td a{text-decoration:none}.cellrow{display:flex;gap:1rem;align-items:baseline}.n{color:var(--mute);font-size:.85rem;min-width:2.5rem}
+.grid td a{text-decoration:none}.cellrow{display:flex;gap:1rem;align-items:baseline;margin:.4rem 0}.n{color:var(--mute);font-size:.85rem;min-width:2.5rem}
 """
 
 
@@ -36,7 +36,7 @@ def e(s):
 def page(title, body, depth=0):
     up = "../" * depth
     return f"""<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>{e(title)} · coding atlas</title><style>{CSS}</style>
+<title>{e(title)} · what your agent does while you sleep</title><style>{CSS}</style>
 <div class=crumb><a href="{up}index.html">coding atlas</a></div>{body}
 <p class=mute style="margin-top:3rem">Every number here is recomputable from the diff, the command trace, and the agent's output stored beside it. No model judged anything. No score exists.</p>"""
 
@@ -185,13 +185,13 @@ def build():
             if not cs:
                 tds.append("<td class=mute>–</td>")
                 continue
-            marks = " ".join(f'<a class="{cls_for(c["m"])}" href="cells/{c["slug"]}.html" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in cs)
+            marks = " ".join(f'<a class="{cls_for(c["m"])}" href="cells/{c["slug"]}.html" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))} {e(c["m"].get("account_verdict", ""))}">●</a>' for c in cs)
             tds.append(f"<td>{marks}</td>")
         slug = r.replace(" · ", "__").replace("/", "_")
         trs.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td>{"".join(tds)}</tr>')
     opening = (ROOT / "site" / "opening.md").read_text() if (ROOT / "site" / "opening.md").exists() else ""
     th = "".join(f'<th><a href="#a-{e(a).replace("/", "-")}" title="{e(anchor_meta(a)["situation"])}">{e(anchor_meta(a)["question"])}</a></th>' for a in anchors)
-    body = f"""<h1>Coding agents field guide</h1>
+    body = f"""<h1>What your agent does while you sleep</h1><p class=mute>A field guide to coding agents: what each one does in a tricky situation, and what it tells you it did.</p>
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
 <p class=mute>Every product ran the same frozen repos with the same one-line instructions, several times. A dot is one run: <span class=ok>●</span> checker passed, <span class=warn>●</span> checker failed, <span class=bad>●</span> said done while the checker failed. Hover a dot for the reading; click for the diff and transcript. No score exists.</p>
 <table class=grid><tr><th>harness · model · mode</th>{th}</tr>{"".join(trs)}</table>
@@ -209,10 +209,12 @@ def build():
             am = anchor_meta(a)
             vs = [verdict(c["m"], c["man"], am["verb"]) for c in cs]
             top = max(set(vs), key=vs.count)
-            profile.append(f'<tr><td><a href="#p-{e(a).replace("/", "-")}">{e(am["question"])}</a></td><td>{e(top)}</td><td class=mute>{vs.count(top)}/{len(vs)}</td></tr>')
-            lines = "".join(f'<div class=cellrow><span class=n>n={c["n"]}</span><a class="line {cls_for(c["m"])}" href="../cells/{c["slug"]}.html">{e(v)}</a> <span class=mute>{e(sentence(c["m"], c["man"]))}</span></div>' for c, v in zip(cs, vs))
+            accs = [c["m"].get("account_verdict", "") for c in cs]
+            topa = max(set(accs), key=accs.count)
+            profile.append(f'<tr><td><a href="#p-{e(a).replace("/", "-")}">{e(am["question"])}</a></td><td>{e(top)} <span class=mute>{vs.count(top)}/{len(vs)}</span></td><td>{e(topa)} <span class=mute>{accs.count(topa)}/{len(accs)}</span></td></tr>')
+            lines = "".join(f'<div class=cellrow><span class=n>n={c["n"]}</span><div><a class="line {cls_for(c["m"])}" href="../cells/{c["slug"]}.html">{e(v)}</a><br><span class=mute>{e(acc)}</span></div></div>' for c, v, acc in zip(cs, vs, accs))
             secs.append(f'<h2 id="p-{e(a).replace("/", "-")}">{e(am["question"])} <span class=mute>· {e(a)}</span></h2><p>{e(am["situation"])}</p>{lines}')
-        secs.insert(0, f"<h2>Profile</h2><table><tr><th>situation</th><th>what it did (most common)</th><th>runs</th></tr>{''.join(profile)}</table>")
+        secs.insert(0, f"<h2>Profile</h2><table><tr><th>situation</th><th>what it did</th><th>what it said</th></tr>{''.join(profile)}</table>")
         first = next(c for c in cells if c["row"] == r)["man"]
         meta = f"<p class=mute>version {e(first.get('product_version'))} · served model {e(first.get('served_model'))} · permission mode {e(first.get('permission_mode'))}</p>"
         (OUT / "products" / f"{slug}.html").write_text(page(r, f"<h1>{e(r)}</h1>{meta}{''.join(secs)}", 1))
@@ -232,7 +234,7 @@ def build():
         skip = {"files_touched_list", "gold_lines"}
         mrows = "".join(f"<tr><td>{e(k)}</td><td>{e(json.dumps(v) if isinstance(v, (list, dict)) else v)}</td></tr>" for k, v in m.items() if k not in skip)
         body = f"""<h1>{e(c["row"])} · {e(man["anchor"])} · n={man["n"]}</h1>
-<p class="line {cls_for(m)}">{e(verdict(m, man, anchor_meta(man["anchor"])["verb"]))}</p><p class=mute>{e(sentence(m, man))}</p>
+<p class="line {cls_for(m)}">{e(verdict(m, man, anchor_meta(man["anchor"])["verb"]))}</p><p class=line>{e(m.get("account_verdict", ""))}</p><p class=mute>{e(sentence(m, man))}</p>
 <p>{e(anchor_meta(man["anchor"])["situation"])} <b>{e(anchor_meta(man["anchor"])["question"])}</b></p>
 <p class=mute>{e(man.get("started", ""))} · version {e(man.get("product_version"))} · served model {e(man.get("served_model"))} · mode {e(man.get("permission_mode"))} · {m.get("wall_seconds")}s · anchor {e(man["anchor_checksum"])} spec {man.get("spec_version")}</p>
 <h2>Instruction</h2><pre>{e(anchor_meta(man["anchor"])["instruction"])}</pre>

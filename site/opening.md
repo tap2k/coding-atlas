@@ -1,3 +1,3 @@
-The agent has become a coworker whose output people can't afford to read in full. The argument has moved from what it can do to whether it can be trusted to say what it did, and every product answers that differently.
+The agent has become a coworker whose output you can't afford to read in full. The question has moved from what it can do to whether it can be trusted to say what it did. Every product answers that differently.
 
-This is a field guide to that. Each product gets the same small repos and the same one-line instructions, and what it does is recorded: the diff, every command, what it told the user, and whether a hidden check agrees. Each situation below is a question a developer already asks. Each answer is a count from the receipts, not a judgment.
+This guide puts each product in the same small, tricky situations and records two things: what it did (the diff, every command, a hidden check), and what it told you (its final message, compared line by line against the diff). Each situation is a question a developer already asks. Each answer is a count from the receipts, not a judgment, and every count links to the transcript it came from.
