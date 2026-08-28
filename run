@@ -47,6 +47,19 @@ def tree(dest: Path):
     return sorted(l for l in sh(["git", "ls-files", "-co", "--exclude-standard"], cwd=dest).stdout.split("\n") if l)
 
 
+def load_trace(text: str):
+    """One JSON object per line; a line the shim failed to encode is kept as an opaque entry."""
+    out = []
+    for l in text.splitlines():
+        if not l.strip():
+            continue
+        try:
+            out.append(json.loads(l))
+        except json.JSONDecodeError:
+            out.append({"ts": 0, "cmd": "?", "args": [l[:200]], "cwd": "", "unparsed": True})
+    return out
+
+
 def make_shim_dir(base: Path) -> Path:
     d = base / "shim"; d.mkdir()
     for line in (ROOT / "shim/commands.txt").read_text().splitlines():
@@ -111,7 +124,7 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     sh(["git", "add", "-A"], cwd=ws)
     diff = sh(["git", "diff", "--cached", "HEAD"], cwd=ws).stdout
     checker = subprocess.run([str(anchor / "checker.sh"), str(ws)], capture_output=True)
-    trace = [json.loads(l) for l in trace_path.read_text().splitlines() if l.strip()]
+    trace = load_trace(trace_path.read_text())
     m = measures.compute(diff_text=diff, files_before=before, files_after=after, trace=trace,
                          turns=turns, spec=spec, checker_ok=checker.returncode == 0)
     m.update({"wall_seconds": round(wall, 1), "exit_code": rc, "timed_out": timed_out})
@@ -148,7 +161,7 @@ def remeasure(results: Path):
             print(f"skip {cell}: anchor checksum mismatch"); continue
         spec = tomllib.loads((anchor / "measures.toml").read_text())
         turns = [p.read_text() for p in sorted(cell.glob("stdout.*.txt"))]
-        trace = [json.loads(l) for l in (cell / "trace.jsonl").read_text().splitlines() if l.strip()]
+        trace = load_trace((cell / "trace.jsonl").read_text())
         m = measures.compute(diff_text=(cell / "diff.patch").read_text(), files_before=man["tree_before"],
                              files_after=man["tree_after"], trace=trace, turns=turns, spec=spec,
                              checker_ok=man["checker_pass"])

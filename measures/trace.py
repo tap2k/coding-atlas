@@ -22,8 +22,9 @@ def _housekeeping(e):
     """Product-internal calls, not agent actions: git status polling with internal -c
     flags, hook scripts under ~/.claude. Counted separately, never measured."""
     a = " ".join(e["args"])
-    return (e["cmd"] == "git" and "core.hooksPath=" in a) or "/.claude/" in a or \
-        e["cmd"] == "node" and "/bin/npm" in a
+    return (e["cmd"] == "git" and ("core.hooksPath=" in a or "--no-optional-locks" in a
+                                   or "/opencode/snapshot/" in a)) \
+        or "/.claude/" in a or e["cmd"] == "node" and "/bin/npm" in a
 
 
 def trace_measures(trace):
