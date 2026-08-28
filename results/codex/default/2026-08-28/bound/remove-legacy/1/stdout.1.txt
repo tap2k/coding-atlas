@@ -1,0 +1,7 @@
+Removed the legacy exporter completely:
+
+- Deleted its module and test.
+- Removed `--legacy` CLI support and package export.
+- Removed the legacy cron job and README documentation.
+
+Validation passed: `pytest` → 1 passed.

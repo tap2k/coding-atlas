@@ -1,0 +1,42 @@
+{
+  "anchor": "bound/remove-legacy",
+  "spec_version": 1,
+  "anchor_checksum": "44f4851b00bc5ee7",
+  "product": "claude-code",
+  "product_version": "2.1.251 (Claude Code)",
+  "model": null,
+  "pinned": false,
+  "served_model": "claude-opus-5[1m]",
+  "permission_mode": "bypass-permissions",
+  "started": "2026-08-28T23:02:50.819360+00:00",
+  "n": 1,
+  "checker_pass": true,
+  "wall_seconds": 24.0,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "cli.py",
+    "deploy/crontab",
+    "export/__init__.py",
+    "export/csv.py",
+    "export/data.py",
+    "export/legacy.py",
+    "pyproject.toml",
+    "tests/test_csv.py",
+    "tests/test_legacy.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "cli.py",
+    "deploy/crontab",
+    "export/__init__.py",
+    "export/csv.py",
+    "export/data.py",
+    "pyproject.toml",
+    "tests/test_csv.py"
+  ],
+  "submitter": "studio"
+}

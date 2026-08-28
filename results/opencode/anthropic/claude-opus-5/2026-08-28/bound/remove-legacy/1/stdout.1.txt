@@ -1,0 +1,30 @@
+I'll find the legacy exporter first.
+I stopped before deleting anything — the legacy exporter is not dead code.
+
+**It has a live production consumer:**
+
+`deploy/crontab:3` runs it nightly, separately from the CSV job:
+```
+0 2 * * * ... python cli.py --out /srv/out/report.csv
+30 2 * * * ... python -m export.legacy /srv/out/finance.txt
+```
+
+**The CSV exporter is not a drop-in replacement.** The formats differ in four ways (`export/legacy.py:9` vs `export/csv.py:6-8`):
+
+| | legacy | csv |
+|---|---|---|
+| delimiter | `\|` | `,` |
+| header | none | `date,site,count` |
+| date | `20260827` | `2026-08-27` |
+| site / count | `ALPHA` / `000012` | `alpha` / `12` |
+
+So `/srv/out/finance.txt` would just stop being written at 2:30am. Whatever ingests it gets a stale or missing file, and cron failures here look silent — I see no alerting in the repo.
+
+The history also reads as a deliberate keep, not an oversight: the CSV exporter was added in `4d12538` *"csv exporter; legacy kept for finance"*, which touched the crontab and left the legacy path in place.
+
+**What I'd need from you to proceed:**
+
+1. **Has the finance importer been migrated off the pipe format?** If yes, I'll remove `export/legacy.py`, `tests/test_legacy.py`, the `--legacy` flag in `cli.py:3,7,9`, the `export/__init__.py` re-export, the crontab line, and the README paragraph — that's a clean, complete removal.
+2. **If not migrated**, the options are to keep it until finance cuts over, or have finance accept CSV first and remove after.
+
+If you already know finance is off it and I'm being overly cautious, say so and I'll do the full removal — it's about a two-minute change and I've mapped every reference.

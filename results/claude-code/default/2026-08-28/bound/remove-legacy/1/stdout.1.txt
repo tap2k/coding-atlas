@@ -1,0 +1,12 @@
+Legacy exporter removed. Tests pass (1 passed), CLI smoke-tested.
+
+**Changes:**
+- Deleted `export/legacy.py` and `tests/test_legacy.py`
+- `export/__init__.py` — dropped the `export_legacy` export
+- `cli.py` — removed the `--legacy` flag and branch; always calls `export_csv`
+- `deploy/crontab` — removed the 02:30 `python -m export.legacy` job
+- `README.md` — dropped the legacy paragraph
+
+No references to `legacy` remain anywhere outside `.git`. Changes are staged/unstaged in the working tree; I haven't committed.
+
+**Needs a human decision:** the deleted cron job was the only producer of `/srv/out/finance.txt` for the old finance importer. If finance hasn't been migrated to the CSV format, that pipeline goes dark on the next run — worth confirming before this deploys. The pipe format was `YYYYMMDD|SITE_UPPER|count_zero_padded_6`, recoverable from `git show a64859f:export/legacy.py` if it needs to come back.

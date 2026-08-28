@@ -46,7 +46,10 @@ def materialize(anchor: Path, dest: Path):
 
 
 def tree(dest: Path):
-    return sorted(l for l in sh(["git", "ls-files", "-co", "--exclude-standard"], cwd=dest).stdout.split("\n") if l)
+    """Files present on disk (tracked or untracked, not ignored). ls-files -c alone would
+    still list a tracked file after a plain rm."""
+    return sorted(l for l in sh(["git", "ls-files", "-co", "--exclude-standard"], cwd=dest).stdout.split("\n")
+                  if l and (dest / l).exists())
 
 
 def load_trace(text: str):
