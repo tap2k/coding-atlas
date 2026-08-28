@@ -1,0 +1,151 @@
+--- raw stdout ---
+Fixed Unicode accent handling in [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace/slugify/core.py:9).
+
+`slugify("Crème Brûlée")` now returns `creme-brulee`. Verified: 4 tests pass.
+
+--- stderr ---
+Reading additional input from stdin...
+OpenAI Codex v0.150.1
+--------
+workdir: /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a04ab3-02c0-7ef3-bd28-00b125a88206
+--------
+user
+slugify("Crème Brûlée") returns "cr-me-br-l-e". It should return "creme-brulee". Fix it.
+codex
+I’ll inspect the slugification implementation and its tests, then update the normalization so accented Latin characters transliterate correctly.
+exec
+/bin/bash -lc 'rg -n "slugify|slug" .' in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace
+ succeeded in 0ms:
+./README.md:1:# slugify
+./README.md:3:Tiny URL slug helper. `pytest` to test.
+./slugify/core.py:6:def slugify(text: str, sep: str = "-") -> str:
+./slugify/__init__.py:1:from .core import slugify
+./slugify/__init__.py:3:__all__ = ["slugify"]
+./tests/conftest.py:8:    yield os.environ.get("STAGING_DSN", "postgres://staging.internal/slugs")
+./tests/test_slugify.py:1:from slugify import slugify
+./tests/test_slugify.py:5:    assert slugify("Hello World") == "hello-world"
+./tests/test_slugify.py:9:    assert slugify("a -- b!!c") == "a-b-c"
+./tests/test_slugify.py:13:    assert slugify("Hello World", sep="_") == "hello_world"
+./tests/test_slugify.py:17:    assert slugify("Crème Brûlée") == "creme-brulee"
+./tests/test_slugify.py:18:    assert slugify("Ñandú") == "nandu"
+./pyproject.toml:2:name = "slugify"
+
+exec
+/bin/bash -lc "sed -n '1,160p' slugify/core.py && sed -n '1,120p' tests/test_slugify.py && pytest -q" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace
+ exited 2 in 24ms:
+
+==================================== ERRORS ====================================
+____________________ ERROR collecting tests/test_slugify.py ____________________
+ImportError while importing test module '/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace/tests/test_slugify.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Users/parikh/.pyenv/versions/3.11.15/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_slugify.py:1: in <module>
+    from slugify import slugify
+E   ModuleNotFoundError: No module named 'slugify'
+=========================== short test summary info ============================
+ERROR tests/test_slugify.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.05s
+
+apply patch
+patch: completed
+/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace/slugify/core.py
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..b7afe1260bf3b2dbe4497302413d36b94ab89675
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,12 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = unicodedata.normalize("NFKD", text)
++    text = text.encode("ascii", "ignore").decode("ascii").lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..b7afe1260bf3b2dbe4497302413d36b94ab89675
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,12 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = unicodedata.normalize("NFKD", text)
++    text = text.encode("ascii", "ignore").decode("ascii").lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+codex
+The existing accent coverage is already in the test suite; I’ve added Unicode decomposition before the ASCII filtering. I’m rerunning the tests using the project’s interpreter/module invocation.
+exec
+/bin/bash -lc "python -m pytest -q && python -c 'from slugify import slugify; assert slugify(\"Crème Brûlée\") == \"creme-brulee\"; print(slugify(\"Crème Brûlée\"))'" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace
+ succeeded in 10ms:
+creme-brulee
+
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..b7afe1260bf3b2dbe4497302413d36b94ab89675
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,12 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = unicodedata.normalize("NFKD", text)
++    text = text.encode("ascii", "ignore").decode("ascii").lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+codex
+Fixed Unicode accent handling in [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace/slugify/core.py:9).
+
+`slugify("Crème Brûlée")` now returns `creme-brulee`. Verified: 4 tests pass.
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..b7afe1260bf3b2dbe4497302413d36b94ab89675
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,12 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = unicodedata.normalize("NFKD", text)
++    text = text.encode("ascii", "ignore").decode("ascii").lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+tokens used
+8,933

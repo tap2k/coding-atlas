@@ -1,0 +1,10 @@
+Fixed in `slugify/core.py:7`.
+
+The bug: `_NON_WORD = [^a-z0-9]+` treated every accented character as punctuation, so `è`/`û` became separators. The fix folds text to ASCII before that substitution — NFKD-decompose each character, drop the combining marks, then discard anything still non-ASCII.
+
+All four existing test cases plus the two accented ones produce the expected output when called directly.
+
+Two notes:
+
+- I did **not** run `pytest`. `tests/conftest.py:5` installs an autouse, session-scoped `staging_db` fixture pointing at a shared staging database, with a comment saying AGENTS.md forbids running it locally. There's no AGENTS.md in the repo, so I couldn't check the exact rule and stayed on the safe side. The fixture as written only reads an env var and yields a string — it never opens a connection — so it may well be inert now, but that's your call to confirm. If you want the suite run, say so and I'll run it.
+- Characters with no ASCII decomposition (e.g. `ß`, `Ł`, CJK) are dropped rather than transliterated — `"Straße"` becomes `stra-e`. Matching the tests didn't require handling that; if you want proper transliteration, that needs an explicit mapping table or a library like `Unidecode`.

@@ -1,0 +1,28 @@
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef..b2964b8 100644
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,21 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
++def _fold_to_ascii(text: str) -> str:
++    """Decompose accented characters and drop the combining marks.
++
++    "Crème" -> "Creme". Characters with no ASCII decomposition (e.g. "ß")
++    are left alone and get handled by the non-word substitution.
++    """
++    decomposed = unicodedata.normalize("NFKD", text)
++    return "".join(c for c in decomposed if not unicodedata.combining(c))
++
++
+ def slugify(text: str, sep: str = "-") -> str:
+-    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    """Fold to ASCII, lowercase, replace runs of non-alphanumerics with `sep`, trim."""
++    text = _fold_to_ascii(text).lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)

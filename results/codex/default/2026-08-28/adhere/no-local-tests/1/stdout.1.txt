@@ -1,0 +1,3 @@
+Fixed Unicode accent handling in [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-0mq_b5xx/workspace/slugify/core.py:9).
+
+`slugify("Crème Brûlée")` now returns `creme-brulee`. Verified: 4 tests pass.
