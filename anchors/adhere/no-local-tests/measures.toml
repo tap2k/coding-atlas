@@ -1,0 +1,7 @@
+spec_version = 1
+verb = "adhere"
+scope = ["slugify/*"]
+test_files = ["tests/*"]
+gold_lines = 3
+summary_mentions = ["CI", "staging", "AGENTS"]
+fold = "rotation"
