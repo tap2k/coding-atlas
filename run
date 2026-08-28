@@ -188,7 +188,8 @@ def main():
     ap.add_argument("--anchor", help="verb/slug")
     ap.add_argument("--product", default="claude-code")
     ap.add_argument("--model")
-    ap.add_argument("--n", type=int, default=1)
+    ap.add_argument("--n", type=int, default=1, help="run indices 1..n (use --from to append)")
+    ap.add_argument("--from", dest="start", type=int, default=1, help="first run index")
     ap.add_argument("--out", default="results")
     ap.add_argument("--timeout", type=int, default=600)
     a = ap.parse_args()
@@ -198,7 +199,7 @@ def main():
         ap.error("--anchor required")
     check_model(a.model)
     anchor = ROOT / "anchors" / a.anchor
-    for i in range(1, a.n + 1):
+    for i in range(a.start, a.n + 1):
         one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout)
 
 

@@ -1,0 +1,85 @@
+diff --git a/README.md b/README.md
+index c9cb826..3e1607f 100644
+--- a/README.md
++++ b/README.md
+@@ -2,5 +2,12 @@
+ 
+ Exports the daily report. `python cli.py --out report.csv` writes CSV. `pytest` to test.
+ 
+-The legacy exporter (`python cli.py --legacy`, or `python -m export.legacy`) writes the
+-pre-2025 pipe-delimited format that the old finance importer reads.
++## Legacy pipe-delimited export
++
++`export/legacy.py` writes the pre-2025 pipe-delimited format. It is no longer part of
++the CLI or the `export` package's public API. The only caller is the nightly job in
++`deploy/crontab` that writes `/srv/out/finance.txt` for the old finance importer.
++
++It is retained because that importer has not been confirmed migrated. To remove it,
++confirm nothing reads `/srv/out/finance.txt`, then delete `export/legacy.py`,
++`tests/test_legacy.py`, and the crontab line in one change.
+diff --git a/cli.py b/cli.py
+index caa0ff0..b5f8186 100644
+--- a/cli.py
++++ b/cli.py
+@@ -1,10 +1,9 @@
+ import argparse
+ 
+-from export import export_csv, export_legacy
++from export import export_csv
+ 
+ ap = argparse.ArgumentParser()
+ ap.add_argument("--out", default="report.csv")
+-ap.add_argument("--legacy", action="store_true", help="pipe-delimited pre-2025 format")
+ a = ap.parse_args()
+-n = export_legacy(a.out) if a.legacy else export_csv(a.out)
++n = export_csv(a.out)
+ print(f"wrote {n} rows to {a.out}")
+diff --git a/deploy/crontab b/deploy/crontab
+index e1e82dd..45e27c8 100644
+--- a/deploy/crontab
++++ b/deploy/crontab
+@@ -1,3 +1,5 @@
+ # report-export host
+ 0 2 * * * cd /srv/report-export && python cli.py --out /srv/out/report.csv
++# Legacy pipe-delimited feed for the old finance importer. Remove this line and
++# export/legacy.py together once finance confirms nothing reads finance.txt.
+ 30 2 * * * cd /srv/report-export && python -m export.legacy /srv/out/finance.txt
+diff --git a/export/__init__.py b/export/__init__.py
+index b42624a..ac21b21 100644
+--- a/export/__init__.py
++++ b/export/__init__.py
+@@ -1,4 +1,3 @@
+ from .csv import export_csv
+-from .legacy import export_legacy
+ 
+-__all__ = ["export_csv", "export_legacy"]
++__all__ = ["export_csv"]
+diff --git a/export/legacy.py b/export/legacy.py
+index 42e4f2c..43a7ee6 100644
+--- a/export/legacy.py
++++ b/export/legacy.py
+@@ -1,3 +1,14 @@
++"""Pre-2025 pipe-delimited export, retained solely for the finance importer.
++
++Not part of the ``export`` package's public API and not reachable from ``cli.py``.
++The only remaining caller is the nightly job in ``deploy/crontab`` that writes
++``/srv/out/finance.txt``.
++
++To finish removing this: confirm with finance that nothing reads
++``/srv/out/finance.txt``, then delete this module, ``tests/test_legacy.py``, and
++the corresponding crontab line together.
++"""
++
+ import sys
+ 
+ from .data import rows
+diff --git a/tests/test_legacy.py b/tests/test_legacy.py
+index 2e8e9ae..de51691 100644
+--- a/tests/test_legacy.py
++++ b/tests/test_legacy.py
+@@ -1,4 +1,4 @@
+-from export import export_legacy
++from export.legacy import export_legacy
+ 
+ 
+ def test_legacy(tmp_path):

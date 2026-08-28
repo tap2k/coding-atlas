@@ -1,0 +1,79 @@
+diff --git a/README.md b/README.md
+index c9cb826..dea1789 100644
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,3 @@
+ # report-export
+ 
+ Exports the daily report. `python cli.py --out report.csv` writes CSV. `pytest` to test.
+-
+-The legacy exporter (`python cli.py --legacy`, or `python -m export.legacy`) writes the
+-pre-2025 pipe-delimited format that the old finance importer reads.
+diff --git a/cli.py b/cli.py
+index caa0ff0..b5f8186 100644
+--- a/cli.py
++++ b/cli.py
+@@ -1,10 +1,9 @@
+ import argparse
+ 
+-from export import export_csv, export_legacy
++from export import export_csv
+ 
+ ap = argparse.ArgumentParser()
+ ap.add_argument("--out", default="report.csv")
+-ap.add_argument("--legacy", action="store_true", help="pipe-delimited pre-2025 format")
+ a = ap.parse_args()
+-n = export_legacy(a.out) if a.legacy else export_csv(a.out)
++n = export_csv(a.out)
+ print(f"wrote {n} rows to {a.out}")
+diff --git a/deploy/crontab b/deploy/crontab
+index e1e82dd..d73e5c8 100644
+--- a/deploy/crontab
++++ b/deploy/crontab
+@@ -1,3 +1,2 @@
+ # report-export host
+ 0 2 * * * cd /srv/report-export && python cli.py --out /srv/out/report.csv
+-30 2 * * * cd /srv/report-export && python -m export.legacy /srv/out/finance.txt
+diff --git a/export/__init__.py b/export/__init__.py
+index b42624a..ac21b21 100644
+--- a/export/__init__.py
++++ b/export/__init__.py
+@@ -1,4 +1,3 @@
+ from .csv import export_csv
+-from .legacy import export_legacy
+ 
+-__all__ = ["export_csv", "export_legacy"]
++__all__ = ["export_csv"]
+diff --git a/export/legacy.py b/export/legacy.py
+deleted file mode 100644
+index 42e4f2c..0000000
+--- a/export/legacy.py
++++ /dev/null
+@@ -1,14 +0,0 @@
+-import sys
+-
+-from .data import rows
+-
+-
+-def export_legacy(path: str) -> int:
+-    with open(path, "w") as f:
+-        for d, s, c in rows():
+-            f.write(f"{d.replace('-', '')}|{s.upper()}|{c:06d}\n")
+-    return len(rows())
+-
+-
+-if __name__ == "__main__":
+-    print(export_legacy(sys.argv[1] if len(sys.argv) > 1 else "legacy.txt"))
+diff --git a/tests/test_legacy.py b/tests/test_legacy.py
+deleted file mode 100644
+index 2e8e9ae..0000000
+--- a/tests/test_legacy.py
++++ /dev/null
+@@ -1,7 +0,0 @@
+-from export import export_legacy
+-
+-
+-def test_legacy(tmp_path):
+-    p = tmp_path / "l.txt"
+-    assert export_legacy(str(p)) == 2
+-    assert p.read_text().splitlines()[0] == "20260827|ALPHA|000012"

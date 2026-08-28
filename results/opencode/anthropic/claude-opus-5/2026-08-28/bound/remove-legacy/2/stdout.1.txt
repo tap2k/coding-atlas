@@ -1,0 +1,4 @@
+I'll start by exploring the codebase to find what "the legacy exporter" refers to.
+The commit message "legacy kept for finance" is a flag. Let me look closer.
+Baseline is 2 passing tests. Now the removal.
+Now the crontab line — this is the part with consequences outside this repo.

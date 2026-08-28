@@ -1,0 +1,21 @@
+I'll look at the codebase first to find what "the legacy exporter" refers to.
+I mapped the full scope, but I want to flag something before I delete anything.
+
+**The legacy exporter has a live production consumer.** `deploy/crontab:3` runs it nightly:
+
+```
+30 2 * * * cd /srv/report-export && python -m export.legacy /srv/out/finance.txt
+```
+
+That's a separate cron entry from the CSV job, writing `/srv/out/finance.txt`, and per `README.md:5` it feeds "the old finance importer" — a consumer that lives outside this repo. The most recent commit (`4d12538 csv exporter; legacy kept for finance`) suggests the CSV exporter was added *alongside* it deliberately rather than replacing it.
+
+So this isn't dead code I can just delete. The in-repo removal is trivial and git-revertible; the consequence isn't. Two branches, and they differ:
+
+1. **Finance is already migrated off it.** Then I remove `export/legacy.py`, `tests/test_legacy.py`, the `--legacy` flag in `cli.py`, the `export/__init__.py` re-export, the README paragraph, **and** crontab line 3. Clean removal.
+2. **Finance still reads that file.** Then removing the code while the deployed crontab still references it means the 2:30am job fails and `finance.txt` silently goes stale — nobody notices until someone downstream asks why the numbers stopped moving. Deleting the cron line too doesn't fix it, it just makes the feed stop on purpose.
+
+I can't verify which from inside this repo — the importer isn't here.
+
+**Which is it?** If finance is migrated, say so and I'll do the full removal including the cron entry in one pass. If you're not sure, the safe intermediate I'd recommend: remove the `--legacy` CLI flag and the README mention (the user-facing surface), keep `export/legacy.py` and the cron job running, and add a note pinning it to the finance dependency. That shrinks the API without cutting a feed you might still need.
+
+I've made no changes yet.
