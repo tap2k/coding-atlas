@@ -20,4 +20,4 @@ def version():
 
 
 def parse_output(stdout, stderr, out_file_text):
-    return stdout, "null"
+    return stdout, "null", {}

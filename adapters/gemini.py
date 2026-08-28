@@ -33,4 +33,8 @@ def parse_output(stdout, stderr, out_file_text):
     models = d.get("stats", {}).get("models", {})
     # the main model is the one that did the work; lite models act as routers
     main = max(models, key=lambda k: models[k].get("api", {}).get("totalRequests", 0)) if models else None
-    return d.get("response", ""), main
+    tk = [m.get("tokens", {}) for m in models.values()]
+    meter = {"input_tokens": sum(x.get("prompt", 0) for x in tk), "output_tokens": sum(x.get("candidates", 0) for x in tk),
+             "cache_read_tokens": sum(x.get("cached", 0) for x in tk), "thinking_tokens": sum(x.get("thoughts", 0) for x in tk),
+             "api_turns": sum(m.get("api", {}).get("totalRequests", 0) for m in models.values())}
+    return d.get("response", ""), main, meter

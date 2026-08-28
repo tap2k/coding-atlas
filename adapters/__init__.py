@@ -5,10 +5,11 @@ instruction and a model. Contract:
   argv(instruction, model, out_file, cwd) -> list[str]
   continue_argv(reply, model, out_file, cwd) -> list[str]   # second turn, same session
   env(iso_dir) -> dict                                       # extra env for the run
-  parse_output(stdout, stderr, out_file_text) -> (message, served_model)
+  parse_output(stdout, stderr, out_file_text) -> (message, served_model, meter)
       # message: the agent's final text to the user; served_model: what the product says
-      # it used, or None. Both from the product's machine-readable output; nothing else
-      # is read from it.
+      # it used, or None; meter: tokens/cost/api turns as the product reports them (dict,
+      # keys may be missing). All from the product's machine-readable output; nothing
+      # else is read from it.
   hide_user_files() -> restore_fn                            # optional
   version() -> list[str]
 """

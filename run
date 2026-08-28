@@ -112,13 +112,13 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
         except subprocess.TimeoutExpired as e:
             out, err, rc, to = e.stdout or "", e.stderr or "", None, True
         raw = out
-        out, served = adapter.parse_output(raw, err, out_file.read_text() if out_file.exists() else None)
-        served_models.append(served)
+        out, served, meter = adapter.parse_output(raw, err, out_file.read_text() if out_file.exists() else None)
+        served_models.append(served); meters.append(meter or {})
         if out != raw:
             err = f"--- raw stdout ---\n{raw}\n--- stderr ---\n{err}"
         return out, err, rc, to
 
-    turns, stderrs, served_models = [], [], []
+    turns, stderrs, served_models, meters = [], [], [], []
     restore = getattr(adapter, "hide_user_files", lambda: (lambda: None))()
     try:
         stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file), str(ws), mode))
@@ -149,6 +149,7 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
         "anchor": str(rel), "spec_version": spec["spec_version"], "anchor_checksum": checksum(anchor),
         "product": product, "product_version": version, "model": model, "pinned": model is not None,
         "served_model": next((m for m in served_models if m), None),
+        "meter": [m for m in meters],
         "permission_mode": pm, "started": started.isoformat(), "n": n,
         "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
         "timed_out": timed_out, "tree_before": before, "tree_after": after,

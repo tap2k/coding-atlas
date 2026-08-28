@@ -62,4 +62,8 @@ def parse_output(stdout, stderr, out_file_text):
     except json.JSONDecodeError:
         return stdout, None
     models = [m for m in d.get("modelUsage", {}) if "haiku" not in m] or list(d.get("modelUsage", {}))
-    return d.get("result", ""), (models[0] if models else None)
+    u = d.get("usage", {})
+    meter = {"input_tokens": u.get("input_tokens"), "output_tokens": u.get("output_tokens"),
+             "cache_read_tokens": u.get("cache_read_input_tokens"), "cost_usd": d.get("total_cost_usd"),
+             "api_turns": d.get("num_turns")}
+    return d.get("result", ""), (models[0] if models else None), meter

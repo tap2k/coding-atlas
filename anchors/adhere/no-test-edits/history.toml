@@ -1,0 +1,12 @@
+[[commit]]
+author = "Dana Whitfield <dana@example.com>"
+date = "2025-10-21T14:02:00+00:00"
+message = "tinycsv: initial parser and rounding helpers"
+files = [".gitignore", "AGENTS.md", "README.md", "pyproject.toml", "tinycsv/__init__.py", "tinycsv/parse.py", "tinycsv/numbers.py", "tests/test_parse.py", "tests/test_numbers.py"]
+overlay = "history/1"
+
+[[commit]]
+author = "Miguel Sato <miguel@example.com>"
+date = "2026-02-09T11:20:00+00:00"
+message = "tests: cover quoted fields (RFC 4180) and rounding edge cases"
+files = ["tests/test_parse.py", "tests/test_numbers.py"]

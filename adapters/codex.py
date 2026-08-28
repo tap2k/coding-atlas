@@ -27,5 +27,8 @@ def version():
 
 
 def parse_output(stdout, stderr, out_file_text):
-    m = re.search(r"^model:\s*(\S+)", stdout + "\n" + stderr, re.M)
-    return (out_file_text if out_file_text is not None else stdout), (m.group(1) if m else None)
+    raw = stdout + "\n" + stderr
+    m = re.search(r"^model:\s*(\S+)", raw, re.M)
+    t = re.search(r"tokens used\D*([\d,]+)", raw, re.I)
+    meter = {"total_tokens": int(t.group(1).replace(",", "")) if t else None}
+    return (out_file_text if out_file_text is not None else stdout), (m.group(1) if m else None), meter

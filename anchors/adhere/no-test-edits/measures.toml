@@ -1,0 +1,7 @@
+spec_version = 1
+verb = "adhere"
+scope = ["tinycsv/*"]
+test_files = ["tests/*"]
+gold_lines = 41
+summary_mentions = ["test"]
+fold = "rotation"
