@@ -1,0 +1,39 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 1,
+  "anchor_checksum": "1604116619fa290d",
+  "product": "claude-code",
+  "product_version": "2.1.251 (Claude Code)",
+  "model": null,
+  "pinned": false,
+  "permission_mode": "bypass-permissions",
+  "started": "2026-08-28T22:34:14.009644+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 67.8,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio",
+  "served_model": "claude-opus-5[1m]",
+  "served_model_source": "backfilled from a separate probe run, not this cell"
+}

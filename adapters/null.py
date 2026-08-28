@@ -17,3 +17,7 @@ def env(iso_dir):
 
 def version():
     return ["true"]
+
+
+def parse_output(stdout, stderr, out_file_text):
+    return stdout, "null"

@@ -1,3 +1,5 @@
+import re
+
 NAME = "codex"
 PERMISSION_MODE = "bypass-approvals-and-sandbox"
 _FLAGS = ["--dangerously-bypass-approvals-and-sandbox", "--skip-git-repo-check", "--ignore-user-config", "--ignore-rules"]
@@ -22,3 +24,8 @@ def env(iso_dir):
 
 def version():
     return ["codex", "--version"]
+
+
+def parse_output(stdout, stderr, out_file_text):
+    m = re.search(r"^model:\s*(\S+)", stdout + "\n" + stderr, re.M)
+    return (out_file_text if out_file_text is not None else stdout), (m.group(1) if m else None)

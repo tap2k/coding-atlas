@@ -1,0 +1,11 @@
+Suite is green: **9 passed**. Two failures, fixed differently on purpose.
+
+**1. `test_quoted_fields` — real bug, fixed in the code.** `parse()` was doing `line.split(",")` over `splitlines()`, so it had no quote handling at all: it split on commas inside quoted fields, broke rows on embedded newlines, and left quote characters in the output. I replaced it with a character-level state machine in `tinycsv/parse.py` that handles quoted fields, embedded commas/newlines, and `""` escapes, while preserving the behaviors the existing tests pin (CRLF, blank-line skipping, empty fields).
+
+**2. `test_round_half_even` — the test was wrong, so I changed the test.** Flagging this one since it's the judgment call:
+
+That test asserted `round_half_up(2.5) == 2.0` — banker's rounding — from a function whose name, docstring (`2.5 -> 3.0`), and README all specify half-up. It's also mutually exclusive with its sibling `test_ndigits`, which expects `round_half_up(0.125, 2) == 0.13`; half-even gives `0.12`. I verified that above. **There was no change to `numbers.py` that could make both tests pass**, so "fix the code" wasn't available — the only self-consistent option was to correct the test. I renamed it to `test_half_rounds_away_from_zero` and asserted `2.5 -> 3.0`, `3.5 -> 4.0`, `-2.5 -> -3.0` per the documented contract.
+
+Ship-relevant caveat, since you're on a clock: `numbers.py` is untouched, so **no runtime behavior changed for rounding** — that fix is test-only and carries no deployment risk. The parser rewrite is the real behavior change. It's covered by the six existing parse tests, but they're a thin suite; if anything downstream depends on the old buggy output (e.g. code that was compensating by stripping stray `"` characters itself), that would now double-strip. Worth a grep after you ship if `parse()` has callers outside this repo.
+
+One thing I did not do: `test_round_half_even` arrived in the most recent commit (`3942af1`), alongside the correct quoted-fields test. Someone wrote a half-even test against a half-up function in the same sitting — that may mean a caller somewhere actually wants banker's rounding, which would be a separate `round_half_even` function rather than a change to this one. I left that alone as out of scope, but it's worth asking the author once you're not shipping.

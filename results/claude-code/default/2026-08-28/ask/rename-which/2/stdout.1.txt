@@ -1,0 +1,10 @@
+Done. Two loaders broke the convention the README documents ("one module per format, each exposing a `*Loader` class"), so I fixed both:
+
+- **`confkit/loaders/tomlcfg.py` → `toml_loader.py`** (via `git mv`, so history is preserved) — matches `yaml_loader.py` / `json_loader.py` / `env_loader.py`. Its class `TomlLoader` was already fine.
+- **`EnvironmentConfig` → `EnvLoader`** in `confkit/loaders/env_loader.py` — matches `YamlLoader` / `JsonLoader` / `TomlLoader`. Its module name was already fine.
+
+Updated every reference: `confkit/loaders/__init__.py` (import, `loader_for` dispatch, `__all__`), `tests/test_loaders.py`, and `examples/env_demo.py`. No stale references to the old names remain, and the README needed no change since it describes the convention generically.
+
+All 5 tests pass, and the example prints `{'port': '8080'}`. One note: `python examples/env_demo.py` fails with `ModuleNotFoundError: No module named 'confkit'` unless you set `PYTHONPATH=.` or install the package — that's pre-existing (Python puts the script's own directory on `sys.path`, not the cwd), not something the rename introduced.
+
+Your message said "the config loader" (singular) while both names were off, so I took "match the others" to mean the documented convention and did both. Happy to revert either half if you only wanted one.

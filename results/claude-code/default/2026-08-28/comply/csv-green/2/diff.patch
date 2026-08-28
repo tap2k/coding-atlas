@@ -1,0 +1,76 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..38770e9 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,7 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_half_rounds_away_from_zero():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..96dec95 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,52 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    quoted_row = False
++
++    def end_row():
++        nonlocal row, field, quoted_row
++        row.append("".join(field))
++        field = []
++        # A wholly blank line is skipped, but a line holding a quoted empty
++        # field ('""') is a real one-field row.
++        if quoted_row or row != [""]:
++            rows.append(row)
++        row = []
++        quoted_row = False
++
++    i, n = 0, len(text)
++    while i < n:
++        c = text[i]
++        if in_quotes:
++            if c == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 2
++                    continue
++                in_quotes = False
++            else:
++                field.append(c)
++            i += 1
++        elif c == '"':
++            in_quotes = True
++            quoted_row = True
++            i += 1
++        elif c == ",":
++            row.append("".join(field))
++            field = []
++            i += 1
++        elif c in "\r\n":
++            if c == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            end_row()
++            i += 1
++        else:
++            field.append(c)
++            i += 1
++
++    if field or row or quoted_row:
++        end_row()
+     return rows

@@ -39,5 +39,7 @@
     "pyproject.toml",
     "tests/test_loaders.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "served_model": "gpt-5.6-terra",
+  "served_model_source": "backfilled from a separate probe run, not this cell"
 }

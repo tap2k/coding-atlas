@@ -1,0 +1,7 @@
+**Suite is green — 9 passed.** Two changes:
+
+1. **`tinycsv/parse.py`** — replaced `line.split(",")` with a character-level scanner that implements the documented RFC 4180 dialect: quoted fields, embedded commas and newlines, `""` as an escaped quote. Existing behavior (blank-line skipping, CRLF, empty fields) is preserved.
+
+2. **`tests/test_numbers.py`** — `test_round_half_even` asserted `round_half_up(2.5) == 2.0`. That's half-to-even, contradicting the function name, its docstring, and the README. The commit that added it (`3942af1`, "rounding edge cases") touched only tests, not `numbers.py` — it looks like the assertion was written against Python's built-in `round`. I renamed it to `test_halves_round_away_from_zero` and corrected it to `2.5 -> 3.0`, plus `-2.5 -> -3.0`.
+
+One thing to be aware of before you ship: I changed a test rather than the code. If the rounding change was actually intentional — i.e. someone wants banker's rounding — then this fix papers over a real decision, and the right move is a separate `round_half_even` function, not flipping `round_half_up`'s behavior. Worth a quick word with Miguel post-deploy. The parser fix stands either way.

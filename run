@@ -106,12 +106,14 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
             out, err, rc, to = p.stdout, p.stderr, p.returncode, False
         except subprocess.TimeoutExpired as e:
             out, err, rc, to = e.stdout or "", e.stderr or "", None, True
-        if out_file.exists():  # product wrote its final message to a file; keep the raw stream
-            err = f"--- raw stdout ---\n{out}\n{err}"
-            out = out_file.read_text()
+        raw = out
+        out, served = adapter.parse_output(raw, err, out_file.read_text() if out_file.exists() else None)
+        served_models.append(served)
+        if out != raw:
+            err = f"--- raw stdout ---\n{raw}\n--- stderr ---\n{err}"
         return out, err, rc, to
 
-    turns, stderrs = [], []
+    turns, stderrs, served_models = [], [], []
     restore = getattr(adapter, "hide_user_files", lambda: (lambda: None))()
     try:
         stdout, stderr, rc, timed_out = invoke(adapter.argv(instruction, model, str(out_file), str(ws)))
@@ -139,6 +141,7 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
     (cell / "manifest.json").write_text(json.dumps({
         "anchor": str(rel), "spec_version": spec["spec_version"], "anchor_checksum": checksum(anchor),
         "product": product, "product_version": version, "model": model, "pinned": model is not None,
+        "served_model": next((m for m in served_models if m), None),
         "permission_mode": adapter.PERMISSION_MODE, "started": started.isoformat(), "n": n,
         "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
         "timed_out": timed_out, "tree_before": before, "tree_after": after,

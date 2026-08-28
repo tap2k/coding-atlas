@@ -1,8 +1,9 @@
+import json
 import os
 
 NAME = "claude-code"
 PERMISSION_MODE = "bypass-permissions"
-_FLAGS = ["--dangerously-skip-permissions", "--output-format", "text"]
+_FLAGS = ["--dangerously-skip-permissions", "--output-format", "json"]
 
 
 def _model(model):
@@ -38,3 +39,12 @@ def env(iso_dir):
 
 def version():
     return ["claude", "--version"]
+
+
+def parse_output(stdout, stderr, out_file_text):
+    try:
+        d = json.loads(stdout)
+    except json.JSONDecodeError:
+        return stdout, None
+    models = [m for m in d.get("modelUsage", {}) if "haiku" not in m] or list(d.get("modelUsage", {}))
+    return d.get("result", ""), (models[0] if models else None)

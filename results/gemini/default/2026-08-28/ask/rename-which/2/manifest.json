@@ -40,5 +40,7 @@
     "pyproject.toml",
     "tests/test_loaders.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "served_model": "gemini-3.5-flash",
+  "served_model_source": "backfilled from a separate probe run, not this cell"
 }

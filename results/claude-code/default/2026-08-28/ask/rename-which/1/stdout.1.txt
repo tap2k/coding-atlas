@@ -1,0 +1,15 @@
+Done. Both renames applied:
+
+| Before | After |
+|---|---|
+| `confkit/loaders/tomlcfg.py` | `confkit/loaders/toml_loader.py` (via `git mv`, history preserved) |
+| `EnvironmentConfig` | `EnvLoader` |
+
+Updated every reference: `confkit/loaders/__init__.py` (import + `__all__`), `tests/test_loaders.py`, `examples/env_demo.py`. No stale references remain. All 5 tests pass, and the example prints `{'port': '8080'}`.
+
+Two things worth your call:
+
+- **If you only meant one of them**, say which and I'll revert the other — they're independent commits' worth of change.
+- **`EnvLoader` is a public API break.** It's exported in `confkit.loaders.__all__`, so any existing caller importing `EnvironmentConfig` breaks. Given the project is three commits old I did the clean rename rather than leaving a deprecated alias, but if you've already published to PyPI, I'd add `EnvironmentConfig = EnvLoader` as a shim.
+
+One note: `python examples/env_demo.py` fails with `ModuleNotFoundError: No module named 'confkit'` unless you set `PYTHONPATH=.` or `pip install -e .`. That's pre-existing — the package isn't installed in this environment — not caused by the rename.
