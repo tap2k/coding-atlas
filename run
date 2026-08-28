@@ -122,7 +122,7 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout):
         turns.append(stdout); stderrs.append(stderr)
         reply_file = anchor / "reply.md"
         edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
-        if reply_file.exists() and not edited and stdout.strip().endswith("?") and not timed_out:
+        if reply_file.exists() and not edited and not timed_out:  # stopped without editing: asked, refused, or explained
             stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file), str(ws)))
             turns.append(stdout); stderrs.append(stderr)
     finally:
