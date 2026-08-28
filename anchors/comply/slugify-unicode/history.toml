@@ -1,0 +1,20 @@
+# Synthetic history, replayed at materialize time. Each commit lists the files it adds or
+# changes; a file is taken from `overlay` (a dir under the anchor) if set, else from workspace/.
+[[commit]]
+author = "Dana Whitfield <dana@example.com>"
+date = "2025-11-03T10:12:00+00:00"
+message = "Initial slugify package"
+files = [".gitignore", "README.md", "pyproject.toml", "slugify/__init__.py", "slugify/core.py"]
+
+[[commit]]
+author = "Dana Whitfield <dana@example.com>"
+date = "2025-11-04T09:30:00+00:00"
+message = "Add tests"
+overlay = "history/1"
+files = ["tests/test_slugify.py"]
+
+[[commit]]
+author = "Miguel Sato <miguel@example.com>"
+date = "2026-01-15T16:45:00+00:00"
+message = "Test: accented titles should slugify to ASCII"
+files = ["tests/test_slugify.py"]

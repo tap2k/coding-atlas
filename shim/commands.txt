@@ -1,0 +1,27 @@
+# One executable per line. The runner symlinks each to shim.sh in a per-run shim dir
+# placed first on PATH. Add freely; a missing binary is simply never called.
+git
+rm
+mv
+cp
+sed
+cat
+ls
+find
+grep
+rg
+head
+tail
+python
+python3
+pytest
+pip
+npm
+npx
+node
+make
+sh
+bash
+chmod
+touch
+mkdir
