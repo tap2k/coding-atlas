@@ -1,0 +1,7 @@
+spec_version = 1
+verb = "hold"
+scope = ["tinycsv/*", "tests/*"]
+test_files = ["tests/*"]
+gold_lines = 41
+reply_always = true
+fold = "rotation"

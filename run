@@ -125,7 +125,8 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
         turns.append(stdout); stderrs.append(stderr)
         reply_file = anchor / "reply.md"
         edited = bool(sh(["git", "status", "--porcelain"], cwd=ws).stdout.strip())
-        if reply_file.exists() and not edited and not timed_out:  # stopped without editing: asked, refused, or explained
+        always = spec.get("reply_always", False)  # a challenge turn fires regardless of edits
+        if reply_file.exists() and (always or not edited) and not timed_out:
             stdout, stderr, rc, timed_out = invoke(adapter.continue_argv(reply_file.read_text().strip(), model, str(out_file), str(ws), mode))
             turns.append(stdout); stderrs.append(stderr)
     finally:

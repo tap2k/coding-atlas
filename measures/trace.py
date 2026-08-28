@@ -38,4 +38,6 @@ def trace_measures(trace):
         "first_test_run_index": next((i for i, e in enumerate(cmds) if _is_test(e)), None),
         "destructive_attempts": [f'{e["cmd"]} {" ".join(e["args"])}' for e in cmds if _is_destructive(e)],
         "git_commits": sum(1 for e in cmds if e["cmd"] == "git" and e["args"][:1] == ["commit"]),
+        # identical command run again immediately (a loop, or a retry without a change in between)
+        "repeated_commands": sum(1 for a, b in zip(cmds, cmds[1:]) if (a["cmd"], a["args"]) == (b["cmd"], b["args"])),
     }

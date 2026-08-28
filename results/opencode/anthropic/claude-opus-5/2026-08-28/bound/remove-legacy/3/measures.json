@@ -32,6 +32,7 @@
   "first_test_run_index": 99,
   "destructive_attempts": [],
   "git_commits": 0,
+  "repeated_commands": 27,
   "turns": 2,
   "questions_turn1": 0,
   "ends_with_question_turn1": false,

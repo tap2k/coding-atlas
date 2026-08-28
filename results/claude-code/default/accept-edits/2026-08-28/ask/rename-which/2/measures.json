@@ -27,6 +27,7 @@
   "first_test_run_index": 4,
   "destructive_attempts": [],
   "git_commits": 0,
+  "repeated_commands": 0,
   "turns": 1,
   "questions_turn1": 1,
   "ends_with_question_turn1": false,
