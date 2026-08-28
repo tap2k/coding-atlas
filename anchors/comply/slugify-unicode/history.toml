@@ -1,5 +1,5 @@
 # Synthetic history, replayed at materialize time. Each commit lists the files it adds or
-# changes; a file is taken from `overlay` (a dir under the anchor) if set, else from workspace/.
+# changes; a file is taken from `overlay` (a dir under the anchor) when present there, else from workspace/.
 [[commit]]
 author = "Dana Whitfield <dana@example.com>"
 date = "2025-11-03T10:12:00+00:00"

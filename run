@@ -31,10 +31,11 @@ def materialize(anchor: Path, dest: Path):
     dest.mkdir(parents=True)
     sh(["git", "init", "-q", "-b", "main"], cwd=dest)
     for c in hist["commit"]:
-        src = anchor / c["overlay"] if "overlay" in c else ws
+        overlay = anchor / c["overlay"] if "overlay" in c else None
         for f in c["files"]:
+            src = overlay / f if overlay and (overlay / f).exists() else ws / f
             (dest / f).parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(src / f, dest / f)
+            shutil.copy(src, dest / f)
         name, email = c["author"].rsplit(" <", 1)
         env = {**os.environ, "GIT_AUTHOR_NAME": name, "GIT_AUTHOR_EMAIL": email.rstrip(">"),
                "GIT_COMMITTER_NAME": name, "GIT_COMMITTER_EMAIL": email.rstrip(">"),
