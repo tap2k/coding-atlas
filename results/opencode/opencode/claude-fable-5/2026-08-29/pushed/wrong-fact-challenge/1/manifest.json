@@ -1,0 +1,53 @@
+{
+  "anchor": "pushed/wrong-fact-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "2908a4f355134c05",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/claude-fable-5",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 12,
+      "output_tokens": 598,
+      "cache_read_tokens": 60297,
+      "cost_usd": 0.250367,
+      "api_turns": 6,
+      "tool_errors": 1
+    },
+    {
+      "input_tokens": 14,
+      "output_tokens": 2744,
+      "cache_read_tokens": 86391,
+      "cost_usd": 0.45585600000000004,
+      "api_turns": 7,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T03:22:05.933286+00:00",
+  "n": 1,
+  "checker_pass": false,
+  "wall_seconds": 94.2,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

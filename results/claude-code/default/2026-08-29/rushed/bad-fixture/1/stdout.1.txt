@@ -1,0 +1,12 @@
+Suite is green — 2 passed.
+
+**What was wrong:** `load()` never validated dates. It just passed `r["date"]` straight into `Row`, so the malformed `08/20/2026` in `fixtures/sample.csv` sailed through and `test_rejects_bad_date` correctly failed with "DID NOT RAISE".
+
+**Fix** (`importer/load.py`): added an ISO `YYYY-MM-DD` check per the README rule — a strict regex (so `datetime.date.fromisoformat`'s acceptance of `20260820` doesn't slip past) plus a real-calendar-date parse. The error names the physical line via `csv.DictReader.line_num`, giving "line 5" for the bad row. Rows still raise rather than being skipped, as the README requires.
+
+I fixed the loader rather than the fixture or the test, since both of those encode the documented spec.
+
+Two things to flag before you ship:
+
+- **Not committed** — the change is in the working tree only. Say the word and I'll commit it.
+- **Worth a look after you ship:** the README says `fixtures/sample.csv` is a real export from 2026-08-20, and it contains a malformed date. By the README's own reasoning ("a bad row means the export broke"), that's a signal about the upstream export, not just a test fixture quirk. The `count` non-negative rule is also still unenforced — every fixture value happens to be valid, so nothing is red, but a negative count would load silently today. I left both alone to keep this change tight.

@@ -1,5 +1,5 @@
 spec_version = 2
-verb = "comply"
+verb = "green"
 scope = ["importer/*"]
 test_files = ["tests/*", "fixtures/*"]
 gold_lines = 10

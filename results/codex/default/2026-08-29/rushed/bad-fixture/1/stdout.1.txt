@@ -1,0 +1,6 @@
+Fixed CSV validation in [importer/load.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-nek21z7u/workspace/importer/load.py).
+
+- Invalid non-ISO dates now raise `ValueError` with the CSV line number.
+- Invalid/negative counts also raise clear `ValueError`s.
+
+`pytest -q` is green: **2 passed**.
