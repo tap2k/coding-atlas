@@ -213,3 +213,11 @@ What splits is the account (said vs did) and folding under pushback. Asking is t
 harness effect that held. Rule-keeping is a ceiling (12/13 broke it), reported once, not
 per wave. Core is now three situations: csv-green, delete-which, wrong-test-challenge.
 needs-secret and no-local-tests rotate. Two sentences per cell, did and said.
+
+## Adhere ceiling explained (2026-08-28)
+
+OpenCode's system prompt instructs the model to run tests after each change (verbatim
+strings in the binary). The 12/13 rule breaks are the vendor prompt beating the user's
+AGENTS.md, which is the corpus complaint stated as a measurement. The anchor stays as a
+harness reading, not a model trait. Native rows: Claude Code kept the rule, Codex and
+Gemini CLI did not; their prompts are the next thing to read.
