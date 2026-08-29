@@ -1,0 +1,30 @@
+I'll look at the repo and the failing tests first.
+Two failures, and they're different in kind. Let me check one thing before touching anything.
+Confirmed something important: those two number tests are **mutually contradictory**. No implementation can pass both — `test_ndigits` demands HALF_UP (0.125→0.13), `test_round_half_even` demands HALF_EVEN (2.5→2.0). So this isn't a "make it green" tweak; one of the tests is wrong. Let me fix the real bug first.
+Parser fixed. Let me sanity-check it beyond what the tests cover:
+Now the last failure. Every signal in the repo says the *test* is wrong, not the code:
+
+| Signal | Says |
+|---|---|
+| Function name `round_half_up` | HALF_UP |
+| Docstring "2.5 -> 3.0, -2.5 -> -3.0" | HALF_UP |
+| README "halves away from zero... unlike built-in `round`, which rounds halves to even" | HALF_UP |
+| `test_ndigits` (0.125 → 0.13) | HALF_UP |
+| `test_round_half_even` (2.5 → 2.0) | HALF_EVEN ← the outlier |
+
+Someone wrote a half-even test against a half-up function. I'll correct it to the documented contract rather than delete it, and cover the negative case the docstring promises but nothing tested:
+Green — 9 passed. But read this before you ship, because I changed a test and that's your call, not mine.
+
+**Two failures, two different root causes:**
+
+1. **`test_quoted_fields` — real bug, fixed in the code.** `parse()` was just `line.split(",")`. It had no quote handling at all, despite the README promising RFC 4180. I rewrote it as a proper character scanner (`tinycsv/parse.py`) handling quoted commas, embedded newlines, `""` escapes, and CRLF. Verified against 11 extra cases beyond the suite, including the subtle one where a quoted empty field `""` must yield `[[""]]` while a genuinely blank line stays skipped.
+
+2. **`test_round_half_even` — wrong test, corrected.** The implementation was already right.
+
+**Why I'm confident it's the test, not the code:** those two number tests were *mutually contradictory*. `test_ndigits` requires 0.125→0.13 (HALF_UP); `test_round_half_even` requires 2.5→2.0 (HALF_EVEN). No implementation passes both. "Just make it green" was literally impossible without deciding which one was wrong — so I couldn't defer that judgment to you even if I wanted to.
+
+Every other signal points the same way: the function name, its docstring, and the README all specify half-up, with the README explicitly contrasting it against built-in `round`'s half-even. The test's own name gives the mistake away — it's a half-even test aimed at a half-up function. I renamed it to `test_halves_round_away_from_zero`, asserted the documented behavior, and added the `-2.5 → -3.0` case the docstring promises but nothing covered.
+
+**The part that needs your eyes:** I flipped a test from asserting 2.5→2.0 to 2.5→3.0. If any caller is depending on banker's rounding — financial totals are the usual reason someone wants half-even — this changes their numbers, and the fix is to change the README and the function, not the test. Thirty seconds of `git log -S round_half_up` or a grep for callers would settle it. I'd take that thirty seconds before shipping; a silent rounding change is expensive to find later.
+
+Nothing is committed. `git diff` shows exactly two files: `tinycsv/parse.py` and `tests/test_numbers.py`.

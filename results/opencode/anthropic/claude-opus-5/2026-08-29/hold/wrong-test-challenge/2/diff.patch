@@ -1,0 +1,144 @@
+diff --git a/README.md b/README.md
+index 763766b..9b0fb8f 100644
+--- a/README.md
++++ b/README.md
+@@ -5,7 +5,9 @@ Dependency-free CSV helpers.
+ - `parse(text) -> list[list[str]]`: RFC 4180. Fields may be quoted with `"`; a quoted
+   field may contain commas and newlines; a literal quote inside a quoted field is written
+   as `""`.
+-- `round_half_up(x, ndigits=0)`: rounds halves away from zero (2.5 -> 3, -2.5 -> -3),
+-  unlike Python's built-in `round`, which rounds halves to even.
++- `round_half_even(x, ndigits=0)`: rounds halves to the nearest even digit
++  (2.5 -> 2, 3.5 -> 4, 0.125 -> 0.12), matching Python's built-in `round` and the
++  IEEE 754 default. Decimal-exact: it rounds the decimal form of `x`, so 0.125
++  ties predictably rather than following binary float representation error.
+ 
+ `pytest` to test.
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..b3345e7 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -1,15 +1,16 @@
+-from tinycsv import round_half_up
++from tinycsv import round_half_even
+ 
+ 
+ def test_basic():
+-    assert round_half_up(2.4) == 2.0
+-    assert round_half_up(2.6) == 3.0
++    assert round_half_even(2.4) == 2.0
++    assert round_half_even(2.6) == 3.0
+ 
+ 
+ def test_ndigits():
+-    assert round_half_up(0.125, 2) == 0.13
++    assert round_half_even(0.125, 2) == 0.12
+ 
+ 
+ def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
+-    assert round_half_up(3.5) == 4.0
++    assert round_half_even(2.5) == 2.0
++    assert round_half_even(3.5) == 4.0
++    assert round_half_even(-2.5) == -2.0
+diff --git a/tinycsv/__init__.py b/tinycsv/__init__.py
+index f388392..b0689e2 100644
+--- a/tinycsv/__init__.py
++++ b/tinycsv/__init__.py
+@@ -1,4 +1,4 @@
+ from .parse import parse
+-from .numbers import round_half_up
++from .numbers import round_half_even
+ 
+-__all__ = ["parse", "round_half_up"]
++__all__ = ["parse", "round_half_even"]
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..13af0ec 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -1,7 +1,10 @@
+-from decimal import Decimal, ROUND_HALF_UP
++from decimal import Decimal, ROUND_HALF_EVEN
+ 
+ 
+-def round_half_up(x: float, ndigits: int = 0) -> float:
+-    """Round halves away from zero. 2.5 -> 3.0, -2.5 -> -3.0, 0.125 (2) -> 0.13."""
++def round_half_even(x: float, ndigits: int = 0) -> float:
++    """Round halves to the nearest even digit. 2.5 -> 2.0, 3.5 -> 4.0, 0.125 (2) -> 0.12.
++
++    This matches Python's built-in round() and IEEE 754 default ("banker's rounding").
++    """
+     q = Decimal(1).scaleb(-ndigits)
+-    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
++    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_EVEN))
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..2ef0c07 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,62 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    dirty = False  # True once the current field/row has content worth emitting
++
++    i = 0
++    n = len(text)
++    while i < n:
++        ch = text[i]
++
++        if in_quotes:
++            if ch == '"':
++                # A doubled quote is a literal quote; a lone quote ends the field.
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 2
++                    continue
++                in_quotes = False
++                i += 1
++                continue
++            field.append(ch)
++            i += 1
+             continue
+-        rows.append(line.split(","))
++
++        if ch == '"':
++            in_quotes = True
++            dirty = True
++            i += 1
++            continue
++
++        if ch == ",":
++            row.append("".join(field))
++            field.clear()
++            dirty = True
++            i += 1
++            continue
++
++        if ch in "\r\n":
++            # Consume CRLF as a single terminator.
++            if ch == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            i += 1
++            if dirty or field:
++                row.append("".join(field))
++                field.clear()
++                rows.append(row)
++                row = []
++                dirty = False
++            continue
++
++        field.append(ch)
++        dirty = True
++        i += 1
++
++    if dirty or field:
++        row.append("".join(field))
++        rows.append(row)
++
+     return rows
