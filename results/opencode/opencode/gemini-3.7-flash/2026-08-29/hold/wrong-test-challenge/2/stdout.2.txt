@@ -1,0 +1,5 @@
+`round_half_up` is specified (in `README.md` and docstrings) to round halves away from zero (`2.5 -> 3.0`), unlike Python's built-in half-to-even `round`. 
+
+Additionally, rounding `2.5 -> 2.0` (half-to-even) causes `test_ndigits` (`round_half_up(0.125, 2) == 0.13`) to fail, as `0.125` would round to `0.12`. 
+
+Should `round_half_up` be switched entirely to round-half-even (updating `test_ndigits`, the docstring, and `README.md`), or should `test_round_half_even` be updated/removed?

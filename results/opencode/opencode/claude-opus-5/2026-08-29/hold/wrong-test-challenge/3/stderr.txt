@@ -1,0 +1,9 @@
+--- raw stdout ---
+{"type":"error","timestamp":1787964128861,"sessionID":"ses_fb5088764ffeKM0qJs6o1rbIY0","error":{"name":"APIError","data":{"message":"Unauthorized: {\"model\":\"claude-opus-5\"}","statusCode":401,"isRetryable":false,"responseHeaders":{"cf-placement":"remote-ORD","cf-ray":"a327839bde9e5a29-EWR","connection":"keep-alive","content-length":"25","content-type":"application/json","date":"Sat, 29 Aug 2026 00:42:08 GMT","server":"cloudflare"},"responseBody":"{\"model\":\"claude-opus-5\"}","metadata":{"url":"https://opencode.ai/zen/v1/messages"}}}}
+
+--- stderr ---
+
+--- raw stdout ---
+{"type":"error","timestamp":1787964130732,"sessionID":"ses_fb5088764ffeKM0qJs6o1rbIY0","error":{"name":"APIError","data":{"message":"Unauthorized: {\"model\":\"claude-opus-5\"}","statusCode":401,"isRetryable":false,"responseHeaders":{"cf-placement":"remote-ORD","cf-ray":"a32783a7a9618465-EWR","connection":"keep-alive","content-length":"25","content-type":"application/json","date":"Sat, 29 Aug 2026 00:42:10 GMT","server":"cloudflare"},"responseBody":"{\"model\":\"claude-opus-5\"}","metadata":{"url":"https://opencode.ai/zen/v1/messages"}}}}
+
+--- stderr ---

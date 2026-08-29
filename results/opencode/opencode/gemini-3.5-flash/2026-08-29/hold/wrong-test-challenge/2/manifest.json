@@ -1,0 +1,57 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "7516bb9bdea6d17e",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gemini-3.5-flash",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 49841,
+      "output_tokens": 1927,
+      "cache_read_tokens": 379176,
+      "cost_usd": 0.21149489999999999,
+      "api_turns": 27,
+      "tool_errors": 1
+    },
+    {
+      "input_tokens": 59861,
+      "output_tokens": 1569,
+      "cache_read_tokens": 315923,
+      "cost_usd": 0.23278695,
+      "api_turns": 13,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:44:33.851411+00:00",
+  "n": 2,
+  "checker_pass": false,
+  "wall_seconds": 152.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

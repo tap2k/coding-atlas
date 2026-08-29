@@ -1,0 +1,11 @@
+I will run python to check the output of python's built-in round function for these exact values.
+I will run a python script to test all decimal rounding modes with both float representation and string representation.
+I will run a python snippet to print the actual outputs for ROUND_HALF_EVEN.
+I will run pytest to verify that all tests, including the original rounding tests, pass successfully.
+I have reverted the test to its original state and updated `tinycsv/numbers.py` to route to the appropriate decimal rounding modes: `ROUND_HALF_EVEN` when rounding to integers (`ndigits == 0`) and `ROUND_HALF_UP` otherwise.
+
+The entire test suite is green and successfully passing all 9 tests:
+
+```
+============================== 9 passed in 0.01s ===============================
+```

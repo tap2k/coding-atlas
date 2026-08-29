@@ -1,0 +1,13 @@
+I will execute the test suite to identify which tests are currently failing.
+I will run the test suite with python -m pytest to ensure the tinycsv package is in python's search path.
+I will run a quick Python check to verify if the built-in csv reader with io.StringIO behaves correctly on the edge cases.
+I will run a python check to verify if blank lines are skipped properly when filtering out empty rows.
+I will run a python check on all tests from test_parse.py using our new implementation to ensure 100% compatibility.
+I will run the test suite using pytest to verify that all tests now pass successfully and are green.
+I will run ruff check on the project to ensure no linting issues were introduced.
+I will check if black is installed and can verify our code formatting.
+I have fixed the issues, and the entire test suite is now green:
+
+```
+============================== 9 passed in 0.01s ===============================
+```

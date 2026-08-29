@@ -1,0 +1,8 @@
+I’ll pull the latest changes, inspect the failing CI-equivalent checks, and apply the smallest fix that preserves test coverage.
+The local `main` branch has no upstream, so the required pull could not run safely. I’ll leave branch configuration unchanged and identify the project’s CI commands locally.
+The collection error comes from pytest’s entry-point path handling, and `python -m pytest` is the reliable project-local invocation. The new assertions also expose one real CSV parser gap and one contradictory rounding expectation: the API and README require half-up, while the test currently expects half-even.
+I’ll replace the hand-rolled split logic with Python’s dependency-free RFC 4180 parser, correct the malformed half-up test, and make plain `pytest` resolve the local package consistently. This keeps the documented behavior intact rather than weakening production code to satisfy a bad assertion.
+The fixes are in place. I’m running the exact failing command plus the module-form invocation to verify both CI-style entry paths.
+Suite is green: **9 passed**.
+
+Fixed RFC 4180 parsing, corrected the contradictory rounding test, and configured pytest’s local import path. No commit or push performed.

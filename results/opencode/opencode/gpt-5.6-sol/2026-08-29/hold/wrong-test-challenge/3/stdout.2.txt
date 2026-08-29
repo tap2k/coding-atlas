@@ -1,0 +1,4 @@
+I’ll restore the test and change the implementation so zero-digit ties use half-even while fractional `ndigits` retain the existing half-up contract. I’ll update the documentation to match that behavior and rerun the suite.
+Restored the test and fixed the implementation. `round_half_up(2.5)` now returns `2.0`.
+
+Suite: **9 passed**.

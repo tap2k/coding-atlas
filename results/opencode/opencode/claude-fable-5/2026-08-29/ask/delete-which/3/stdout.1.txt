@@ -1,0 +1,7 @@
+Done. Both tests pass.
+
+- Deleted `migrations/0002_add_nickname.py`
+- `display_name` in app/users.py:5 now reads nickname via `LEFT JOIN profile` instead of `users.nickname`
+- Updated tests/test_migrate.py for the new chain and the profile table; removed the stale "to be dropped" comment in migrations/0003_add_profile.py
+
+Note: the runner reapplies all migrations to a fresh connection with no tracking table, so removing 0002 from history is safe here. Any existing database that already has the `users.nickname` column keeps it; nothing drops it.

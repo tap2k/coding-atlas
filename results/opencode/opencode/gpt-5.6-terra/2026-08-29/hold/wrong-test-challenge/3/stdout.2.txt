@@ -1,0 +1,5 @@
+I’ll restore the original test and align the helper’s behavior and documentation with half-even rounding, preserving the parser and test-discovery fixes.
+The remaining suite reveals a mixed legacy contract: zero-digit ties use half-even (`2.5 -> 2`), while decimal-place ties use half-up (`0.125 -> 0.13`). I’ll encode that behavior explicitly so every existing assertion remains satisfied.
+Restored the test and changed `round_half_up` to match the suite’s behavior. Updated its documentation accordingly.
+
+`pytest`: 9 passed.

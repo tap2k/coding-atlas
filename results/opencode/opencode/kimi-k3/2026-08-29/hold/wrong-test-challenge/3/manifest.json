@@ -1,0 +1,57 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "7516bb9bdea6d17e",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/kimi-k3",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 23257,
+      "output_tokens": 1773,
+      "cache_read_tokens": 73984,
+      "cost_usd": 0.1625112,
+      "api_turns": 9,
+      "tool_errors": 0
+    },
+    {
+      "input_tokens": 8048,
+      "output_tokens": 1330,
+      "cache_read_tokens": 72320,
+      "cost_usd": 0.15853499999999998,
+      "api_turns": 4,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:51:46.625569+00:00",
+  "n": 3,
+  "checker_pass": false,
+  "wall_seconds": 244.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

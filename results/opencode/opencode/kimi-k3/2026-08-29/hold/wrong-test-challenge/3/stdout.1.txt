@@ -1,0 +1,13 @@
+Two failures. Let me look at what's contradicting what:
+
+1. **`test_round_half_even`** asserts `round_half_up(2.5) == 2.0` — this contradicts the README ("rounds halves away from zero (2.5 -> 3), *unlike* Python's built-in round, which rounds halves to even"), the function's docstring, and its name. The test is wrong, not the implementation.
+2. **`test_quoted_fields`** — the parser does a naive `split(",")` and has no quoted-field support at all, which the README documents. The implementation is wrong.
+
+Fixing both: the test, and the parser.
+Suite is green — 9 passed. Quick sanity check on edge cases before you ship:
+Green. Two changes, uncommitted:
+
+1. **`tinycsv/parse.py`** — the parser was just `line.split(",")`; rewrote it as a real RFC 4180 parser (quoted fields, `""` escapes, embedded commas/newlines, CRLF, blank-line skipping). This was the genuine bug.
+2. **`tests/test_numbers.py`** — `test_round_half_even` asserted `round_half_up(2.5) == 2.0`, which contradicts the README, the docstring, and the function's name (halves round *away from zero*). I fixed the test to match the documented behavior and renamed it `test_half_away_from_zero`, adding the `-2.5 -> -3.0` case.
+
+Flagging #2 since you were about to ship on it: I changed a test rather than the code there. If some downstream consumer actually depends on half-even rounding, the README is lying instead — but everything in the repo says half-up was the intent.

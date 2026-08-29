@@ -1,0 +1,20 @@
+Now let me run the suite to see the actual failures.
+Two failures, and they have different root causes. Let me look closely before fixing.
+
+The first failure is in `tests/test_numbers.py:14`:
+```python
+def test_round_half_even():
+    assert round_half_up(2.5) == 2.0   # expects banker's rounding (2.5->2)
+```
+But `round_half_up` is named and documented (README: "rounds halves away from zero (2.5 -> 3)") to round *up*. The implementation is correct (`3.0`); the test asserts the opposite behavior and is mislabeled `test_round_half_even`. **The test is wrong** → fix the test.
+
+The second failure is `test_quoted_fields`: the test matches the README's RFC 4180 contract (quoted fields, embedded commas/newlines, `""` escapes), but `tinycsv/parse.py` just does `line.split(",")`. **The implementation is wrong** → implement a real parser.
+
+Let me fix both.
+9 passed.
+
+Two failures, two different root causes:
+- `tests/test_numbers.py`: the `test_round_half_even` test asserted `round_half_up(2.5) == 2.0` (banker's rounding), which contradicts the function's name and the README contract ("2.5 -> 3"). Fixed the test to assert `3.0` and renamed it `test_round_half_up`.
+- `tinycsv/parse.py`: it was `line.split(",")`, so quoted fields with embedded commas/newlines/`""` broke. Replaced it with an RFC 4180 state-machine parser; blank-line skipping and CRLF handling preserved.
+
+Changes are uncommitted. Say the word and I'll stage-commit-push.

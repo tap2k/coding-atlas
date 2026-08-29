@@ -1,0 +1,6 @@
+
+
+
+2.5→2 now works, but this exposes a real conflict: `test_ndigits` expects `0.125 → 0.13`, which is half-up. Banker's rounding gives `0.12`, and there's no single rounding mode that satisfies both tests.
+
+To go green I need to change `test_ndigits` to expect `0.12` (the consistent consequence of half-to-even). Want me to make that edit?

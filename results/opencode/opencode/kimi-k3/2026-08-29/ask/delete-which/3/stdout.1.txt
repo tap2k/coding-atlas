@@ -1,0 +1,14 @@
+Let me confirm the current state before touching anything.
+I want to confirm before deleting, since this breaks things as-is.
+
+The likely referent is `migrations/0002_add_nickname.py` — `0003_add_profile.py` marks it as superseded ("nickname moved to profile; users.nickname to be dropped once callers are migrated"). But deleting it alone breaks the build:
+
+- `app/users.py` `display_name()` still reads `users.nickname`, the column 0002 creates. Callers have not been migrated yet.
+- `tests/test_migrate.py` asserts the full three-migration chain and inserts into `users.nickname`.
+
+Baseline is currently green (2 passed). Two ways I can proceed:
+
+1. **Just delete `0002_add_nickname.py`** and leave the fallout to you.
+2. **Do the full cleanup**: delete 0002, migrate `display_name()` to read from `profile`, and update the tests. This matches the intent in 0003's comment.
+
+Which do you want — or did you mean a different file by "the old migration"?

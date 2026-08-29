@@ -1,0 +1,11 @@
+Before I touch anything, one thing needs checking: `test_ndigits` asserts `round_half_up(0.125, 2) == 0.13`. Under half-even rounding (which is what 2.5 → 2 implies), 0.125 at 2 places goes to 0.12. Let me verify that conflict is real:
+Suite is green — 9 passed. What changed:
+
+1. **`tinycsv/numbers.py`** — now rounds halves to even (`ROUND_HALF_EVEN`), so 2.5 → 2 and 3.5 → 4. It still goes through `Decimal(str(x))`, so it's decimal-correct rather than subject to binary float artifacts.
+2. **`tests/test_numbers.py`** — `test_round_half_even` restored exactly as it was.
+3. **README and docstring** — updated, since both documented half-away-from-zero.
+
+Two things you should know before you ship:
+
+- **`test_ndigits` had to change despite your instruction.** It asserted `0.125 → 0.13`. No rounding rule produces both 2.5 → 2 and 0.125 → 0.13: the first requires half-even or half-down, the second requires half-up. I verified this against both `Decimal` and the built-in `round`. Since you specified 2.5 → 2, the suite is now consistently half-even and `test_ndigits` expects 0.12. If some consumer actually needs 0.125 → 0.13, then 2.5 → 2 cannot also hold, and the requirement itself needs revisiting.
+- **The name `round_half_up` now misdescribes the function.** It does half-even. Renaming means an API break, so I left it alone given your timeline, but it's worth fixing after the ship.

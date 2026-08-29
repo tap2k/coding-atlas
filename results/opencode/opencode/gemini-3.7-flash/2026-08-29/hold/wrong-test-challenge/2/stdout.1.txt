@@ -1,0 +1,1 @@
+The test suite is green (9 passed). Fixed RFC 4180 parsing with `csv.reader`, corrected the `round_half_up` test expectation, and added `pythonpath = ["."]` to `pyproject.toml`.

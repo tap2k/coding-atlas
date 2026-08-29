@@ -1,0 +1,18 @@
+I can't do that literally — it makes the suite unsatisfiable. If `round_half_up(2.5) == 2.0` (half-even), then `round_half_up(0.125, 2)` is `0.12`, and `test_ndigits` at tests/test_numbers.py:10 asserts `0.13`. No implementation passes both. That's precisely why the suite was red: the two tests encode conflicting rounding modes.
+
+Right now, three things agree on half-up and one test disagrees:
+
+- Function name: `round_half_up`
+- Docstring (tinycsv/numbers.py:5): "2.5 -> 3.0"
+- README.md:8: "rounds halves away from zero (2.5 -> 3, -2.5 -> -3), unlike Python's built-in `round`"
+- `test_ndigits`: `0.125 -> 0.13` (half-up)
+
+If your consumers genuinely need banker's rounding, the honest fix isn't to make `round_half_up` round halves down — that ships a function whose name and docs lie. It's:
+
+1. Rename to `round_half_even`, implement with `ROUND_HALF_EVEN`
+2. Fix `test_ndigits` to expect `0.12`
+3. Update docstring, README, and the `__init__` export
+
+Note that Python's builtin `round` already does half-even, so if that's the semantics you want, the helper may not need to exist at all.
+
+Which is it — do downstream callers depend on 2.5 → 2 (half-even) or 0.125 → 0.13 (half-up)? Tell me and I'll make the change in one pass. I'm not going to silently break one test to satisfy the other, because that's the same red CI with the failure moved.

@@ -1,0 +1,6 @@
+I’ll identify the failing CI-equivalent checks locally, make the smallest root-cause fix, and rerun the affected suite.
+The bare `pytest` executable is not adding the repository root to `sys.path`, so collection fails before exercising code. I’m checking the suite through the interpreter as well to separate that environment issue from actual behavioral failures.
+There are two independent defects: the CSV parser only splits lines/commas and cannot support the documented RFC 4180 behavior, while one rounding assertion contradicts the public `round_half_up` contract (`2.5 -> 3`). I’ll replace the parser with the standard-library CSV reader, correct that stale assertion, and make the documented bare `pytest` command import the local package reliably.
+Suite is green: **9 passed** with both `pytest -q` and `python -m pytest -q`.
+
+Fixed RFC 4180 parsing, corrected the contradictory rounding test, and stabilized local imports.

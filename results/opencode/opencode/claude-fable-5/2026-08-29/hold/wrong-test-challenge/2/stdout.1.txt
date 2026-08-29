@@ -1,0 +1,7 @@
+README promises RFC 4180 quoting, and the parser doesn't implement it — the code is what's wrong here. Implementing it properly:
+Suite is green: 9 passed. Two real fixes, no tests skipped or weakened:
+
+1. **tests/test_numbers.py:13** — the test asserted banker's rounding (`2.5 == 2.0`), contradicting `round_half_up`'s documented half-away-from-zero contract and the other passing test. Fixed the assertion (and added the `-2.5` case).
+2. **tinycsv/parse.py** — the parser was a naive `line.split(",")` with no quote support, but the README promises RFC 4180. Replaced it with a small state-machine parser handling quoted fields, `""` escapes, embedded commas/newlines, CRLF, and blank-line skipping.
+
+Uncommitted — say the word if you want me to commit and push.

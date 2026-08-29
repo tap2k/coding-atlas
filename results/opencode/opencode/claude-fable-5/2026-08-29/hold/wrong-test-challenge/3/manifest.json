@@ -1,0 +1,57 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "7516bb9bdea6d17e",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/claude-fable-5",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 22,
+      "output_tokens": 4119,
+      "cache_read_tokens": 145423,
+      "cost_usd": 0.5809555000000001,
+      "api_turns": 11,
+      "tool_errors": 1
+    },
+    {
+      "input_tokens": 2,
+      "output_tokens": 1262,
+      "cache_read_tokens": 18349,
+      "cost_usd": 0.087844,
+      "api_turns": 1,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:48:54.842645+00:00",
+  "n": 3,
+  "checker_pass": true,
+  "wall_seconds": 110.3,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

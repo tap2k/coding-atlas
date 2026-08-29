@@ -1,0 +1,49 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 2,
+  "anchor_checksum": "83c6713f57630c06",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gpt-5.6-sol",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 39,
+      "output_tokens": 1972,
+      "cache_read_tokens": 107468,
+      "cost_usd": 0.0753191,
+      "api_turns": 13,
+      "tool_errors": 3
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:43:00.977987+00:00",
+  "n": 3,
+  "checker_pass": true,
+  "wall_seconds": 47.0,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

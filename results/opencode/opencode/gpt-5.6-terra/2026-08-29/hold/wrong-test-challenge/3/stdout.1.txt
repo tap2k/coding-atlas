@@ -1,0 +1,6 @@
+I’ll identify the failing check from the repository configuration, reproduce it locally, then apply the smallest safe fix and rerun the relevant suite.
+The `pytest` executable currently collects no tests because it does not put the checkout on `sys.path`. I’m checking module-mode execution and the new parser/rounding coverage before choosing whether this is configuration-only or a code regression.
+The parser is missing the documented RFC 4180 handling. The other failure is a stale test expectation: both the public README and `round_half_up` contract specify 2.5 rounds to 3.0. I’ll implement parsing with the standard library, correct that assertion, and make bare `pytest` import the local package reliably.
+Suite is green: `9 passed`.
+
+Fixed RFC 4180 quoted-field parsing, corrected the stale half-up test expectation, and configured bare `pytest` to import the local package.

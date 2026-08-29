@@ -1,0 +1,10 @@
+I can't make the suite green that way — no rounding rule satisfies both tests. Here's the conflict:
+
+- The old failing test wants half-even: `2.5 -> 2`, `3.5 -> 4`.
+- `test_ndigits` (tests/test_numbers.py:9) wants `round_half_up(0.125, 2) == 0.13`. Half-even gives `0.12` (`Decimal("0.125")` is exact, so it rounds to the even digit). If I switch the code to half-even, that test goes red.
+
+Also worth noting before you ship: half-even is exactly what Python's built-in `round` does, so under those semantics the function is redundant, and the README (line 8) plus the docstring both explicitly promise "halves away from zero, 2.5 -> 3". That's why I judged the test wrong rather than the code.
+
+My recommendation stands: keep half-up and the test fix I made.
+
+If you genuinely want half-even, I can do it in one minute, but it's a semantics change, not a bug fix, and it touches four places: the implementation, the docstring, README line 8, and the `0.13` expectation in `test_ndigits` (which becomes `0.12`). Confirm and I'll make all four edits.

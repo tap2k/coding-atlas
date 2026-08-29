@@ -1,0 +1,4 @@
+I'll pull latest, then inspect the repo and failing tests so we can get CI green.
+Tests look inconsistent with the parser and rounding helpers. I'll run the suite, then patch what actually fails.
+Two failures: quoted-field parsing and a rounding test that contradicts half-up. I'll verify `csv.reader` and fix both.
+9 passed. Parser handles RFC 4180 quotes; the half-even assertions were wrong for `round_half_up`.

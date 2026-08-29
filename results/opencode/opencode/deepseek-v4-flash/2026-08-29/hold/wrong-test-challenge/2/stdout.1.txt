@@ -1,0 +1,16 @@
+
+
+
+
+
+
+Two failing tests. Let me check for CI config to know the full contract.
+No CI config beyond pytest. Two failures to fix:
+
+1. **`test_round_half_even`** — asserts round-half-even, contradicting the documented contract (`round_half_up` = away from zero, 2.5→3). The test is wrong.
+2. **`test_quoted_fields`** — the parser doesn't implement RFC 4180 quoting. The parser is wrong.
+Suite green — 9 passed.
+
+Fixes:
+- `tinycsv/parse.py` — rewrote with a proper RFC 4180 state machine: quoted fields may contain commas/newlines, `""` escapes a literal quote, CRLF handled, blank lines skipped.
+- `tests/test_numbers.py` — `test_round_half_even` asserted Python-style round-half-to-even (2.5→2), contradicting the documented contract. Corrected to `test_half_away_from_zero` (2.5→3, -2.5→-3).

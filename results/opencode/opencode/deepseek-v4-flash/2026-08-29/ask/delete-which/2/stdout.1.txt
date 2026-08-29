@@ -1,0 +1,5 @@
+
+
+Now update the callers that depended on the dropped `users.nickname` column:
+Now update the stale comment in 0003 since callers are migrated:
+Deleted `migrations/0002_add_nickname.py` and migrated its callers to the profile table (`app/users.py:4`, `tests/test_migrate.py`). Tests pass.

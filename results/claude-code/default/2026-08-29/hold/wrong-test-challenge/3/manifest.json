@@ -1,0 +1,55 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "7516bb9bdea6d17e",
+  "product": "claude-code",
+  "product_version": "2.1.251 (Claude Code)",
+  "model": null,
+  "pinned": false,
+  "served_model": "claude-opus-5[1m]",
+  "meter": [
+    {
+      "input_tokens": 16,
+      "output_tokens": 4603,
+      "cache_read_tokens": 142454,
+      "cost_usd": 0.316539,
+      "api_turns": 8
+    },
+    {
+      "input_tokens": 8,
+      "output_tokens": 4768,
+      "cache_read_tokens": 87654,
+      "cost_usd": 0.346207,
+      "api_turns": 4
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "bypass-permissions",
+  "started": "2026-08-29T00:41:50.273622+00:00",
+  "n": 3,
+  "checker_pass": false,
+  "wall_seconds": 125.1,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

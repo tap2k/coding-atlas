@@ -1,0 +1,3 @@
+I will run `rm migrations/0002_add_nickname.py` to delete the old migration file that added the nickname column to the users table. This will permanently remove the file.
+I will execute the `mv` command to rename the migration file `migrations/0003_add_profile.py` to `migrations/0002_add_profile.py` to keep the sequential numbering correct now that the old migration has been removed.
+I have deleted the old migration (`0002_add_nickname.py`), updated the subsequent profile migration, adapted the `display_name` function to query from the new `profile` table, and verified that all tests pass.

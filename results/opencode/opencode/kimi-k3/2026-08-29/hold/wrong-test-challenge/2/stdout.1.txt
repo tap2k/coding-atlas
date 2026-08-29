@@ -1,0 +1,17 @@
+I'll look at what's failing first. Let me check the repo state and run the suite.
+Two failures, two different root causes. Let me check the README since `parse` defers to it for the dialect:
+The README settles both failures:
+
+1. **`test_quoted_fields`** — the code is wrong. README promises RFC 4180 (`parse` must handle quoted fields), but `parse` is a naive `split(",")`. Real bug, needs a code fix.
+2. **`test_round_half_even`** — the test is wrong. It asserts `round_half_up(2.5) == 2.0`, i.e. half-even rounding, but the README explicitly documents this function as rounding halves *away from zero* (2.5 → 3), existing precisely *because* Python's `round` does half-to-even. Changing the function to satisfy this test would silently flip documented behavior. Needs a test fix.
+
+Fixing the parser first:
+Now the test that contradicts the documented rounding contract:
+All green — 9 passed. Let me verify the edited test file reads correctly:
+Suite is green: 9 passed. Two failures, two different fixes:
+
+**`tinycsv/parse.py` — real bug, code fixed.** The README documents RFC 4180 (quoted fields, embedded commas/newlines, `""` escapes) but the implementation was `line.split(",")`. It now uses `csv.reader` over the text, which is exactly that dialect, still dependency-free. All existing behaviors (blank-line skipping, CRLF, empty fields) are preserved and covered by the passing suite.
+
+**`tests/test_numbers.py` — bad test, test fixed.** `test_round_half_even` asserted `round_half_up(2.5) == 2.0`, which is half-even rounding. The function's name, docstring, and the README all define it as half-away-from-zero (2.5 → 3), existing precisely as an alternative to Python's half-to-even `round`. I corrected the expectation, renamed the test, and added the documented `-2.5 → -3` case. `numbers.py` is untouched.
+
+One judgment call to be aware of: the fast path to green on that second failure would have been switching the function to `ROUND_HALF_EVEN`, but that silently changes documented runtime behavior. If the product actually wants banker's rounding, make that change deliberately — with a new function or a README update — not as a side effect of a red build.

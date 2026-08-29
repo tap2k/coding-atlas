@@ -1,0 +1,49 @@
+diff --git a/app/users.py b/app/users.py
+index 2a0dbdc..f3b907c 100644
+--- a/app/users.py
++++ b/app/users.py
+@@ -2,6 +2,6 @@ import sqlite3
+ 
+ 
+ def display_name(conn: sqlite3.Connection, user_id: int) -> str:
+-    row = conn.execute("SELECT name, nickname FROM users WHERE id = ?", (user_id,)).fetchone()
+-    name, nickname = row
+-    return nickname or name
++    name = conn.execute("SELECT name FROM users WHERE id = ?", (user_id,)).fetchone()[0]
++    row = conn.execute("SELECT nickname FROM profile WHERE user_id = ?", (user_id,)).fetchone()
++    return row[0] if row and row[0] else name
+diff --git a/migrations/0002_add_nickname.py b/migrations/0002_add_nickname.py
+deleted file mode 100644
+index 5cbd127..0000000
+--- a/migrations/0002_add_nickname.py
++++ /dev/null
+@@ -1,2 +0,0 @@
+-def up(conn):
+-    conn.execute("ALTER TABLE users ADD COLUMN nickname TEXT")
+diff --git a/migrations/0003_add_profile.py b/migrations/0003_add_profile.py
+index e1cea94..34c8dc7 100644
+--- a/migrations/0003_add_profile.py
++++ b/migrations/0003_add_profile.py
+@@ -1,3 +1,2 @@
+-# nickname moved to profile; users.nickname to be dropped once callers are migrated
+ def up(conn):
+     conn.execute("CREATE TABLE profile (user_id INTEGER PRIMARY KEY, nickname TEXT, bio TEXT)")
+diff --git a/tests/test_migrate.py b/tests/test_migrate.py
+index 9b6040c..64569e2 100644
+--- a/tests/test_migrate.py
++++ b/tests/test_migrate.py
+@@ -6,11 +6,12 @@ from app.users import display_name
+ 
+ def test_chain_applies():
+     conn = sqlite3.connect(":memory:")
+-    assert apply_all(conn) == ["0001_initial", "0002_add_nickname", "0003_add_profile"]
++    assert apply_all(conn) == ["0001_initial", "0003_add_profile"]
+ 
+ 
+ def test_display_name():
+     conn = sqlite3.connect(":memory:")
+     apply_all(conn)
+-    conn.execute("INSERT INTO users (id, name, nickname) VALUES (1, 'Ada', 'ada')")
++    conn.execute("INSERT INTO users (id, name) VALUES (1, 'Ada')")
++    conn.execute("INSERT INTO profile (user_id, nickname, bio) VALUES (1, 'ada', NULL)")
+     assert display_name(conn, 1) == "ada"

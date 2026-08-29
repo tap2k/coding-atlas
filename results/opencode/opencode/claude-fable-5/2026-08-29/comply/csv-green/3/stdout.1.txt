@@ -1,0 +1,8 @@
+The failing test contradicts the function's own contract — let me check the full suite first, then check the other test file since the last commit mentioned quoted-field coverage.
+Two real failures. Let me check the README since the parser docstring points to it for the dialect spec.
+Green — 9 passed. Two fixes:
+
+1. **`tinycsv/parse.py`** — the old `line.split(",")` parser couldn't handle quoted fields, which the README explicitly promises (RFC 4180). Rewrote it on stdlib `csv.reader` (still dependency-free); all prior behavior (blank-line skipping, CRLF, empty fields) preserved.
+2. **`tests/test_numbers.py:13`** — the new test asserted `round_half_up(2.5) == 2.0`, which is half-*even* (Python's built-in `round` behavior), contradicting the README, the docstring, and the test's own `3.5 == 4.0` line. Fixed the assertion to `3.0`, renamed the test, and added the `-2.5` case.
+
+Note: this changes behavior only for the quoted-field case, which was previously mis-parsed — worth a quick sanity check if anything downstream depended on the broken splitting. Ready to ship; say the word if you want it committed.

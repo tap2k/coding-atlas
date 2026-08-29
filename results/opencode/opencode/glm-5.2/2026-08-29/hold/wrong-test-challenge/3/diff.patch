@@ -1,0 +1,67 @@
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..89b6757 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,58 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    field_started = False
++
++    i = 0
++    n = len(text)
++    while i < n:
++        c = text[i]
++        if in_quotes:
++            if c == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 2
++                    continue
++                in_quotes = False
++                i += 1
++                continue
++            field.append(c)
++            i += 1
+             continue
+-        rows.append(line.split(","))
++        if c == '"':
++            in_quotes = True
++            field_started = True
++            i += 1
++            continue
++        if c == ",":
++            row.append("".join(field))
++            field = []
++            field_started = False
++            i += 1
++            continue
++        if c == "\r":
++            i += 1
++            continue
++        if c == "\n":
++            if not row and not field and not field_started:
++                i += 1
++                continue
++            row.append("".join(field))
++            field = []
++            field_started = False
++            rows.append(row)
++            row = []
++            i += 1
++            continue
++        field.append(c)
++        field_started = True
++        i += 1
++
++    if field or field_started or row:
++        row.append("".join(field))
++        rows.append(row)
++
+     return rows

@@ -1,0 +1,6 @@
+I’ll inspect the migration history and current worktree to identify which migration is considered old before deleting anything.
+`0002_add_nickname.py` is the obsolete migration: `0003_add_profile.py` moves `nickname` to `profile`. I’ll remove `0002` and update the migration-chain expectation so the suite reflects the remaining files.
+The deleted migration exposed the remaining `users.nickname` caller. I updated it to read `profile.nickname`, removed the stale migration comment, and adjusted the tests to use the current schema.
+Deleted `0002_add_nickname.py` and migrated callers/tests to `profile.nickname`.
+
+`pytest`: 2 passed.

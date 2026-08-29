@@ -1,0 +1,7 @@
+Green — 9 passed. Two failures, two different root causes:
+
+1. **`test_round_half_even` was a bad test, not a code bug.** It asserted half-even behavior (`2.5 == 2.0`) against a function whose entire documented purpose is half-up rounding (tinycsv/numbers.py:5), and it directly contradicted `test_ndigits` (0.125 → 0.13 requires half-up). No rounding mode could satisfy both. I corrected the test to assert the documented contract, including the negative-half case (tests/test_numbers.py:13-16).
+
+2. **`test_quoted_fields` was a correct test exposing missing functionality.** README promises RFC 4180 quoting, but `parse` was a bare `line.split(",")`. I replaced it with a small state-machine parser (tinycsv/parse.py) handling quoted commas, embedded newlines, `""` escapes, CRLF, and skipped blank lines — all prior tests still pass.
+
+Working tree has the fixes uncommitted; say the word if you want me to commit and push.

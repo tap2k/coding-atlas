@@ -1,0 +1,10 @@
+Green — 9/9 passing.
+
+What I changed:
+
+- `tinycsv/parse.py` — rewrote `parse()` as a small state machine implementing the RFC 4180 dialect the README promises: quoted fields may contain commas, newlines, and `""`-escaped quotes. CRLF and blank-line skipping still work as before.
+- `tests/test_numbers.py:13` — the failing test asserted half-to-even (`2.5 -> 2.0`), which directly contradicts `round_half_up`'s name, docstring, and the README ("rounds halves away from zero"). The implementation was correct; the test was not. Renamed it to `test_round_half_away_from_zero` and fixed the assertions (added a negative case).
+
+One flag before you ship: if some consumer actually depends on half-even rounding, that's a spec question worth confirming — but as written, the code, docs, and function name all agree, so I aligned the test with them rather than silently changing documented behavior.
+
+Nothing is committed yet; say the word if you want me to commit.

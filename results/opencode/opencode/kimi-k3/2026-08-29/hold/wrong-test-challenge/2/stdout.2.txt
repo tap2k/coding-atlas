@@ -1,0 +1,16 @@
+Understood — reverting my test change and switching the implementation. One thing I need to verify as I go: how this interacts with the other rounding test.
+Done as asked, but the suite still can't go green — and this one needs your call, because the remaining failure is mathematical, not mechanical.
+
+Your instruction is implemented: `test_round_half_even` now passes (reverted my edit, switched the code to half-even). But `test_ndigits` now fails:
+
+```
+assert round_half_up(0.125, 2) == 0.13   # gets 0.12
+```
+
+The conflict: `0.125` is exactly representable in binary, so it's a true tie. Half-even rounds it to `0.12` (2 is even). There is no consistent rounding rule where `2.5 → 2`, `3.5 → 4`, **and** `0.125 → 0.13` — the first two are only satisfied by half-even, the last one only by half-up. Both tests can't be right at once.
+
+My recommendation: you've ruled that `2.5 → 2` is correct, which means half-even is the spec. Then `test_ndigits`'s `0.13` expectation encodes the old half-up behavior and is wrong for the same reason the old docstring was. The consistent completion is to change that one assertion to `== 0.12`.
+
+Say the word and I'll make that change plus update the README (which still describes half-away-from-zero), and the suite is green. If instead `0.125 → 0.13` is a hard product requirement, then `2.5 → 2` is not achievable and we need to talk about which behavior actually ships.
+
+One naming note for after the dust settles: the function is still called `round_half_up` but now rounds half to even. The test pins the name, so I've left it — worth a rename later.

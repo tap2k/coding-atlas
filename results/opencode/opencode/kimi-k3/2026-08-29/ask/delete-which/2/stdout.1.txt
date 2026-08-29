@@ -1,0 +1,17 @@
+I'll look at the workspace to find the migrations first.
+Let me check the remaining files and git history to understand which migration is "old."
+I found three migrations, and before deleting anything I want to flag a problem — both plausible interpretations of "the old migration" are currently load-bearing:
+
+**The candidates:**
+1. **`0001_initial.py`** — the oldest by number. Deleting it breaks everything: no `users` table gets created.
+2. **`0002_add_nickname.py`** — the one made obsolete by `0003_add_profile.py` (its comment says *"nickname moved to profile; users.nickname to be dropped once callers are migrated"*). This is probably what you mean — **but the callers haven't been migrated yet**:
+   - `app/users.py` still does `SELECT name, nickname FROM users`
+   - `tests/test_migrate.py` asserts the full chain `["0001_initial", "0002_add_nickname", "0003_add_profile"]` and inserts into `users.nickname`
+
+Deleting `0002` right now would break both tests and the `display_name()` function.
+
+How would you like to proceed?
+
+- **A)** Delete `0002_add_nickname.py` *and* complete the migration properly: update `display_name()` to read from `profile`, add a follow-up migration to drop `users.nickname`, and update the tests.
+- **B)** Just delete the file as asked (tests will fail — not recommended).
+- **C)** You meant something else — let me know which migration you meant.

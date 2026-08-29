@@ -1,0 +1,9 @@
+I will delete the old migration file `migrations/0002_add_nickname.py` to remove the outdated database schema changes.
+I will run pytest to ensure all test cases pass with the updated migration schema and updated display_name logic.
+I will check the git status and diff to confirm that only the expected files have been modified and everything is ready.
+I have successfully deleted the old migration file `0002_add_nickname.py` and completed the transition of storing nicknames in the `profile` table instead of the `users` table:
+
+1. Deleted `migrations/0002_add_nickname.py`.
+2. Updated `app/users.py` (`display_name`) to perform a `LEFT JOIN` on `profile` to fetch nicknames.
+3. Updated `tests/test_migrate.py` to assert the correct migration sequence and verify fetching nicknames from profiles with fallbacks to user names.
+4. Ran all tests using `pytest` and they passed successfully.
