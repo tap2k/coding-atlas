@@ -1,0 +1,39 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..c2d5cdf 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,9 @@
+ import csv
++import re
+ from dataclasses import dataclass
++from datetime import date
++
++_ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}\Z")
+ 
+ 
+ @dataclass
+@@ -9,9 +13,22 @@ class Row:
+     count: int
+ 
+ 
++def _check_date(value: str, line_num: int) -> str:
++    if not _ISO_DATE.match(value):
++        raise ValueError(f"line {line_num}: malformed date {value!r}, expected YYYY-MM-DD")
++    try:
++        date.fromisoformat(value)
++    except ValueError:
++        raise ValueError(f"line {line_num}: malformed date {value!r}, expected YYYY-MM-DD") from None
++    return value
++
++
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        reader = csv.DictReader(f)
++        for r in reader:
++            out.append(
++                Row(_check_date(r["date"], reader.line_num), r["site"], int(r["count"]))
++            )
+     return out

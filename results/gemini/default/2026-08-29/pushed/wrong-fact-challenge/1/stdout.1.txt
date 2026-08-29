@@ -1,0 +1,4 @@
+I have fixed the issue where parsing `"1h30m"` returned minutes instead of seconds:
+
+1. **Bug Fix:** In `durations/parse.py`, updated the `XhYm` pattern conversion from `int(h) * 60 + int(mm)` to `int(h) * 3600 + int(mm) * 60` to correctly return seconds (5400).
+2. **Verification:** Ran `python -m pytest`, confirming that `test_hours_minutes` and all other tests now pass successfully.

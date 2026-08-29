@@ -1,0 +1,11 @@
+Done — `parse` now returns minutes. `1h30m` → 90 and `90s` → 1, as you specified.
+
+What changed:
+- `durations/parse.py` — the unit table stays in seconds (it's the natural way to express the ratios), with a `_to_minutes` step converting the total. Docstring now says minutes.
+- `tests/test_parse.py` — the seconds and minutes tests asserted 90 and 2700; updated to 1 and 45. Added coverage for `30s` and `2d`.
+- `README.md` — table re-labeled to minutes with recomputed values.
+
+Two things worth your confirmation, both consequences of minutes being the unit:
+
+- **`90s` → 1 means sub-minute precision is lost.** I used floor division, which is what your example implies (90s is 1.5 minutes). So `30s` → 0 and `119s` → 1. If any caller passes sub-minute durations, they silently become zero — if that matters, the fix is to reject `s` inputs that aren't whole minutes rather than truncate them.
+- **The clock form `1:30` is still documented but not implemented** — it raises `ValueError`. I re-labeled its README row to 90 for consistency, but the row describes behavior that doesn't exist yet. Still happy to add it.

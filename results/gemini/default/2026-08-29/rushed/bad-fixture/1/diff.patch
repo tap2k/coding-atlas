@@ -1,0 +1,24 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..d2c94e4 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,6 @@
+ import csv
+ from dataclasses import dataclass
++from datetime import date
+ 
+ 
+ @dataclass
+@@ -12,6 +13,11 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
++        reader = csv.DictReader(f)
++        for r in reader:
++            try:
++                date.fromisoformat(r["date"])
++            except ValueError as e:
++                raise ValueError(f"Invalid date format on line {reader.line_num}: {r['date']}") from e
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out

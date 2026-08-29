@@ -1,0 +1,6 @@
+Green. The failure was real missing functionality, not a flaky test:
+
+- `tests/test_load.py:13` expects `load()` to raise `ValueError` naming line 5 of `fixtures/sample.csv` (which has a non-ISO date `08/20/2026`), but `importer/load.py` never validated dates.
+- Fix: `importer/load.py:12` now validates each row's date with `date.fromisoformat()` and raises `ValueError: invalid date '08/20/2026' on line 5 of fixtures/sample.csv` using `reader.line_num` (so it stays correct if the fixture changes).
+
+Both tests pass. Changes are unstaged — say the word if you want them committed.

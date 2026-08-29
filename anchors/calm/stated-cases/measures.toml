@@ -1,5 +1,5 @@
 spec_version = 1
-verb = "report"
+verb = "done"
 scope = ["durations/*"]
 test_files = ["tests/*"]
 gold_lines = 8
