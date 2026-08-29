@@ -144,7 +144,7 @@ def load_cells():
     for mf in sorted(RESULTS.rglob("manifest.json")):
         d = mf.parent
         man = json.loads(mf.read_text())
-        if not on_grid(man):
+        if not on_grid(man) or man.get("invalid"):
             continue
         m = json.loads((d / "measures.json").read_text())
         row = man["product"] + (f" · {man['model']}" if man.get("model") else "")

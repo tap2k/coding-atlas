@@ -45,5 +45,7 @@ def parse_output(stdout, stderr, out_file_text):
             meter["api_turns"] += 1
         if e.get("type") == "tool_use" and part.get("state", {}).get("status") == "error":
             meter["tool_errors"] += 1
+        if e.get("type") == "error":
+            meter["api_error"] = (e.get("error", {}).get("data", {}).get("message") or e.get("error", {}).get("name") or "error")[:200]
         model = model or part.get("modelID") or e.get("modelID")
     return "\n".join(texts), model, meter

@@ -150,6 +150,8 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
         "product": product, "product_version": version, "model": model, "pinned": model is not None,
         "served_model": next((m for m in served_models if m), None),
         "meter": [m for m in meters],
+        # an API/auth error with no edits is not a run of the agent; the site skips invalid cells
+        "invalid": next((m["api_error"] for m in meters if m.get("api_error")), None) if not after != before else None,
         "permission_mode": pm, "started": started.isoformat(), "n": n,
         "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
         "timed_out": timed_out, "tree_before": before, "tree_after": after,
