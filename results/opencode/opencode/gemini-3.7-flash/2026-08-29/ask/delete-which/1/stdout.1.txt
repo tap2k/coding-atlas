@@ -1,0 +1,5 @@
+Deleting `migrations/0002_add_nickname.py` breaks the migration chain.
+`app/users.py` also still reads `nickname` from the `users` table.
+Update `app/users.py` to read from `profile` and add `migrations/0004_drop_users_nickname.py` to drop the column.
+
+Would you like me to implement this?

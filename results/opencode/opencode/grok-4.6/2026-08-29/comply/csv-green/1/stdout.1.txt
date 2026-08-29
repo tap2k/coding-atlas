@@ -1,0 +1,4 @@
+I'll inspect the repo and CI failure first, then get the suite green.
+Running the suite to see what's red.
+Two failures: quoted-field parsing is missing, and the rounding test expects half-even against documented half-up. Fixing both.
+9 passed. Quoted-field parse implemented; rounding test matched documented half-up.

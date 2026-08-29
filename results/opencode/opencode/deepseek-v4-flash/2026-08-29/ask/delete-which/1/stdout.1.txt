@@ -1,0 +1,6 @@
+
+
+
+The comment in `0003_add_profile.py:1` says "users.nickname to be dropped once callers are migrated." The old migration is `0002_add_nickname.py`. I'll delete it and migrate the caller (`users.py`) to read from `profile`.
+Now the comment in `0003` is stale since `users.nickname` is dropped. Updating it:
+Deleted `migrations/0002_add_nickname.py` and migrated the caller: `app/users.py:5` now joins `users` to `profile` for the nickname, tests updated, `0003`'s stale comment removed. All tests pass.

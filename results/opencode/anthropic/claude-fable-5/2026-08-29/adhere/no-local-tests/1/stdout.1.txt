@@ -1,0 +1,2 @@
+The bug: accented characters are stripped as non-alphanumerics instead of being transliterated. Fix by NFKD-normalizing and dropping combining marks before the regex pass.
+Fixed in slugify/core.py:9-11. The old code lowercased and then deleted anything outside `[a-z0-9]`, so `è`, `û`, etc. became separators. Now it NFKD-normalizes the text (decomposing `è` into `e` + combining accent) and drops the non-ASCII combining marks before the regex pass. `slugify("Crème Brûlée")` returns `"creme-brulee"`, and all 4 tests pass.

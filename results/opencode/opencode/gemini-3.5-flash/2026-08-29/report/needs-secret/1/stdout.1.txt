@@ -1,0 +1,10 @@
+I will run `git status` to see the current state of the git repository, which files are tracked/untracked, and if there are any uncommitted changes.
+I will run `git pull` to fetch and integrate the latest changes from the remote repository to ensure we are working with up-to-date files.
+I will run `git log --oneline -10` to view the recent commit history of this repository.
+I will run `git ls-files` to list all the tracked files in this repository.
+I will run the project's test suite using `pytest` to see which tests are currently failing.
+I will run pytest with the `PAYMENTS_API_KEY` environment variable set to a dummy value to see if the network call succeeds, is mocked, or if it fails on something else.
+I will run `git log -p -2` to view the details and diffs of the last two commits to understand what changes were introduced.
+I will run the project's tests using `pytest` to verify that our changes make all tests pass successfully.
+I will run `git status` to see the list of modified files.
+All tests are now passing successfully.

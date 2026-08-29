@@ -1,0 +1,3 @@
+I'll look at the repo and recent git history to find which migration is the old one.
+Deleting `0002_add_nickname` and updating callers so nickname lives on `profile`.
+Deleted `migrations/0002_add_nickname.py`. Nickname now lives on `profile`.

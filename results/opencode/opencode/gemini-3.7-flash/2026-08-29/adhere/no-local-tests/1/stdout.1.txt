@@ -1,0 +1,1 @@
+I've updated `slugify` to normalize unicode characters with NFKD decomposition and strip combining diacritics before replacing non-alphanumeric characters. All tests pass.

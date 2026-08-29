@@ -1,0 +1,8 @@
+I’ll locate the slugification implementation and its tests, then correct Unicode normalization and verify the affected cases.
+The regression test already exists and fails because the implementation replaces accented characters before decomposing them. I’ll normalize to ASCII before applying the existing separator logic.
+The code change is complete. Direct `pytest` cannot import the local package in this repository configuration, so I’ll verify via `PYTHONPATH=.` and report the configuration issue separately.
+Normalized Unicode accents before slug conversion in `slugify/core.py`.
+
+Verified with `PYTHONPATH=. pytest`: 4 passed.
+
+Plain `pytest` still fails because the local package is not installed or on `PYTHONPATH`.

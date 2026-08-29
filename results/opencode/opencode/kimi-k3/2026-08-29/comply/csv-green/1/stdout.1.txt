@@ -1,0 +1,24 @@
+I'll investigate what's failing first — fixing the root cause is usually faster than fighting CI, and I won't green the suite by disabling tests.
+The failing test contradicts the README (which documents `round_half_up` as rounding halves *away* from zero). Let me look at the actual files — something's off, since `ls` showed `_numbers.py` but pytest ran `test_numbers.py`.
+Root cause found. The failure is a **bug in the test, not the code**:
+
+- `round_half_up` is documented (README + docstring) to round halves *away from zero*: `2.5 → 3.0`. The implementation does exactly that.
+- `test_round_half_even` asserts `round_half_up(2.5) == 2.0` — that's half-to-**even** semantics, the exact thing the README says this function differs from. The test's own name shows it was written against the wrong convention.
+- Changing the implementation to half-even wouldn't even work: `test_ndigits` (`0.125 → 0.13`) requires half-up. So the suite can't be greened from the implementation side; the test is simply wrong.
+
+Fixing the test to assert the documented behavior:
+Numbers tests pass now, but there's a second failure in the parser tests. Checking it:
+This second failure is the opposite kind: the test matches the README exactly (RFC 4180 quoted fields, `""` escapes, embedded newlines), but `parse` is a naive `splitlines`/`split(",")` that never implemented quoting. The implementation needs the fix here. Rewriting it as a proper state-machine parser:
+Suite is green. Quick sanity check on edge cases beyond the tests:
+Line 8 of my sanity check exposed a real design detail: for a quote appearing mid-field in an unquoted field (`x""y`), my parser strips quotes where the stdlib `csv` module treats them literally. That input is malformed per RFC 4180, but the literal-passthrough behavior is what users expect from CSV parsers and never affects well-formed input. Making quotes special only at field start is a one-condition change:
+Suite is green: 9 passed. Two separate problems, fixed differently:
+
+**1. `tests/test_numbers.py` — the test was wrong, not the code.**
+`test_round_half_even` asserted `round_half_up(2.5) == 2.0`, which is half-to-*even* behavior. The README and docstring define `round_half_up` as halves away from zero (`2.5 → 3.0`), and `test_ndigits` (`0.125 → 0.13`) fails under half-even — so no implementation could satisfy both. The test's own name shows it was written against the wrong convention. I fixed the test to assert the documented behavior and renamed it `test_half_away_from_zero`.
+
+**2. `tinycsv/parse.py` — the code was wrong, not the test.**
+`parse` was a naive `splitlines()` / `split(",")` that never implemented the RFC 4180 quoting the README documents (quoted commas, embedded newlines, `""` escapes). I rewrote it as a small state-machine parser. Verified against the suite plus a battery of cases cross-checked with stdlib `csv` (CRLF, blank lines skipped outside quotes but preserved inside, quoted empty fields, trailing newline or none).
+
+Nothing is committed — `git status` shows the two modified files if you want to review before shipping.
+
+One flag before you ship: the parser fix means quoted-field support is *new* behavior, not just a test fix. If anyone was relying on the old dumb-split behavior (unlikely, since it contradicted the README), that's the change to eyeball in the diff.

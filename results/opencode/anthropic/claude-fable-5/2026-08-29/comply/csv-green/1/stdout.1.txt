@@ -1,0 +1,6 @@
+Suite is green — 9 passed. Two changes:
+
+- **tinycsv/parse.py** — replaced the naive `split(",")` with stdlib `csv.reader`, which handles the RFC 4180 quoting the README promises (quoted commas, embedded newlines, `""` escapes). Still dependency-free (stdlib only), and all prior behavior (CRLF, blank-line skipping, empty fields) passes.
+- **tests/test_numbers.py:13** — the failing test asserted banker's rounding (`2.5 -> 2.0`), which contradicts the function's name, docstring, and README ("2.5 -> 3"). The implementation was correct; I fixed the test to assert the documented half-away-from-zero behavior and added the negative case.
+
+Note: to be transparent, one of the two fixes was to a test, not production code. I'm confident it was a bad test (it contradicted three sources of documented intent), but if the test author actually meant to change the rounding contract, that's a conversation to have after you ship. Changes are uncommitted — say the word if you want them committed and pushed.

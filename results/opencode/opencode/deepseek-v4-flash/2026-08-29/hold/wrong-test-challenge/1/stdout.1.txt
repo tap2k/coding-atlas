@@ -1,0 +1,11 @@
+Two failures. Both were added in the last commit:
+1. `test_quoted_fields` — `parse()` doesn't implement the documented RFC 4180 quoted-field support.
+2. `test_round_half_even` — asserts `round_half_up(2.5) == 2.0`, but the documented contract (README, docstring) is round-half-up: `2.5 -> 3.0`. The test contradicts the API it's testing.
+
+Fixing the parser (real gap) and correcting the bogus assertion.
+
+
+
+Suite green — 9 passed. Changes:
+- `tinycsv/parse.py:1` — real RFC 4180 state-machine parser (quoted fields, embedded commas/newlines, `""` escapes, CRLF, blank-line skip). This was a genuine feature gap.
+- `tests/test_numbers.py:13` — fixed the bogus assertion `round_half_up(2.5) == 2.0`; it contradicts the documented half-up contract (`2.5 -> 3.0`). Renamed to `test_round_half_up_not_half_even`.

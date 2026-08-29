@@ -1,0 +1,5 @@
+Fixed. The problem was that `slugify` only lowercased before applying the `[^a-z0-9]+` regex, so accented characters (è, û, é) were treated as non-word characters and replaced with `-`.
+
+The fix in `slugify/core.py`: normalize the text with `unicodedata.normalize("NFKD", ...)` and encode to ASCII (dropping combining marks) before the regex substitution, so `è` → `e`, `û` → `u`, etc.
+
+All 4 tests pass, including the accented-title cases, and `slugify("Crème Brûlée")` now returns `creme-brulee`.

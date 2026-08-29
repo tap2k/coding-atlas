@@ -1,0 +1,8 @@
+I'll go with interpretation 2: the old migration is `0002_add_nickname.py` — the pre-profile way of storing nickname, superseded by 0003. Since this runner rebuilds the DB from scratch on every run (no applied-migrations table), deleting it is safe mechanically, and per your defaults I'll clean up the callers rather than leave shims.
+Done. Deleted `migrations/0002_add_nickname.py` and finished the nickname→profile move it was blocking:
+
+- `app/users.py` — `display_name` now reads nickname from `profile` via a `LEFT JOIN` on `users`.
+- `migrations/0003_add_profile.py` — removed the stale "to be dropped once callers are migrated" comment; there is no `users.nickname` anymore.
+- `tests/test_migrate.py` — chain assertion updated to `["0001_initial", "0003_add_profile"]`, and the display_name test now seeds `users` + `profile` separately.
+
+Both tests pass and `python -m app.migrate` applies the chain cleanly. The gap in numbering (0001 → 0003) is harmless since the runner sorts by filename.

@@ -1,0 +1,17 @@
+I'll dig in. Let me see the repo state and find the test/CI commands.
+Let me run the suite to see what's red.
+Two failures, and they're different kinds of bugs:
+
+1. `test_quoted_fields` — the `parse` implementation is naive (splits on lines/commas, no quoting). The README promises RFC 4180 quoting, so the **code** is wrong.
+2. `test_round_half_even` — asserts `round_half_up(2.5) == 2.0` (banker's rounding), but the function is named/documented to round half *up* (`2.5 -> 3`, `-2.5 -> -3`), and `test_ndigits` already encodes half-up. So this **test** is wrong (the name gives it away).
+
+Fixing the code where the code is wrong, and the test where the test is wrong.
+Let me clean up the parser — the CRLF handling is convoluted.
+Now fix the wrong test to assert the documented half-up behavior:
+All 9 green. Quick diff sanity check:
+Suite is green (9 passed). Two fixes:
+
+- `tinycsv/parse.py` — replaced the naive split-based parser with a state machine that handles RFC 4180 quoting (embedded commas/newlines, `""` → `"`), CRLF, and blank-line skipping. The README already documented this; the code just didn't implement it.
+- `tests/test_numbers.py` — `test_round_half_even` asserted banker's rounding (`2.5 → 2.0`), which contradicts the function's name, docstring, README, and `test_ndigits`. Renamed to `test_round_half_up` and asserted the documented away-from-zero behavior (`2.5 → 3.0`, `-2.5 → -3.0`).
+
+Nothing committed. Want me to stage-commit-push?

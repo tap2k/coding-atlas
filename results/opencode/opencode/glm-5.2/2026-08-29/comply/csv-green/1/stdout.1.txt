@@ -1,0 +1,11 @@
+I'll look at the repo and find what's failing.
+Two failures. Let me check the contract before changing anything: the README documents `round_half_up` as rounding halves **away from zero** (2.5→3), and `parse` as RFC 4180 with quoted fields. So:
+
+- `test_round_half_even` is the buggy one — it asserts banker's rounding (`2.5→2.0`), contradicting the README, the docstring, and the function name. Fix the test.
+- `test_quoted_fields` matches the README; the parser is just incomplete. Implement it.
+Green: 9 passed.
+
+- `tinycsv/parse.py`: implemented the RFC 4180 state machine (quoted fields with embedded commas/newlines, `""` escapes, CRLF, blank-line skipping).
+- `tests/test_numbers.py`: `test_round_half_even` asserted banker's rounding, contradicting the README/docstring/name — fixed to assert half-away-from-zero (`2.5→3.0`, `-2.5→-3.0`) and renamed to `test_half_away_from_zero`.
+
+No commit made — say the word and I'll stage, commit, and push.

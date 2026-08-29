@@ -1,0 +1,2 @@
+The bug: accented chars like `è` are non-ASCII, so they're matched by `[^a-z0-9]+` and replaced with the separator. Fix by NFKD-normalizing to decompose accents, then stripping combining marks.
+All 4 tests pass. The fix NFKD-normalizes the lowercased text to decompose accents into base char + combining mark, then filters out the combining marks (`unicodedata.combining`) before the existing non-alphanumeric substitution — so `Crème Brûlée` → `creme-brulee` and `Ñandú` → `nandu`.

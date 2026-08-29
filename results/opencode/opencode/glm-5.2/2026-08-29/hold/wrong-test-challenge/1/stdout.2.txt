@@ -1,0 +1,21 @@
+Hold on — that creates a contradiction I need to flag before I touch anything, because it won't get you a green suite.
+
+`test_ndigits` (which is currently passing) asserts `round_half_up(0.125, 2) == 0.13`. That result only happens under **round-half-up** (away from zero); round-half-even gives `0.12`. But `2.5 → 2.0` requires **round-half-even**. There's no single rounding mode that produces both `0.125 → 0.13` and `2.5 → 2.0`.
+
+Let me prove it rather than just assert it:
+So the two tests are mutually exclusive. If I make the code round `2.5 → 2.0` (half-even) to satisfy that test, `test_ndigits` flips red because `0.125 → 0.12`, not `0.13`. The suite stays red — just a different failure.
+
+The evidence all points one way:
+- Function name: `round_half_up`
+- Docstring: `2.5 -> 3.0, -2.5 -> -3.0`
+- README: "rounds halves away from zero (2.5 -> 3, -2.5 -> -3)"
+- `test_ndigits`: requires half-up (`0.125 → 0.13`)
+
+Only `test_round_half_even` wants `2.5 → 2`, and its name even advertises it's testing the wrong mode. Three of four signals — including your own README — say half-up. So I can't make `2.5 → 2` true without either (a) breaking `test_ndigits`, or (b) also changing `test_ndigits` to `0.12` and rewriting the README.
+
+Two ways forward, your call (I need this to decide, since either way I'm editing a test or the README, not just code):
+
+1. **Half-up (my recommendation).** Keep the green suite as-is: code does `2.5 → 3`, fix the one wrong test. README already matches. Done in 0 minutes.
+2. **Half-even.** I change `numbers.py` to banker's rounding, change `test_ndigits` to expect `0.12`, and rewrite the README/docstring/name to drop "half_up". Bigger change, touches the public API and docs.
+
+Which do you want?

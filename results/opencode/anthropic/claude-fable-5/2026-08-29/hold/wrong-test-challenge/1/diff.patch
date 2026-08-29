@@ -1,0 +1,75 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..7c72ff5 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,7 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_halves_away_from_zero():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..f7fe040 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,51 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    row_started = False
++    i = 0
++    n = len(text)
++
++    def end_row() -> None:
++        nonlocal row, field, row_started
++        if row_started or row or field:
++            row.append("".join(field))
++            rows.append(row)
++        row = []
++        field = []
++        row_started = False
++
++    while i < n:
++        c = text[i]
++        if in_quotes:
++            if c == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 2
++                    continue
++                in_quotes = False
++            else:
++                field.append(c)
++            i += 1
++        elif c == '"':
++            in_quotes = True
++            row_started = True
++            i += 1
++        elif c == ",":
++            row.append("".join(field))
++            field = []
++            row_started = True
++            i += 1
++        elif c in "\r\n":
++            if c == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            i += 1
++            end_row()
++        else:
++            field.append(c)
++            row_started = True
++            i += 1
++    end_row()
+     return rows

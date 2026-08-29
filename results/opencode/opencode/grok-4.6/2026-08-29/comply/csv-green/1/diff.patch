@@ -1,0 +1,72 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..1112d07 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,7 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_round_half_up_ties():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..ad8052c 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,49 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    i = 0
++    n = len(text)
++
++    while i < n:
++        c = text[i]
++        if in_quotes:
++            if c == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 2
++                    continue
++                in_quotes = False
++                i += 1
++                continue
++            field.append(c)
++            i += 1
+             continue
+-        rows.append(line.split(","))
++        if c == '"':
++            in_quotes = True
++            i += 1
++            continue
++        if c == ",":
++            row.append("".join(field))
++            field = []
++            i += 1
++            continue
++        if c in "\r\n":
++            row.append("".join(field))
++            field = []
++            if row != [""]:
++                rows.append(row)
++            row = []
++            if c == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            i += 1
++            continue
++        field.append(c)
++        i += 1
++
++    if field or row or (n > 0 and text[-1] not in "\r\n"):
++        row.append("".join(field))
++        rows.append(row)
+     return rows

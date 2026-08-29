@@ -1,0 +1,36 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..e68a0e6 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,7 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_round_half_up_halves():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..c1474aa 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,14 @@
++import csv
++import io
++
++
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
++    f = io.StringIO(text)
++    reader = csv.reader(f)
+     rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    for row in reader:
++        if not row:
+             continue
+-        rows.append(line.split(","))
++        rows.append(row)
+     return rows

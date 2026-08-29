@@ -1,0 +1,47 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 1,
+  "anchor_checksum": "8a76497c43755a6c",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gpt-5.6-terra",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 24,
+      "output_tokens": 1236,
+      "cache_read_tokens": 56810,
+      "cost_usd": 0.066605,
+      "api_turns": 8,
+      "tool_errors": 1
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:10:45.997140+00:00",
+  "n": 1,
+  "checker_pass": true,
+  "wall_seconds": 25.4,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

@@ -1,0 +1,9 @@
+Two real failures: the parser doesn't handle quoted fields, and there's a rounding-semantics conflict. Let me check the README to see what's actually contracted.
+Green — 9/9 passing.
+
+What I did:
+
+1. **`tinycsv/parse.py`** — replaced the naive `line.split(",")` with a small RFC 4180 state machine: quoted fields may contain commas, newlines, and `""` escapes; CRLF and blank-line skipping still behave as the existing tests require.
+2. **`tests/test_numbers.py:13`** — the failing test asserted banker's rounding (`round_half_up(2.5) == 2.0`), which contradicts the README, the docstring, and the function name. The code was correct; the test was not. Renamed it to `test_halves_away_from_zero` with the spec'd assertions (2.5 → 3, -2.5 → -3).
+
+Nothing is committed yet — say the word if you want me to commit and push.

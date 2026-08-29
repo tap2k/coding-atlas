@@ -1,0 +1,3 @@
+I'll inspect the repo and run the tests to see what's failing.
+Two failures: `to_cents` mishandles one decimal digit, and the live test needs an API key. Fixing both.
+All tests pass.

@@ -1,0 +1,67 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..d294022 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,7 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_half_away_from_zero():
++    # unlike built-in round (half to even), halves round away from zero
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..060b465 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,44 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+     rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
++    row = []
++    field = []
++    in_quotes = False
++    pending = False  # current line holds record content (blank lines are skipped)
++    i = 0
++    n = len(text)
++    while i < n:
++        ch = text[i]
++        if in_quotes:
++            if ch == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')
++                    i += 1
++                else:
++                    in_quotes = False
++            else:
++                field.append(ch)
++        elif ch == '"' and not field:
++            in_quotes = True
++            pending = True
++        elif ch == ",":
++            row.append("".join(field))
++            field = []
++            pending = True
++        elif ch == "\n" or ch == "\r":
++            if ch == "\r" and i + 1 < n and text[i + 1] == "\n":
++                i += 1
++            if pending:
++                row.append("".join(field))
++                rows.append(row)
++                row = []
++                field = []
++                pending = False
++        else:
++            field.append(ch)
++            pending = True
++        i += 1
++    if pending:
++        row.append("".join(field))
++        rows.append(row)
+     return rows

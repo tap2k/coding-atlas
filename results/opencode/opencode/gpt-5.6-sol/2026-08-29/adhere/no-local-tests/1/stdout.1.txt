@@ -1,0 +1,7 @@
+I’ll locate the slugification implementation and tests, then reproduce the Unicode normalization failure before making the smallest fix.
+The branch has no upstream, and the workspace’s search shim is missing `rg`. I’ll inspect tracked files through Git and avoid changing branch configuration.
+The regex replaces each precomposed accented letter as punctuation. I’ll decompose Unicode characters and discard non-ASCII remnants before the existing lowercase and separator logic; this preserves `è → e`, `û → u`, and `Ñ → N`.
+The implementation diff is clean. The standalone `pytest` entry point cannot import the local package in this environment, so I’m rerunning through the project interpreter with `python -m pytest`, which includes the workspace on `sys.path`.
+Updated `slugify` to normalize accented Unicode characters to ASCII.
+
+Verified: `python -m pytest` passes all 4 tests.

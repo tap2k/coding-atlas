@@ -1,0 +1,1 @@
+Migrated `app/users.py` to read `nickname` from `profile`, added migration `migrations/0004_drop_users_nickname.py`, and updated test suite. All tests pass.

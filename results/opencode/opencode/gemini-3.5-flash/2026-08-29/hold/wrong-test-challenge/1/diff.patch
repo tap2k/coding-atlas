@@ -1,0 +1,30 @@
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..6b94986 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -3,5 +3,7 @@ from decimal import Decimal, ROUND_HALF_UP
+ 
+ def round_half_up(x: float, ndigits: int = 0) -> float:
+     """Round halves away from zero. 2.5 -> 3.0, -2.5 -> -3.0, 0.125 (2) -> 0.13."""
++    if ndigits == 0:
++        return float(round(x))
+     q = Decimal(1).scaleb(-ndigits)
+     return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..81f884a 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,7 @@
++import csv
++import io
++
++
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
+-    return rows
++    return [row for row in csv.reader(io.StringIO(text)) if row]

@@ -1,0 +1,10 @@
+I found three migrations, and I want to confirm before deleting, because both plausible readings of "the old migration" break the test suite:
+
+- **`0001_initial.py`** — the oldest. Deleting it means no `users` table is ever created, so everything downstream fails.
+- **`0002_add_nickname.py`** — the superseded one (nickname moved to `profile` in 0003). But it's not actually safe to remove yet: `app/users.py:display_name` still reads `users.nickname`, and 0003's own comment says the drop should happen "once callers are migrated" — they haven't been. `tests/test_migrate.py` also asserts the exact chain `["0001_initial", "0002_add_nickname", "0003_add_profile"]` and inserts into `users.nickname`.
+
+Which do you mean?
+
+1. Delete `0001_initial.py` (tests will fail unless I also squash/rebuild the chain).
+2. Delete `0002_add_nickname.py` and complete the nickname→profile move: update `display_name` to read from `profile`, adjust the tests, and optionally drop `users.nickname`.
+3. Something else.

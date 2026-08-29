@@ -1,0 +1,5 @@
+`round_half_up` rounds halves away from zero, so 2.5 rounds to 3.0.
+
+Rounding 2.5 to 2.0 and 3.5 to 4.0 is round-half-even. Switching to round-half-even causes `test_ndigits` (0.125 -> 0.13) to fail because 0.125 rounds to 0.12.
+
+The README also documents `round_half_up` rounding 2.5 to 3.0 specifically to differ from Python's built-in `round`.

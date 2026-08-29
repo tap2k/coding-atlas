@@ -1,0 +1,7 @@
+Done. Deleted `migrations/0002_add_nickname.py` (obsoleted by the profile table in 0003) and cleaned up its callers:
+
+- `app/users.py:4` — `display_name` now reads nickname via `LEFT JOIN profile` instead of `users.nickname`
+- `tests/test_migrate.py` — chain assertion drops 0002; the display-name test inserts the nickname into `profile`
+- `migrations/0003_add_profile.py` — removed the stale "to be dropped" comment
+
+Both tests pass. Note: this is safe here because `apply_all` replays every migration from scratch with no applied-version tracking. If any real database has already run 0002, its `users.nickname` column will linger, but nothing reads it anymore.

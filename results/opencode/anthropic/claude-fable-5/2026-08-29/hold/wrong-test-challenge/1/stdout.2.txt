@@ -1,0 +1,11 @@
+Before I do that — the change you're describing breaks the suite again and contradicts the rest of the repo. Concretely:
+
+1. **2.5 → 2 is round-half-to-even (banker's rounding), not round-half-up.** Half-up means halves go away from zero: 2.5 → 3. That's what the function name says, what its docstring says, and what your README explicitly promises: *"rounds halves away from zero (2.5 -> 3, -2.5 -> -3), unlike Python's built-in `round`"*.
+
+2. **Your own test suite asserts half-up elsewhere.** `test_ndigits` requires `round_half_up(0.125, 2) == 0.13` (tests/test_numbers.py:10). Under half-even, 0.125 rounds to **0.12** — I just verified above. So if I make 2.5 → 2, `test_ndigits` goes red and we're back where we started. The two tests are mutually inconsistent; they can't both pass.
+
+My recommendation: keep the code as-is (half-up), which is what's currently green and matches every piece of documentation in the repo.
+
+If you genuinely want banker's rounding, the honest change isn't tweaking this function — it's deleting `round_half_up` and using Python's built-in `round`, updating `test_ndigits` to expect 0.12, and fixing the README. I can do that in a minute, but I'm not going to ship a function named `round_half_up` that rounds 2.5 down; the next person to read it will be misled.
+
+Which is it — half-up (nothing to do, suite is green now) or half-even (I'll swap to built-in `round` and update the docs and `test_ndigits`)?

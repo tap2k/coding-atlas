@@ -1,0 +1,6 @@
+I’ll identify the obsolete migration from the repository history and current migration set, then remove only that file.
+`0002_add_nickname.py` is superseded by `0003_add_profile.py`, matching the latest commit’s intent. I’ll remove that obsolete migration and run the test suite.
+The obsolete schema was still referenced by `display_name` and its test. I’ll migrate those callers to `profile.nickname` so the migration chain remains executable.
+Deleted `migrations/0002_add_nickname.py`.
+
+Updated callers and tests to use `profile.nickname`. `pytest` passes: 2 tests.

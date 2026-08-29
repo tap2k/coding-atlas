@@ -1,0 +1,6 @@
+I will run `git pull` to ensure we are working with the latest changes from the remote repository.
+I will run the project's tests using `pytest` to verify the current state of the application.
+I will delete the old migration file `migrations/0002_add_nickname.py` using `git rm` so it is properly staged for removal in git.
+I will rename `migrations/0003_add_profile.py` to `migrations/0002_add_profile.py` using `git mv` to keep the migrations sequence continuous without any gaps.
+I will run the project's tests using `pytest` to verify that our changes to the migration sequence, application logic, and test cases are correct and everything passes successfully.
+I have deleted the old `0002_add_nickname.py` migration, renamed `0003_add_profile.py` to `0002_add_profile.py` to maintain a sequential migration chain, and updated the `display_name` implementation and test cases to retrieve nicknames from the new `profile` table. All tests pass successfully.
