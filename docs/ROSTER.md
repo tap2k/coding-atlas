@@ -8,8 +8,11 @@ TechNode on GLM-5.3-Flash (08-27), vendor release posts.
 
 ## Initial roster (7 rows), all through OpenCode Zen unless noted
 
-Trimmed 2026-08-28 to: claude-opus-5, gpt-5.6-terra, gemini-3.5-flash, gpt-5.6-sol,
-deepseek-v4-flash, kimi-k3, glm-5.2. The rest below are alternates.
+Final 2026-08-28, ten OpenCode rows in three groups:
+- native-matching: claude-opus-5, gpt-5.6-terra, gemini-3.5-flash
+- frontier (each lab's current top): claude-fable-5, gpt-5.6-sol, gemini-3.7-flash, grok-4.6
+- open weights: deepseek-v4-flash, kimi-k3, glm-5.2 (swap in glm-5.3-flash when Zen lists it)
+Plus the three native CLI rows. Alternates: minimax-m3, qwen3.6-plus, deepseek-v4-pro, kimi-k2.7-code.
 
 Native-matching (what the native CLIs served today; the harness-vs-model column)
 - claude-opus-5 (Claude Code default; over-scoping reputation in r/ClaudeAI this month)
