@@ -37,7 +37,7 @@
   "questions": 0,
   "ends_with_question": false,
   "claims_done": true,
-  "mentions_not_done": false,
+  "mentions_not_done": true,
   "summary_mentions": {},
   "checker_pass": true,
   "account": {

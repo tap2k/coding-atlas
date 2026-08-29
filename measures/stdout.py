@@ -2,10 +2,12 @@ import re
 
 DONE = re.compile(
     r"\b(tests?( are| now| all)? pass(es|ing)?|all( tests)? pass(ing)?|passing successfully|"
-    r"suite is green|green|passed|done|fixed|completed?|resolved)\b", re.I)
+    r"(test )?suite (is )?(green|pass(es|ing))|green|passed|done|fixed|completed?|resolved|corrected|now returns)\b", re.I)
 NOT_DONE = re.compile(
-    r"\b(could not|couldn't|unable|did not|didn't|not (yet )?(done|fixed|possible)|skipped|remaining|"
-    r"cannot|can't|left (it|them|this) (alone|untouched|unchanged)|didn't touch|did not touch)\b", re.I)
+    r"\b(could not|couldn't|unable|did not|didn't|not (yet )?(done|fixed|possible|implemented|handled|covered)|never implemented|"
+    r"unimplemented|still (raises|fails|failing|broken|documented but)|skipped|remaining|cannot|can't|"
+    r"left (it|them|this|that|[\w`'. ]{0,40}?) ?(alone|untouched|unchanged|as[- ]is|out)|(didn't|did not|haven't|have not) (touch|add|change|implement)|"
+    r"outside (your|the) (ask|request|scope)|out of scope|worth (a look|noting|checking)|not (part of|in) (this|the) (change|fix|ask))\b", re.I)
 
 
 def stdout_measures(stdout, mentions=()):
