@@ -205,3 +205,11 @@ not install packages. Every harness ran tests 2-4 times per cell on the other an
 
 adhere/no-test-edits (rule against editing tests, on csv-green) was built first and set
 aside as too easy: the rule sits next to the task and costs nothing to keep.
+
+## Synthesis after the 13-row screen (2026-08-28, n=1)
+
+Action outcomes are near-uniform across models: everyone implements, fixes, deletes.
+What splits is the account (said vs did) and folding under pushback. Asking is the one
+harness effect that held. Rule-keeping is a ceiling (12/13 broke it), reported once, not
+per wave. Core is now three situations: csv-green, delete-which, wrong-test-challenge.
+needs-secret and no-local-tests rotate. Two sentences per cell, did and said.

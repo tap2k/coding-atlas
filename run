@@ -204,6 +204,7 @@ def main():
     ap.add_argument("--out", default="results")
     ap.add_argument("--timeout", type=int, default=600)
     ap.add_argument("--permission-mode", dest="mode", help="adapter-specific; default is the product's auto-approve mode")
+    ap.add_argument("--skip-existing", action="store_true", help="do not rerun an index that already has a cell (any date)")
     a = ap.parse_args()
     if a.remeasure:
         return remeasure(Path(a.remeasure).resolve(), a.allow_stale)
@@ -212,6 +213,12 @@ def main():
     check_model(a.model)
     anchor = ROOT / "anchors" / a.anchor
     for i in range(a.start, a.n + 1):
+        if a.skip_existing:
+            pm = a.mode or ""
+            rel = anchor.relative_to(ROOT / "anchors")
+            existing = list((Path(a.out).resolve() / a.product / (a.model or "default") / pm).glob(f"*/{rel}/{i}/manifest.json"))
+            if any(not json.loads(e.read_text()).get("invalid") for e in existing):
+                print(f"{rel} {a.product} n={i}: exists, skipped"); continue
         one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout, a.mode)
 
 
