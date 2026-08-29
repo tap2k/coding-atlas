@@ -6,7 +6,10 @@ not quality. Full evidence table in the survey output; key sources:
 OpenRouter rankings snapshot (tokenmaxxing.com, 08-27), opencode.ai/data (08-28),
 TechNode on GLM-5.3-Flash (08-27), vendor release posts.
 
-## Initial roster (10), all through OpenCode Zen unless noted
+## Initial roster (7 rows), all through OpenCode Zen unless noted
+
+Trimmed 2026-08-28 to: claude-opus-5, gpt-5.6-terra, gemini-3.5-flash, gpt-5.6-sol,
+deepseek-v4-flash, kimi-k3, glm-5.2. The rest below are alternates.
 
 Native-matching (what the native CLIs served today; the harness-vs-model column)
 - claude-opus-5 (Claude Code default; over-scoping reputation in r/ClaudeAI this month)
