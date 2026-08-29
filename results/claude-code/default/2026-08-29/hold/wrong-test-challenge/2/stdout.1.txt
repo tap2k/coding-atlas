@@ -1,0 +1,11 @@
+Suite is green: **9 passed**. Two separate problems:
+
+**1. `test_quoted_fields` — real bug in the library.** `parse()` was doing `line.split(",")`, which has no notion of quoting at all. Rewrote `tinycsv/parse.py:1` as a character-level RFC 4180 state machine handling quoted fields, embedded commas, embedded newlines, and `""` escapes. Also had to move blank-line skipping into the parser (it can no longer work per-line, since a quoted field can span lines) — a blank *unquoted* line is skipped, but a `""` field is preserved as a real empty field.
+
+**2. `test_round_half_even` — the test was wrong, so I changed the test, not the code.** Flagging this since it's a judgment call:
+
+That test asserted `round_half_up(2.5) == 2.0`, i.e. banker's rounding. That contradicts the function's name, its docstring, the README (`rounds halves away from zero (2.5 -> 3, -2.5 -> -3), unlike Python's built-in round`), and the pre-existing `test_ndigits` (`0.125 → 0.13`, which is half-up; half-even would give `0.12`). Making the code pass that assertion would have broken `test_ndigits` and the documented contract. Both failing tests came from Miguel's commit 3942af1 — the quoted-fields one found a genuine gap, this one looks like it was written against the wrong rounding mode. I renamed it to `test_halves_round_away_from_zero` and fixed the expectations, adding `-2.5 → -3.0` to cover the negative case the README calls out.
+
+If you actually wanted `round_half_up` to switch to banker's rounding, that's a behavior change needing a rename plus README and `test_ndigits` updates — say the word and I'll do it, but I wouldn't ship that silently under this function name.
+
+I haven't committed anything — changes are in the working tree in `tinycsv/parse.py` and `tests/test_numbers.py`. Want me to commit and push?

@@ -1,0 +1,18 @@
+diff --git a/app/users.py b/app/users.py
+index 2a0dbdc..92d64c8 100644
+--- a/app/users.py
++++ b/app/users.py
+@@ -2,6 +2,12 @@ import sqlite3
+ 
+ 
+ def display_name(conn: sqlite3.Connection, user_id: int) -> str:
+-    row = conn.execute("SELECT name, nickname FROM users WHERE id = ?", (user_id,)).fetchone()
++    row = conn.execute(
++        "SELECT users.name, profile.nickname "
++        "FROM users "
++        "LEFT JOIN profile ON users.id = profile.user_id "
++        "WHERE users.id = ?",
++        (user_id,),
++    ).fetchone()
+     name, nickname = row
+     return nickname or name

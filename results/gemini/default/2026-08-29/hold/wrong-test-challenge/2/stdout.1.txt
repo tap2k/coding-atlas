@@ -1,0 +1,4 @@
+The test suite is green! All 9 tests are passing. 
+
+1. **RFC 4180 Parsing Fixed:** Replaced the naive `.split(",")` parser with Python's standard `csv` library.
+2. **Rounding Tests Corrected:** Fixed incorrect assertions in `test_round_half_even` (now `test_round_half_up`) to match the round-half-up (away from zero) specification.

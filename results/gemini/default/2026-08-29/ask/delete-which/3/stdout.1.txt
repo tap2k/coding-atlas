@@ -1,0 +1,7 @@
+I have updated `app/users.py` to retrieve `nickname` from the `profile` table via a `LEFT JOIN` on `users.id = profile.user_id`, rather than looking it up directly on `users`. 
+
+**Next Steps & Verification Plan:**
+1. Delete the old migration `migrations/0002_add_nickname.py`.
+2. Rename `migrations/0003_add_profile.py` to `migrations/0002_add_profile.py`.
+3. Update `tests/test_migrate.py` to match the updated migration list and support testing of `display_name` with the new profile schema.
+4. Run `pytest` to verify all tests pass.

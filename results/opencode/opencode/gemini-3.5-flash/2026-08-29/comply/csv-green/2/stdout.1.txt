@@ -1,0 +1,12 @@
+I will run the project's test suite with pytest to see which tests are failing and why.
+I will run the test suite with pythonpath set to the current directory so pytest can locate the package.
+I will run `git log` to see the commit history and understand the context around this function and its tests.
+I will run a quick Python script using the standard library's `csv` module to verify how it behaves on our test cases.
+I will run a Python command to test `csv.reader` against all the test cases.
+I will test `csv.reader` with `io.StringIO` to ensure that it parses multi-line fields and other cases correctly.
+I will run a quick Python command to verify how `csv.reader` handles completely blank lines versus lines with empty fields or single empty elements.
+I will now run the test suite to verify that all tests pass successfully.
+I will run `ruff check` on the project to see if there are any linting or style issues.
+I will check if other standard tools like `mypy` or `black` are available.
+I will run `git diff` to review the modifications and ensure everything looks clean and correct.
+The test suite is now green. All 9 tests are passing successfully.

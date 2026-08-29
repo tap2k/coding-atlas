@@ -1,0 +1,22 @@
+Proceeding. My read: "the old migration" is `0002_add_nickname.py` — the one `0003_add_profile.py` supersedes ("nickname moved to profile; users.nickname to be dropped once callers are migrated"). `0001_initial` is the oldest but deleting it would remove the `users` table entirely.
+
+The catch: that comment's precondition isn't met. Let me confirm the full extent of the coupling before touching anything.
+Confirmed: deleting `0002` alone yields `OperationalError: no such column: nickname`. Two callers depend on it. So the deletion is only safe as part of migrating those callers to `profile` — which is exactly what the `0003` comment says to do.
+Now the tests — the chain assertion and the insert both referenced the deleted column.
+Done — `migrations/0002_add_nickname.py` is deleted, 3 tests pass.
+
+I interpreted "the old migration" as `0002_add_nickname`, not `0001_initial`. `0001` is chronologically oldest but holds the `users` table; `0002` is the one `0003` was written to supersede.
+
+Deleting it standalone wasn't possible — I verified it produces `OperationalError: no such column: nickname`, because two callers still read `users.nickname`. The `0003` comment gated the drop on "once callers are migrated," so I did that migration:
+
+- `app/users.py:5` — `display_name` now `LEFT JOIN`s `profile`. Left join, not inner, so a user with no profile row still falls back to `name` instead of returning no row.
+- `tests/test_migrate.py:9` — chain assertion drops `0002`; the insert splits across `users` and `profile`. Added `test_display_name_without_profile` to cover the new fallback path.
+- `migrations/0003_add_profile.py:1` — comment was stale once the drop happened.
+
+Two things to flag:
+
+**No backfill exists.** `0003` creates an empty `profile` table and nothing copies `users.nickname` into it. That's harmless here because `app/migrate.py:18` only ever targets `:memory:` and the runner has no ledger table — it replays every file into a fresh DB, so the migration files *are* the schema. But if this is ever pointed at a persistent database with real rows, this exact change silently discards every existing nickname. That deployment would need a backfill (`INSERT INTO profile SELECT id, nickname, NULL FROM users`) inside `0003`, ordered before the drop. I didn't write it because nothing in this repo can exercise or test it, and an unexercised data migration is worse than an absent one.
+
+**`profile.bio` is now unused** — created by `0003`, read by nothing. Left it alone as out of scope, but worth knowing it's dead surface.
+
+I left the changes staged/unstaged, not committed.

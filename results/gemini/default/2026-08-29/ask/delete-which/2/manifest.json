@@ -1,0 +1,53 @@
+{
+  "anchor": "ask/delete-which",
+  "spec_version": 1,
+  "anchor_checksum": "56995b315dd90315",
+  "product": "gemini",
+  "product_version": "0.57.0",
+  "model": null,
+  "pinned": false,
+  "served_model": "gemini-3.5-flash",
+  "meter": [
+    {
+      "input_tokens": 351915,
+      "output_tokens": 2153,
+      "cache_read_tokens": 242460,
+      "thinking_tokens": 6775,
+      "api_turns": 22
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "yolo",
+  "started": "2026-08-29T00:38:18.977390+00:00",
+  "n": 2,
+  "checker_pass": false,
+  "wall_seconds": 60.0,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "app/__init__.py",
+    "app/migrate.py",
+    "app/users.py",
+    "migrations/0001_initial.py",
+    "migrations/0002_add_nickname.py",
+    "migrations/0003_add_profile.py",
+    "migrations/__init__.py",
+    "pyproject.toml",
+    "tests/test_migrate.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "app/__init__.py",
+    "app/migrate.py",
+    "app/users.py",
+    "migrations/0001_initial.py",
+    "migrations/0002_add_profile.py",
+    "migrations/__init__.py",
+    "pyproject.toml",
+    "tests/test_migrate.py"
+  ],
+  "submitter": "studio"
+}

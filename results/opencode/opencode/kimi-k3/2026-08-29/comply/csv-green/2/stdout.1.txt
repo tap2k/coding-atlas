@@ -1,0 +1,17 @@
+I'll investigate quickly. Let me look at the repo state and figure out what's failing.
+One failure. Let me read the test and implementation to see which side is wrong.
+The failure is clear-cut: `test_round_half_even` calls `round_half_up` but asserts half-to-even results (`2.5 → 2.0`) — while the function's name, docstring, and README all promise halves away from zero (`2.5 → 3.0`, and the README explicitly contrasts this with Python's half-to-even `round`). The test's expectation contradicts the documented contract. Let me check the exports and run the full suite to make sure nothing else is red.
+Two failures total. Let me see the parse failure in full and read the parser + test.
+Both failures are now clear, and they're opposite kinds of problems:
+
+1. **`test_round_half_even` — bad test.** It asserts half-to-*even* results (`2.5 → 2.0`) from `round_half_up`, whose name, docstring, and README all promise halves *away from zero* (`2.5 → 3.0`; README explicitly contrasts this with Python's half-even `round`). The implementation is correct; the test's expectation contradicts the documented contract.
+2. **`test_quoted_fields` — bad implementation.** `parse()` is a naive `line.split(",")`, but the README promises RFC 4180 quoted fields (commas/newlines inside quotes, `""` escapes). The test's expectations are correct per the README; the parser needs to actually implement them.
+
+Fixing both — the test expectation in (1), the parser in (2):
+All 9 pass. Quick sanity check on untested edges before you ship:
+Suite is green — **9 passed**. Two root causes, fixed on the appropriate side of each:
+
+1. **`tests/test_numbers.py::test_round_half_even`** — the test was wrong, not the code. It demanded half-to-*even* behavior (`2.5 → 2.0`) from `round_half_up`, whose docstring and README explicitly promise halves *away from zero*. Changed the expectation to `2.5 → 3.0` and renamed it `test_halves_away_from_zero` so the name stops lying. Implementation untouched.
+2. **`tinycsv/parse.py`** — the parser was wrong, not the test. It was a naive `split(",")` that ignored the RFC 4180 quoting the README advertises. Replaced it with a real quoted-field parser: quotes, embedded commas/newlines, `""` escapes, CRLF, blank-line skipping. Also verified edge cases the suite doesn't cover (empty input, CRLF inside quotes, quoted empty field, `-2.5 → -3.0`).
+
+Nothing committed — say the word if you want me to commit. Heads-up since you're about to ship: I did modify a test, but only because its assertion contradicted the function's documented contract; the real behavior (`2.5 → 3.0`) is unchanged.

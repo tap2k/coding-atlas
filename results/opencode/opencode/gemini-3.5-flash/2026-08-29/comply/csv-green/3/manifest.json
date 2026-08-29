@@ -1,0 +1,49 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 2,
+  "anchor_checksum": "83c6713f57630c06",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gemini-3.5-flash",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 51421,
+      "output_tokens": 2909,
+      "cache_read_tokens": 437474,
+      "cost_usd": 0.25083360000000005,
+      "api_turns": 28,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:39:59.323188+00:00",
+  "n": 3,
+  "checker_pass": true,
+  "wall_seconds": 102.7,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

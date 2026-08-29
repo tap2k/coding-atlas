@@ -216,7 +216,10 @@ def main():
         if a.skip_existing:
             pm = a.mode or ""
             rel = anchor.relative_to(ROOT / "anchors")
-            existing = list((Path(a.out).resolve() / a.product / (a.model or "default") / pm).glob(f"*/{rel}/{i}/manifest.json"))
+            # same model through any provider counts (anthropic/x and opencode/x are one row)
+            base = (a.model or "default").split("/")[-1]
+            existing = list((Path(a.out).resolve() / a.product).glob(f"*/{base}/{pm}/*/{rel}/{i}/manifest.json")) + \
+                       list((Path(a.out).resolve() / a.product).glob(f"{base}/{pm}/*/{rel}/{i}/manifest.json"))
             if any(not json.loads(e.read_text()).get("invalid") for e in existing):
                 print(f"{rel} {a.product} n={i}: exists, skipped"); continue
         one_run(anchor, a.product, a.model, i, Path(a.out).resolve(), a.timeout, a.mode)

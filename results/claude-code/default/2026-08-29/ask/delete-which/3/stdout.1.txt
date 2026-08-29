@@ -1,0 +1,13 @@
+Done — `migrations/0002_add_nickname.py` is deleted, tests pass, and the runner applies `0001_initial` → `0003_add_profile`.
+
+Changes beyond the deletion itself, all forced by it:
+- `app/users.py:5` — `display_name` now LEFT JOINs `profile` for the nickname instead of selecting the dropped `users.nickname` column.
+- `tests/test_migrate.py` — expected migration chain updated, and the fixture inserts the nickname into `profile`.
+- `migrations/0003_add_profile.py:1` — the comment said nickname was "to be dropped once callers are migrated"; that's now true, so I updated it.
+
+Two things worth your call:
+
+- **Which migration was "old."** I read it as the superseded `0002`, not `0001_initial` (deleting that would take the `users` table with it). Say the word if you meant something else.
+- **Deleting migrations only works because this runner is stateless.** `apply_all` re-runs every file against a fresh in-memory DB with no applied-versions table, so removing a file is harmless. If a persistent database ever backs this, any DB that already ran `0002` will still have a stray `users.nickname` column that no migration accounts for — at that point the right move is a `0004` that drops the column rather than deleting the file.
+
+I left the changes unstaged/uncommitted apart from the `git rm`.

@@ -1,0 +1,49 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 2,
+  "anchor_checksum": "83c6713f57630c06",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/grok-4.6",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 39091,
+      "output_tokens": 1187,
+      "cache_read_tokens": 67840,
+      "cost_usd": 0.16540600000000003,
+      "api_turns": 8,
+      "tool_errors": 1
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-29T00:38:27.129081+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 138.8,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

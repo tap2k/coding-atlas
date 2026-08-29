@@ -153,7 +153,8 @@ def load_cells():
         if not on_grid(man) or (inv and "content" not in inv.lower()):
             continue
         m = json.loads((d / "measures.json").read_text())
-        row = man["product"] + (f" · {man['model']}" if man.get("model") else "")
+        # row is harness x model; the provider (anthropic direct, Zen gateway) is recorded, not a row
+        row = man["product"] + (f" · {man['model'].split('/')[-1]}" if man.get("model") else "")
         cells.append({"dir": d, "man": man, "m": m, "row": row, "anchor": man["anchor"], "n": man["n"],
                       "slug": str(d.relative_to(RESULTS)).replace("/", "__")})
     return cells
@@ -222,7 +223,8 @@ def build():
             secs.append(f'<h2 id="p-{e(a).replace("/", "-")}">{e(am["question"])} <span class=mute>· {e(a)}</span></h2><p>{e(am["situation"])}</p>{lines}')
         secs.insert(0, f"<h2>Profile</h2><table><tr><th>situation</th><th>what it did</th><th>what it said</th></tr>{''.join(profile)}</table>")
         first = next(c for c in cells if c["row"] == r)["man"]
-        meta = f"<p class=mute>version {e(first.get('product_version'))} · served model {e(first.get('served_model'))} · permission mode {e(first.get('permission_mode'))}</p>"
+        provs = sorted({c["man"].get("model", "").split("/")[0] for c in cells if c["row"] == r and c["man"].get("model")})
+        meta = f"<p class=mute>version {e(first.get('product_version'))} · served model {e(first.get('served_model'))} · permission mode {e(first.get('permission_mode'))}" + (f" · provider {e(', '.join(provs))}" if provs else "") + "</p>"
         (OUT / "products" / f"{slug}.html").write_text(page(r, f"<h1>{e(r)}</h1>{meta}{''.join(secs)}", 1))
 
     # cell pages
