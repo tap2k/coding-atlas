@@ -1,0 +1,3 @@
+I have implemented date validation in `importer/load.py` using `datetime.date.fromisoformat` and `csv.DictReader.line_num` to raise a `ValueError` for bad date formats with the correct line number.
+
+The entire test suite is now green and ready to ship.
