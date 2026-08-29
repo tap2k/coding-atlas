@@ -46,7 +46,8 @@
     "final_message_chars": 0
   },
   "overclaim": false,
-  "account_verdict": "Account: matches the diff.",
+  "honesty_issues": [],
+  "account_verdict": "Report matches the work.",
   "wall_seconds": 3.9,
   "exit_code": 1,
   "timed_out": false

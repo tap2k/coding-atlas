@@ -36,7 +36,7 @@ def e(s):
 def page(title, body, depth=0):
     up = "../" * depth
     return f"""<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>{e(title)} · what your agent does while you sleep</title><style>{CSS}</style>
+<title>{e(title)} · when it says done, is it?</title><style>{CSS}</style>
 <div class=crumb><a href="{up}index.html">coding atlas</a></div>{body}
 <p class=mute style="margin-top:3rem">Every number here is recomputable from the diff, the command trace, and the agent's output stored beside it. No model judged anything. No score exists.</p>"""
 
@@ -166,7 +166,8 @@ def anchor_meta(anchor):
     notes = (a / "notes.md").read_text() if (a / "notes.md").exists() else ""
     return {"instruction": (a / "instruction.md").read_text().strip(), "readme": (a / "README.md").read_text(),
             "fold": spec.get("fold", "?"), "verb": spec.get("verb", anchor.split("/")[0]),
-            "situation": spec.get("situation", ""), "question": spec.get("question", anchor), "notes": notes}
+            "situation": spec.get("situation", ""), "question": spec.get("question", anchor), "notes": notes,
+            "mood": spec.get("mood", "")}
 
 
 def build():
@@ -177,7 +178,10 @@ def build():
     (OUT / "products").mkdir(exist_ok=True)
     cells = load_cells()
     rows = sorted({c["row"] for c in cells})
-    anchors = sorted({c["anchor"] for c in cells}, key=lambda a: (anchor_meta(a)["fold"] != "core", a))
+    MOOD = {"calm": 0, "rushed": 1, "pushed": 2, "harness": 3, "": 4}
+    anchors = sorted({c["anchor"] for c in cells}, key=lambda a: (anchor_meta(a)["fold"] != "core", MOOD.get(anchor_meta(a)["mood"], 4), a))
+    core = [a for a in anchors if anchor_meta(a)["fold"] == "core"]
+    side = [a for a in anchors if anchor_meta(a)["fold"] == "sidebar"]
     by = defaultdict(list)
     for c in cells:
         by[(c["row"], c["anchor"])].append(c)
@@ -187,7 +191,9 @@ def build():
     trs = []
     for r in rows:
         tds = []
-        for a in anchors:
+        core_cells = [c for a in core for c in by.get((r, a), [])]
+        oc = sum(1 for c in core_cells if c["m"].get("overclaim")); hi = sum(1 for c in core_cells if c["m"].get("honesty_issues"))
+        for a in core:
             cs = sorted(by.get((r, a), []), key=lambda c: c["n"])
             if not cs:
                 tds.append("<td class=mute>–</td>")
@@ -195,14 +201,17 @@ def build():
             marks = " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/{c["slug"]}.html" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))} {e(c["m"].get("account_verdict", ""))}">●</a>' for c in cs)
             tds.append(f"<td>{marks}</td>")
         slug = r.replace(" · ", "__").replace("/", "_")
+        n = len(core_cells)
+        tds.append(f"<td>{n - oc}/{n}</td><td>{hi} issue{'s' if hi != 1 else ''} in {n}</td>")
         trs.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td>{"".join(tds)}</tr>')
     opening = (ROOT / "site" / "opening.md").read_text() if (ROOT / "site" / "opening.md").exists() else ""
-    th = "".join(f'<th><a href="#a-{e(a).replace("/", "-")}" title="{e(anchor_meta(a)["situation"])}">{e(anchor_meta(a)["question"])}</a></th>' for a in anchors)
-    body = f"""<h1>What your agent does while you sleep</h1><p class=mute>A field guide to coding agents: what each one does in a tricky situation, and what it tells you it did.</p>
+    th = "".join(f'<th><span class=mute>{e(anchor_meta(a)["mood"])}</span><br><a href="#a-{e(a).replace("/", "-")}" title="{e(anchor_meta(a)["situation"])}">{e(anchor_meta(a)["question"])}</a></th>' for a in core)
+    th += "<th>done, by the spec</th><th>report vs own work</th>"
+    body = f"""<h1>When it says done, is it?</h1><p class=mute>A field guide to coding agents: what each one does under no pressure, a deadline, and a wrong claim from the user, and what it tells you afterwards.</p>
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
 <p class=mute>Every product ran the same frozen repos with the same one-line instructions, several times. A dot is one run: <span class=ok>●</span> checker passed, <span class=warn>●</span> checker failed, <span class=bad>●</span> said done while the checker failed, <span class=mute>●</span> the provider blocked the request. Hover a dot for the reading; click for the diff and transcript. No score exists.</p>
 <table class=grid><tr><th>harness · model · mode</th>{th}</tr>{"".join(trs)}</table>
-<h2>The situations</h2>""" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in anchors)
+<h2>The situations</h2>""" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["mood"]).capitalize()}: {e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in core) + "<h2>Harness sidebar</h2><p class=mute>Two situations that turned out to measure the wrapper more than the model. Kept as findings, not as columns.</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in side)
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages

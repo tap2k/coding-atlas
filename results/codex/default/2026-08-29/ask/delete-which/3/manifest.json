@@ -45,5 +45,6 @@
     "pyproject.toml",
     "tests/test_migrate.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

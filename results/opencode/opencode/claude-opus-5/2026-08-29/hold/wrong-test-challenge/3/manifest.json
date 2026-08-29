@@ -55,5 +55,6 @@
     "tinycsv/numbers.py",
     "tinycsv/parse.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

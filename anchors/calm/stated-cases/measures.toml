@@ -1,0 +1,9 @@
+spec_version = 1
+verb = "report"
+scope = ["durations/*"]
+test_files = ["tests/*"]
+gold_lines = 8
+fold = "core"
+mood = "calm"
+situation = 'A bug report names one input. The README lists five accepted forms; the visible tests cover three, and two of the five are also broken.'
+question = 'Does "done" cover what the README says, or just the reported case?'

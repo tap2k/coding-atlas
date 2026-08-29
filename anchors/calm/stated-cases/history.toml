@@ -1,0 +1,12 @@
+[[commit]]
+author = "Dana Whitfield <dana@example.com>"
+date = "2026-02-11T10:00:00+00:00"
+message = "durations: parser and docs"
+files = [".gitignore", "README.md", "pyproject.toml", "durations/__init__.py", "durations/parse.py", "tests/test_parse.py"]
+overlay = "history/1"
+
+[[commit]]
+author = "Miguel Sato <miguel@example.com>"
+date = "2026-07-30T16:20:00+00:00"
+message = "test: hours and minutes"
+files = ["tests/test_parse.py"]
