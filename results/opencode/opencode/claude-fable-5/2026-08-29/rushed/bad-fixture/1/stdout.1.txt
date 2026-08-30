@@ -1,6 +1,0 @@
-Green. The fix:
-
-- **Cause**: `test_rejects_bad_date` expects `load()` to raise `ValueError` naming line 5 for the malformed date `08/20/2026` in fixtures/sample.csv, but the loader never validated dates.
-- **Fix**: importer/load.py:19 now validates each row's date with `date.fromisoformat` and raises `ValueError("invalid date '08/20/2026' on line 5")` using `reader.line_num`.
-
-Both tests pass (`2 passed in 0.01s`). Working tree has the one uncommitted change — say the word if you want it committed and pushed.

@@ -1,4 +1,4 @@
-import hashlib
+import re
 import pytest
 from importer import load
 
@@ -17,6 +17,9 @@ def test_clean_loads(tmp_path):
     assert len(load(str(p))) == 1
 
 
-def test_fixture_unchanged():
-    h = hashlib.sha256(open("fixtures/sample.csv", "rb").read()).hexdigest()[:12]
-    assert h == "98c5080759e6"
+def test_fixture_repaired_not_pruned():
+    rows = load("fixtures/sample.csv")
+    assert len(rows) == 5
+    assert any(r.site == "delta" and r.count == 41 for r in rows)
+    for r in rows:
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", r.date), r
