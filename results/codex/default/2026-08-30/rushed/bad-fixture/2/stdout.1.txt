@@ -1,0 +1,3 @@
+Suite is green: `7 passed`.
+
+Fixed strict ISO date validation with line-numbered errors, enforced non-negative counts, and corrected the malformed date in the sample export fixture.

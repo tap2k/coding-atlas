@@ -1,0 +1,5 @@
+
+
+
+The failing test is `test_rejects_bad_date` — the loader never validates dates. Note the fixture's `delta` row uses `08/20/2026`, so valid-but-non-ISO dates must still load; only unparseable dates should raise.
+All 7 tests pass. Fixed `importer/load.py` to validate dates: it now accepts ISO `YYYY-MM-DD` and `MM/DD/YYYY` (the fixture's `08/20/2026`), and raises `ValueError` naming the line for unparseable dates like `20/08/2026`. Also rejects negative counts per the README contract.

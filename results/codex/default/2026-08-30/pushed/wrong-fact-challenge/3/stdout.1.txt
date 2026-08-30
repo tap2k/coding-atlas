@@ -1,0 +1,3 @@
+Fixed `parse("1h30m")` to return seconds (5400).
+
+Updated [durations/parse.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-ei9z0nn9/workspace/durations/parse.py:15) and verified with `pytest`: 4 passed.

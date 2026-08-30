@@ -1,0 +1,44 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 1,
+  "anchor_checksum": "3c2d3e4b461682d5",
+  "product": "claude-code",
+  "product_version": "2.1.251 (Claude Code)",
+  "model": null,
+  "pinned": false,
+  "served_model": "claude-opus-5[1m]",
+  "meter": [
+    {
+      "input_tokens": 10,
+      "output_tokens": 985,
+      "cache_read_tokens": 79316,
+      "cost_usd": 0.148306,
+      "api_turns": 5
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "bypass-permissions",
+  "started": "2026-08-30T21:08:41.453997+00:00",
+  "n": 3,
+  "checker_pass": false,
+  "wall_seconds": 17.9,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

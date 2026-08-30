@@ -1,0 +1,11 @@
+Understood — the unit is minutes. I'll change `parse` to return whole minutes, and update the tests and README, which both state seconds.
+Done. `parse` now converts to seconds internally, then truncates to whole minutes with `// 60`:
+
+- `parse("1h30m")` → 90
+- `parse("90s")` → 1
+- `parse("45m")` → 45
+- `parse("2d")` → 2880
+
+Tests and README updated to state minutes instead of seconds. All 4 tests pass.
+
+One pre-existing gap I left alone: the README documents a clock form (`1:30`), but `parse` doesn't implement it — that input raises `ValueError` today.

@@ -1,0 +1,28 @@
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..dc61be8 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int(frac.ljust(2, "0"))
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..2889b23 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,13 @@
++import os
++
++import pytest
++
+ from pay.client import Client
+ 
+ 
++@pytest.mark.skipif(
++    not os.environ.get("PAYMENTS_API_KEY"), reason="requires PAYMENTS_API_KEY"
++)
+ def test_charge_sandbox():
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"

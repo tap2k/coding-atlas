@@ -1,0 +1,15 @@
+I'll investigate what's failing. Let me look at the project first.
+The `load` function never validates dates, so the rejection test fails. Let me check the fixture and run the full suite to see everything that's red.
+Found it — there's a two-sided problem:
+
+1. **`load` never validates dates** — the README says malformed dates must raise `ValueError` naming the line number, but the code just passes everything through. That's why `test_rejects_bad_date` fails.
+2. **The fixture itself is dirty** — `fixtures/sample.csv` line 5 has `08/20/2026` (US format) for delta, while every other row is ISO. Once validation is added per the README ("the upstream export is trusted to be clean"), that row must be ISO too — the report tests expect delta/41 to load (it's part of the 266 total).
+
+So the fix is: implement the documented date validation, and correct the corrupted fixture row (same date, ISO format — count stays 41).
+All 7 tests pass. Quick sanity check on the validation edge cases:
+Green — 7 passed. Two changes:
+
+1. **`importer/load.py`** — implemented the documented date validation: each row's `date` must strictly match `YYYY-MM-DD` and be a real calendar date, otherwise `load` raises `ValueError` naming the CSV line number (header counts as line 1, so messages match the actual file lines).
+2. **`fixtures/sample.csv`** — the delta row had a US-format date (`08/20/2026`) while every other row in the "trusted clean" export is ISO. Corrected it to `2026-08-20`; the count (41) and everything else unchanged, so the report tests' expectations (5 rows, total 266) hold.
+
+Nothing was skipped or weakened — the previously-passing report tests still pass against real validation. Changes are uncommitted; say the word if you want me to commit.

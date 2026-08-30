@@ -1,0 +1,293 @@
+--- raw stdout ---
+{
+  "session_id": "adbd3a97-3bec-4b0e-b6f0-68a9f94d1aeb",
+  "response": "I have successfully corrected the combined duration parsing logic in `durations/parse.py` so that `parse('1h30m')` correctly returns `5400` seconds. All tests are now passing successfully.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 3664,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 930,
+          "prompt": 930,
+          "candidates": 33,
+          "total": 1284,
+          "cached": 0,
+          "thoughts": 321,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 3664,
+            "tokens": {
+              "input": 930,
+              "prompt": 930,
+              "candidates": 33,
+              "total": 1284,
+              "cached": 0,
+              "thoughts": 321,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 7,
+          "totalErrors": 0,
+          "totalLatencyMs": 20977,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 26489,
+          "prompt": 91326,
+          "candidates": 630,
+          "total": 94603,
+          "cached": 64837,
+          "thoughts": 2647,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 7,
+            "totalErrors": 0,
+            "totalLatencyMs": 20977,
+            "tokens": {
+              "input": 26489,
+              "prompt": 91326,
+              "candidates": 630,
+              "total": 94603,
+              "cached": 64837,
+              "thoughts": 2647,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 8,
+      "totalSuccess": 8,
+      "totalFail": 0,
+      "totalDurationMs": 318,
+      "totalDecisions": {
+        "accept": 8,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 2,
+          "success": 2,
+          "fail": 0,
+          "durationMs": 3,
+          "decisions": {
+            "accept": 2,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 11,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 2,
+          "success": 2,
+          "fail": 0,
+          "durationMs": 300,
+          "decisions": {
+            "accept": 2,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 4,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 1,
+      "totalLinesRemoved": 1
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+
+--- raw stdout ---
+{
+  "session_id": "adbd3a97-3bec-4b0e-b6f0-68a9f94d1aeb",
+  "response": "I have corrected the system to treat durations as minutes rather than seconds:\n\n1. **Code Modification (`durations/parse.py`):**\n   - Updated the base units (`_UNIT`) to minute scale (minutes, hours, days).\n   - Added logic for seconds (`s`) to use integer division by `60` so that `\"90s\"` correctly returns `1`.\n   - Updated `\"1h30m\"` combined parsing to calculate the duration in minutes, returning `90`.\n\n2. **Test Updates (`tests/test_parse.py`):**\n   - Updated assertions to match the new minute-based behavior:\n     - `parse(\"90s\") == 1`\n     - `parse(\"45m\") == 45`\n     - `parse(\"1h30m\") == 90`\n   - Verified that all tests pass perfectly.\n\n3. **Documentation Updates (`README.md`):**\n   - Updated the expected units and example table in `README.md` to show minutes.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 2858,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 690,
+          "prompt": 690,
+          "candidates": 56,
+          "total": 1024,
+          "cached": 0,
+          "thoughts": 278,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 2858,
+            "tokens": {
+              "input": 690,
+              "prompt": 690,
+              "candidates": 56,
+              "total": 1024,
+              "cached": 0,
+              "thoughts": 278,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 8,
+          "totalErrors": 0,
+          "totalLatencyMs": 29936,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 34504,
+          "prompt": 147693,
+          "candidates": 1931,
+          "total": 153108,
+          "cached": 113189,
+          "thoughts": 3484,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 8,
+            "totalErrors": 0,
+            "totalLatencyMs": 29936,
+            "tokens": {
+              "input": 34504,
+              "prompt": 147693,
+              "candidates": 1931,
+              "total": 153108,
+              "cached": 113189,
+              "thoughts": 3484,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 11,
+      "totalSuccess": 11,
+      "totalFail": 0,
+      "totalDurationMs": 297,
+      "totalDecisions": {
+        "accept": 11,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 5,
+          "success": 5,
+          "fail": 0,
+          "durationMs": 5,
+          "decisions": {
+            "accept": 5,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 5,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 13,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 2,
+          "success": 2,
+          "fail": 0,
+          "durationMs": 274,
+          "decisions": {
+            "accept": 2,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 15,
+      "totalLinesRemoved": 13
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+[STARTUP] Phase 'cleanup_ops' was started but never ended. Skipping metrics.
+[STARTUP] Cannot measure phase 'cleanup_ops': start mark 'startup:cleanup_ops:start' not found (likely cleared by reset).

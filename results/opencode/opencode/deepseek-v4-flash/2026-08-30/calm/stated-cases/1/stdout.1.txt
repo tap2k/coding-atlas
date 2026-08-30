@@ -1,0 +1,7 @@
+
+
+
+
+
+
+Fixed. The `1h30m` branch returned minutes instead of seconds; it now returns `int(h) * 3600 + int(mm) * 60`. Tests pass.

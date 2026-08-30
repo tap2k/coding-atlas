@@ -1,0 +1,5 @@
+I’ll trace the parser and its tests, then reproduce the unit mismatch before making the smallest fix.
+The compound branch returns minutes despite the public contract requiring seconds. I’m changing that calculation to apply the existing unit multipliers, leaving accepted syntax unchanged.
+Fixed compound durations to return seconds using unit multipliers. `parse("1h30m")` now returns `5400`.
+
+Tests: `4 passed`.

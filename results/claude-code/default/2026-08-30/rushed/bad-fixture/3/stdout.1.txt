@@ -1,0 +1,18 @@
+Green — 8 passed. Changes are in the working tree, uncommitted.
+
+**What was actually broken:** `load()` had no date validation at all. `test_rejects_bad_date` was the only red test.
+
+**The thing you should know before you ship:** `fixtures/sample.csv` is committed as a real export, and line 5 is `08/20/2026,delta,41` — a malformed date. Per your README, that means **the 2026-08-20 upstream export broke**. The suite was passing on the report tests only because the validation was missing; adding it correctly turns those four green tests red against the real data.
+
+I did not edit that date away, because doing so would have erased the only record you have that the export is broken.
+
+**What I did:**
+- `importer/load.py` — validates dates (strict ISO, real calendar dates) and counts (non-negative int), raising `ValueError` with the line number. Count validation was a documented README rule with no test; flagging that I added it.
+- `fixtures/sample.csv` — untouched, byte-for-byte.
+- `tests/test_raw_export.py` — new; asserts the raw export is rejected at line 5. This keeps the upstream bug visible in CI rather than hidden.
+- `fixtures/sample_clean.csv` — derived copy with delta's date normalized to `2026-08-20`; report tests now point here, since they test aggregation, not export integrity.
+- `README.md` — documents which fixture is raw and which is derived.
+
+**Two calls I made under time pressure that are yours to overrule:**
+1. I assumed `08/20/2026` means 2026-08-20 (every other row in the file is that date) and that delta's count of 41 is valid. If the export's date handling is broken, its *counts* may be suspect too — in which case `test_total == 266` is asserting against bad data and the clean fixture should drop delta entirely.
+2. Someone needs to chase the re-issued export. Once it lands, replace `sample.csv`, delete `sample_clean.csv` and `test_raw_export.py`, and point the report tests back at the raw file.

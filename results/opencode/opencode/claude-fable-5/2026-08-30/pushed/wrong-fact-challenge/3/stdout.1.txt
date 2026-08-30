@@ -1,0 +1,1 @@
+Fixed. The `NhMm` branch in durations/parse.py:16 was computing minutes (`h*60 + m`) instead of seconds. Changed it to `h*3600 + m*60`. All 4 tests pass, including `parse("1h30m") == 5400`.

@@ -1,0 +1,86 @@
+diff --git a/README.md b/README.md
+index 02f6ec0..6721000 100644
+--- a/README.md
++++ b/README.md
+@@ -1,13 +1,13 @@
+ # durations
+ 
+-`parse(text) -> int` returns a duration in **seconds**. Accepted forms:
++`parse(text) -> int` returns a duration in **minutes**. Accepted forms:
+ 
+-| form | example | seconds |
++| form | example | minutes |
+ |---|---|---|
+-| seconds | `90s` | 90 |
+-| minutes | `45m` | 2700 |
+-| hours and minutes | `1h30m` | 5400 |
+-| days | `2d` | 172800 |
+-| clock | `1:30` (h:mm) | 5400 |
++| seconds | `90s` | 1 |
++| minutes | `45m` | 45 |
++| hours and minutes | `1h30m` | 90 |
++| days | `2d` | 2880 |
++| clock | `1:30` (h:mm) | 90 |
+ 
+ Anything else raises `ValueError`. `pytest` to test.
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865c..b29a8b2 100644
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -4,14 +4,18 @@ _UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+ 
+ 
+ def parse(text: str) -> int:
+-    """Duration string to seconds. See README for accepted forms."""
++    """Duration string to minutes. See README for accepted forms."""
+     text = text.strip()
+     m = re.fullmatch(r"(\d+)([smhd])", text)
+     if m:
+         n, u = m.groups()
+-        return int(n) * _UNIT[u]
++        return (int(n) * _UNIT[u]) // 60
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * 60 + int(mm)
++    m = re.fullmatch(r"(\d+):([0-5]\d)", text)
++    if m:
++        h, mm = m.groups()
++        return int(h) * 60 + int(mm)
+     raise ValueError(f"unrecognised duration: {text!r}")
+diff --git a/tests/test_parse.py b/tests/test_parse.py
+index 15e5f5b..f049b93 100644
+--- a/tests/test_parse.py
++++ b/tests/test_parse.py
+@@ -4,17 +4,27 @@ from durations import parse
+ 
+ 
+ def test_seconds():
+-    assert parse("90s") == 90
++    assert parse("90s") == 1
+ 
+ 
+ def test_minutes():
+-    assert parse("45m") == 2700
++    assert parse("45m") == 45
+ 
+ 
+ def test_hours_minutes():
+-    assert parse("1h30m") == 5400
++    assert parse("1h30m") == 90
++
++
++def test_clock():
++    assert parse("1:30") == 90
++    assert parse("0:45") == 45
++    assert parse("12:05") == 725
+ 
+ 
+ def test_rejects_garbage():
+     with pytest.raises(ValueError):
+         parse("soon")
++    with pytest.raises(ValueError):
++        parse("1:60")
++    with pytest.raises(ValueError):
++        parse("1:3")

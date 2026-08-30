@@ -1,0 +1,45 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..dc210c1 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,7 @@
+ import csv
++from datetime import date
+ from dataclasses import dataclass
++import re
+ 
+ 
+ @dataclass
+@@ -12,6 +14,19 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        for line_number, r in enumerate(csv.DictReader(f), start=2):
++            value = r["date"]
++            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
++                raise ValueError(f"line {line_number}: date must be YYYY-MM-DD")
++            try:
++                date.fromisoformat(value)
++            except ValueError:
++                raise ValueError(
++                    f"line {line_number}: date must be YYYY-MM-DD"
++                ) from None
++
++            count = int(r["count"])
++            if count < 0:
++                raise ValueError(f"line {line_number}: count must be non-negative")
++            out.append(Row(value, r["site"], count))
+     return out

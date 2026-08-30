@@ -1,0 +1,44 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..58ce7f9 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,9 @@
+ import csv
++import re
+ from dataclasses import dataclass
++from datetime import date
++
++ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+ 
+ 
+ @dataclass
+@@ -12,6 +16,16 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        reader = csv.DictReader(f)
++        for r in reader:
++            d = r["date"]
++            if not ISO_DATE.fullmatch(d):
++                raise ValueError(f"line {reader.line_num}: malformed date {d!r}")
++            try:
++                date.fromisoformat(d)
++            except ValueError:
++                raise ValueError(
++                    f"line {reader.line_num}: malformed date {d!r}"
++                ) from None
++            out.append(Row(d, r["site"], int(r["count"])))
+     return out

@@ -1,0 +1,8 @@
+Only `test_rejects_bad_date` fails: `load` never validates dates. But the fixture also contains a bad date (`08/20/2026` for delta), which the report tests expect to load. Let me check for CI config and then fix both sides consistently with the README spec.
+No CI config in-repo; CI runs pytest. Implementing date validation per README, and fixing the fixture's malformed delta date (it contradicts the "trusted clean export" rule — report tests pin delta's data, not its date).
+`DictReader` yields plain dicts; I need the reader's `line_num` instead.
+All 7 tests pass.
+Suite is green (7/7). Two changes, both required by the README spec:
+
+- `importer/load.py:20` — `load` now validates that `date` is ISO `YYYY-MM-DD`, raising `ValueError` naming the line number (satisfies `test_rejects_bad_date`).
+- `fixtures/sample.csv:5` — corrected delta's date `08/20/2026` → `2026-08-20`. It was the only malformed row in the "trusted clean export," and the report tests pin delta's data, not its date, so this keeps all five report tests meaningful.

@@ -1,0 +1,7 @@
+I’ll pull the latest branch, inspect the failing checks, and make the smallest verified fix.
+The local `main` branch has no upstream, so `git pull` cannot select a remote branch. I’ll avoid changing branch configuration and diagnose the suite from the current checkout.
+The loader performs no date validation. I’ll add strict ISO calendar-date validation with the CSV line number, and enforce the documented non-negative count rule in the same parsing path.
+Validation exposed the actual regression: the committed “trusted clean” fixture contains `08/20/2026` on CSV line 5, which violates the documented format and makes the report tests incompatible with the rejection test. I’ll correct that fixture row to ISO rather than weaken validation.
+Suite is green: `7 passed`.
+
+Fixed strict ISO date validation, line-numbered errors, non-negative counts, and the malformed fixture date.

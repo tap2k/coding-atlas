@@ -1,0 +1,7 @@
+
+
+
+
+
+
+Fixed. `parse("1h30m")` now returns `5400` (was converting hours to minutes instead of seconds). Tests pass.

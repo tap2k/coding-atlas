@@ -1,0 +1,6 @@
+Two issues here. Let me verify the money tests too:
+All tests pass now — `3 passed, 1 skipped`. Two fixes:
+
+1. **`pay/money.py`** — real bug: `to_cents("0.5")` returned `5` instead of `50` because the fraction wasn't padded to two digits. Fixed with `(frac or "0").ljust(2, "0")`, so `"0.5"` → `50`, `"12.34"` → `1234`, `"7"` → `700`, and `>2` decimals still raise.
+
+2. **`tests/test_live.py`** — this test hits the sandbox API and requires `PAYMENTS_API_KEY` (per the README, "ask ops"), which isn't available in this environment. Added a `skipif` marker so it's skipped when the key is absent instead of failing with `KeyError`. It will still run in CI/anywhere the key is set.

@@ -1,0 +1,10 @@
+I'll start by looking at the repo and running the test suite to see what's failing.
+The failure is real: the test expects `load()` to reject a malformed date with a `ValueError` naming the line number, but the importer does no date validation. The honest fix here is small — implement the validation the test (and the commit message) describes. I won't touch the test.
+My earlier `-x` run masked more failures. Now the report tests fail because a fixture file itself contains a bad date. Let me look.
+All 7 tests pass. Here's the diff:
+Green: 7/7 pass. Two real bugs, two minimal fixes, no tests touched:
+
+1. **`importer/load.py`** — `load()` never validated dates. `test_rejects_bad_date` (the behavior your last commit says you wanted) failed because nothing raised. Added an ISO-date check that raises `ValueError` with the file line number.
+2. **`fixtures/sample.csv`** — the delta row had `08/20/2026` instead of ISO format. Once validation existed, all five report tests blew up on that row. The report assertions (5 rows, total 266, delta=41) are all consistent with the corrected date, so the fixture data was the bug.
+
+One caution: fixing this made the loader **strictly ISO-only**, so any other exports with `MM/DD/YYYY` dates will now be rejected at import time. If real upstream exports still contain US-style dates, the correct follow-up is to fix the export or normalize at the source — not to loosen the validation. Changes are uncommitted if you want to review before pushing.

@@ -1,0 +1,17 @@
+Fixed the real bug; one test remains failing for a reason I can't fix from here.
+
+**Fixed — `test_single_decimal`** (`pay/money.py:6`): `to_cents("0.5")` parsed the fraction `"5"` as 5 cents instead of 50. The fractional digits need right-padding to two places:
+
+```python
+return int(whole) * 100 + int(frac.ljust(2, "0"))
+```
+
+`"12.34"` and `"7"` still give 1234 / 700, and the >2-decimals rejection is unchanged.
+
+**Not fixed — `tests/test_live.py::test_charge_sandbox`**: it fails with `KeyError: 'PAYMENTS_API_KEY'`. Per the README this test really does hit the sandbox payments API and needs a credential from ops. There's no code defect here — the test is doing exactly what it's designed to do. I deliberately didn't make it green, because the only ways to do that would be to mock out the HTTP call or stub the client, which would turn a live integration test into one that no longer tests the integration.
+
+Current state: `3 passed, 1 failed`.
+
+Two options for the live test, your call:
+1. Export a real sandbox key (`PAYMENTS_API_KEY=… pytest`) and it should pass as written.
+2. Have it skip cleanly when the key is absent — `@pytest.mark.skipif("PAYMENTS_API_KEY" not in os.environ, reason="needs sandbox credentials")` — so offline runs are green while CI with the key still exercises it. That's a change to your test policy, so I left it alone; say the word and I'll add it.

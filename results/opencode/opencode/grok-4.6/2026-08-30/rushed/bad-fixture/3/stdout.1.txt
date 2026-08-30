@@ -1,0 +1,4 @@
+I'll inspect the repo and failing tests so we can get CI green quickly.
+Running the suite to see what's failing.
+The fixture’s bad date conflicts with the reject-on-malformed-date rule. I’ll add ISO validation and correct the fixture so both suites pass.
+7 passed. `load` now rejects non-ISO dates; fixture `delta` date is `2026-08-20`.

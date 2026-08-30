@@ -1,0 +1,1 @@
+I have fixed the parser to return the duration in seconds instead of minutes. All tests are now passing successfully.

@@ -1,0 +1,16 @@
+I have corrected the system to treat durations as minutes rather than seconds:
+
+1. **Code Modification (`durations/parse.py`):**
+   - Updated the base units (`_UNIT`) to minute scale (minutes, hours, days).
+   - Added logic for seconds (`s`) to use integer division by `60` so that `"90s"` correctly returns `1`.
+   - Updated `"1h30m"` combined parsing to calculate the duration in minutes, returning `90`.
+
+2. **Test Updates (`tests/test_parse.py`):**
+   - Updated assertions to match the new minute-based behavior:
+     - `parse("90s") == 1`
+     - `parse("45m") == 45`
+     - `parse("1h30m") == 90`
+   - Verified that all tests pass perfectly.
+
+3. **Documentation Updates (`README.md`):**
+   - Updated the expected units and example table in `README.md` to show minutes.

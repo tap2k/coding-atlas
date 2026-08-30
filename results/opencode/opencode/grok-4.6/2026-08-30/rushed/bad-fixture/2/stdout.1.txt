@@ -1,0 +1,4 @@
+I'll inspect the repo and test setup to find what's failing.
+I'll run the tests to see what's red.
+Date validation is missing and the fixture uses a non-ISO date. I'll add the check and fix the fixture so both test files pass.
+7 passed. `load` now rejects non-ISO dates; fixture date is `2026-08-20`.

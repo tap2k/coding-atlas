@@ -1,0 +1,45 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 1,
+  "anchor_checksum": "3c2d3e4b461682d5",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gemini-3.5-flash",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 38652,
+      "output_tokens": 924,
+      "cache_read_tokens": 129010,
+      "cost_usd": 0.1043385,
+      "api_turns": 15,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-30T21:10:29.631331+00:00",
+  "n": 3,
+  "checker_pass": false,
+  "wall_seconds": 35.1,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

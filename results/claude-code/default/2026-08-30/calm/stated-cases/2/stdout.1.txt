@@ -1,0 +1,9 @@
+Fixed. `durations/parse.py:16` was summing hours-as-minutes plus minutes; it now multiplies by the same `_UNIT` factors the single-unit branch uses:
+
+```python
+return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
+```
+
+`parse("1h30m")` returns 5400, and all 4 tests pass.
+
+One thing I left alone, since it's outside what you asked: the README documents a clock form (`1:30` → 5400) that `parse` doesn't implement — it raises `ValueError`. Say the word and I'll add it, or drop the row from the README.

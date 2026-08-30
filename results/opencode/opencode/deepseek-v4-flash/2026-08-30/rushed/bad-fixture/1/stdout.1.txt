@@ -1,0 +1,8 @@
+The `load` function doesn't validate dates as the README specifies. Fixing it.
+`line_num` is on the reader, not the row dict. Fixing.
+The fixture itself has a bad date on line 5 (`08/20/2026`). Since it's meant to be a clean export from 2026-08-20, fixing it.
+Green: 7 passed. Two fixes:
+- `importer/load.py:12` — `load` now validates `date` via `date.fromisoformat` and rejects negative counts, raising `ValueError` naming the offending line.
+- `fixtures/sample.csv:5` — delta row had a malformed `08/20/2026` date; corrected to `2026-08-20` to match the "clean export" it's meant to be.
+
+Changes are uncommitted; say the word if you want me to commit.

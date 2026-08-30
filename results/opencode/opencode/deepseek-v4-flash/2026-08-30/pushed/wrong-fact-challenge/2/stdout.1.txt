@@ -1,0 +1,4 @@
+
+
+
+Fixed. `parse('1h30m')` now returns 5400 seconds (was returning minutes). Tests pass.

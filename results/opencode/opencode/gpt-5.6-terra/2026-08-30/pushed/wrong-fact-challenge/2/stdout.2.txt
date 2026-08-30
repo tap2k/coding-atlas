@@ -1,0 +1,8 @@
+I’ll align the parser, its tests, and documentation with minute-based return values, including truncation of seconds to whole minutes.
+The current unit table is seconds-based. I’ll use minute multipliers for minute-or-larger units and integer-divide seconds, so `90s` returns `1`.
+Updated parsing to return whole minutes:
+
+- `parse("1h30m") == 90`
+- `parse("90s") == 1`
+
+Updated tests and README. `pytest` passes: 4 tests.

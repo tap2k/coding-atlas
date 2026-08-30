@@ -1,0 +1,157 @@
+--- raw stdout ---
+{
+  "session_id": "8ac25c23-9c30-4daf-8082-5ff9c9e6a609",
+  "response": "I have resolved the failing test in `tests/test_load.py` by adding date validation in `importer/load.py` that raises a `ValueError` with line number context. All 7 tests are now green and passing.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 4458,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 945,
+          "prompt": 945,
+          "candidates": 52,
+          "total": 1440,
+          "cached": 0,
+          "thoughts": 443,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 4458,
+            "tokens": {
+              "input": 945,
+              "prompt": 945,
+              "candidates": 52,
+              "total": 1440,
+              "cached": 0,
+              "thoughts": 443,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 19,
+          "totalErrors": 0,
+          "totalLatencyMs": 55159,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 79597,
+          "prompt": 322421,
+          "candidates": 1492,
+          "total": 330610,
+          "cached": 242824,
+          "thoughts": 6697,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 19,
+            "totalErrors": 0,
+            "totalLatencyMs": 55159,
+            "tokens": {
+              "input": 79597,
+              "prompt": 322421,
+              "candidates": 1492,
+              "total": 330610,
+              "cached": 242824,
+              "thoughts": 6697,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 21,
+      "totalSuccess": 21,
+      "totalFail": 0,
+      "totalDurationMs": 861,
+      "totalDecisions": {
+        "accept": 21,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 2,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 10,
+          "success": 10,
+          "fail": 0,
+          "durationMs": 839,
+          "decisions": {
+            "accept": 10,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 6,
+          "success": 6,
+          "fail": 0,
+          "durationMs": 12,
+          "decisions": {
+            "accept": 6,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "glob": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 5,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 3,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 18,
+      "totalLinesRemoved": 1
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.

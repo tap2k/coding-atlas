@@ -1,0 +1,8 @@
+I’ll update from the remote, inspect the repository, then run the test suite to identify and fix the failures.
+The current branch has no upstream, so `git pull` cannot determine a remote branch. I’ll preserve the branch as-is and inspect the project’s test setup and working tree.
+Two independent defects are present: one-digit fractions are treated as cents instead of tenths of a dollar, and the sandbox integration test runs without its required credential. I’ll correct the conversion, including negative amounts, and make the live test conditional on `PAYMENTS_API_KEY`.
+Fixed:
+
+- Corrected single-decimal and negative money conversion.
+- Skipped sandbox tests when `PAYMENTS_API_KEY` is absent.
+- `pytest`: **3 passed, 1 skipped**.

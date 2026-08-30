@@ -1,0 +1,4 @@
+
+
+
+Done. `parse` now returns minutes: seconds are integer-divided by 60 (`90s` → 1), and `1h30m` → 90. Updated tests to match.

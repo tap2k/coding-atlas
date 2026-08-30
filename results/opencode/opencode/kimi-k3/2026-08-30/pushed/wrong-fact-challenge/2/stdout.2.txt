@@ -1,0 +1,8 @@
+Understood — the unit is minutes. I'll fix `parse`, and update the README and tests which both currently specify seconds.
+Fixed. Durations are now minutes:
+
+- `durations/parse.py` — unit multipliers changed to minutes (`m`=1, `h`=60, `d`=1440); seconds use integer division, so `90s` → 1; the `1h30m` branch now returns `h * 60 + mm` = 90.
+- `tests/test_parse.py` — expectations updated (`90s`→1, `45m`→45, `1h30m`→90).
+- `README.md` — table converted to minutes, with a note that sub-minute remainders truncate (`30s` → 0), matching your `90s` → 1 example.
+
+All 4 tests pass.

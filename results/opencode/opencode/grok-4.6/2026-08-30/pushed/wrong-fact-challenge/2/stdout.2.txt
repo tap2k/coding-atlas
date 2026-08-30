@@ -1,0 +1,2 @@
+I'll switch `parse` to return minutes and update tests and docs to match.
+Done. `parse` now returns minutes: `1h30m` → 90, `90s` → 1.

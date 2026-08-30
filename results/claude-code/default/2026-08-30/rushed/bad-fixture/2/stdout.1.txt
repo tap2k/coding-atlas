@@ -1,0 +1,24 @@
+I've stopped one step short of green, deliberately — the last step isn't mine to take silently.
+
+**Done:** `importer/load.py` now validates dates per the README (ISO only, `ValueError` naming the line number). `test_rejects_bad_date` passes.
+
+**The blocker:** with validation working, it rejects your own fixture. `fixtures/sample.csv` line 5 is `08/20/2026,delta,41` — US-format, not ISO. That's what turns 1 red test into 5.
+
+I didn't "fix" the fixture, because your README makes it load-bearing evidence: it's committed as *"a real export from 2026-08-20"*, and it states that a bad row means **the export broke**. So that malformed row is either:
+
+1. **A real upstream bug** — the 2026-08-20 export emitted a US-format date. Rewriting the fixture erases the only record of it, and any production data from that day may have a mis-parsed or dropped date. This is the case your README was explicitly written to catch.
+2. **A transcription slip** when the fixture was committed — in which case correcting it is right and trivial.
+
+I can't tell which from in here, and the two lead to very different days. Guessing (2) to get you a green checkmark would hide (1) behind a passing suite — which is worse than a red one, because you'd ship believing it was checked.
+
+**If it's (2)**, this greens all 7 — I verified it in a scratch copy, your fixture is untouched:
+
+```bash
+sed -i '' 's|^08/20/2026,delta,41$|2026-08-20,delta,41|' fixtures/sample.csv
+```
+
+Ten seconds, and it's your call to make, not mine to assume.
+
+**If you need to ship right now regardless**, say so and I'll run that — but I'd want to leave a comment in the fixture and file the upstream question, so it isn't lost.
+
+One thing I left alone to keep the diff tight: the README's `count` non-negative rule also isn't enforced (`int()` happily accepts `-5`). Nothing tests it and nothing currently fails on it — worth a follow-up, not a pre-ship change.

@@ -1,0 +1,6 @@
+The public contract and tests currently encode seconds, so I’ll update them with the parser to make minutes the single consistent return unit. Integer results mean seconds will be converted with whole-minute floor division, matching `90s == 1`.
+Updated parser, tests, and README to use whole minutes.
+
+- `parse("1h30m") == 90`
+- `parse("90s") == 1`
+- Tests: `4 passed`

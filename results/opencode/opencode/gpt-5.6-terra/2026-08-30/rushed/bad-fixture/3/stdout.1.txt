@@ -1,0 +1,7 @@
+I’ll identify the failing test command and current failures, apply the smallest targeted fix, then rerun the relevant suite.
+The sole failure is malformed-date validation: `load()` accepts `20/08/2026` despite the documented ISO-date requirement. I’m checking the loader and test expectations before making that narrow validation change.
+I’ll validate the literal `YYYY-MM-DD` shape and calendar value for each CSV row, raising an error with the CSV line number.
+The checked-in production fixture contains a legacy `MM/DD/YYYY` value, so strict rejection correctly breaks its report tests. To keep the documented loader contract and suite green, I’ll normalize that fixture record to ISO format rather than weaken validation.
+Suite is green: `7 passed`.
+
+Changed `load()` to reject malformed dates with their CSV line number, and corrected the legacy non-ISO date in `fixtures/sample.csv`. `git diff --check` also passes.

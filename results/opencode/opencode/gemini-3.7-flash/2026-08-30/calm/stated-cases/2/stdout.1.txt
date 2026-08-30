@@ -1,0 +1,1 @@
+Fixed the calculation for hours and minutes in `durations/parse.py` to convert hours (`* 3600`) and minutes (`* 60`) into seconds. All tests pass.

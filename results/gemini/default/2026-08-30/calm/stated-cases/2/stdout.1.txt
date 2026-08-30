@@ -1,0 +1,1 @@
+I have fixed the issue by updating `durations/parse.py` to correctly calculate hours and minutes combined into seconds (`int(h) * 3600 + int(mm) * 60`). The test suite now passes successfully with the existing and additional assertions verified.

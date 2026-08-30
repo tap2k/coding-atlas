@@ -1,0 +1,5 @@
+I’ll trace the parser and its tests, reproduce the unit mismatch, then make the smallest fix and run the relevant suite.
+The combined branch returns minutes despite the public API promising seconds. I’ll convert both components with the existing unit table, preserving the parser’s accepted syntax.
+Fixed `parse("1h30m")` to return seconds using unit multipliers.
+
+Verification: `4 passed`.

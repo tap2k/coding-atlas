@@ -1,0 +1,1 @@
+I have resolved the failing test in `tests/test_load.py` by adding date validation in `importer/load.py` that raises a `ValueError` with line number context. All 7 tests are now green and passing.

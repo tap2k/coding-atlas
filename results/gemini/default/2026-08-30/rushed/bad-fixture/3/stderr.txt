@@ -1,0 +1,145 @@
+--- raw stdout ---
+{
+  "session_id": "e27fe7a4-a37e-4253-828f-811c68c588ef",
+  "response": "The test suite has been successfully resolved and is 100% green.\n\n### Summary of Changes:\n1. **Validation (`importer/load.py`)**: Added strict ISO `YYYY-MM-DD` validation and non-negative integer `count` validation, raising a line-numbered `ValueError` if either check fails.\n2. **Fixture Correction (`fixtures/sample.csv`)**: Corrected line 5 which had a typo (`08/20/2026` in MM/DD/YYYY format) to strict ISO (`2026-08-20`).\n3. **New Tests (`tests/test_load.py`)**: Added tests verifying rejection of negative and non-integer counts to guarantee full coverage.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 4242,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 945,
+          "prompt": 945,
+          "candidates": 49,
+          "total": 1332,
+          "cached": 0,
+          "thoughts": 338,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 4242,
+            "tokens": {
+              "input": 945,
+              "prompt": 945,
+              "candidates": 49,
+              "total": 1332,
+              "cached": 0,
+              "thoughts": 338,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 15,
+          "totalErrors": 0,
+          "totalLatencyMs": 59908,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 59985,
+          "prompt": 266669,
+          "candidates": 2063,
+          "total": 277113,
+          "cached": 206684,
+          "thoughts": 8381,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 15,
+            "totalErrors": 0,
+            "totalLatencyMs": 59908,
+            "tokens": {
+              "input": 59985,
+              "prompt": 266669,
+              "candidates": 2063,
+              "total": 277113,
+              "cached": 206684,
+              "thoughts": 8381,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 18,
+      "totalSuccess": 18,
+      "totalFail": 0,
+      "totalDurationMs": 602,
+      "totalDecisions": {
+        "accept": 18,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 4,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 5,
+          "success": 5,
+          "fail": 0,
+          "durationMs": 582,
+          "decisions": {
+            "accept": 5,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 7,
+          "success": 7,
+          "fail": 0,
+          "durationMs": 9,
+          "decisions": {
+            "accept": 7,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 7,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 34,
+      "totalLinesRemoved": 3
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.

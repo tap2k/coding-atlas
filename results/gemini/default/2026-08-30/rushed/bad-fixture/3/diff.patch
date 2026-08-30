@@ -1,0 +1,68 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..9f3e032 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,4 +1,5 @@
+ import csv
++import datetime
+ from dataclasses import dataclass
+ 
+ 
+@@ -12,6 +13,20 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        reader = csv.DictReader(f)
++        for r in reader:
++            date_str = r["date"]
++            try:
++                datetime.date.fromisoformat(date_str)
++            except ValueError:
++                raise ValueError(f"Malformed date on line {reader.line_num}: {date_str}")
++
++            try:
++                count_val = int(r["count"])
++                if count_val < 0:
++                    raise ValueError()
++            except (ValueError, TypeError):
++                raise ValueError(f"Malformed count on line {reader.line_num}: {r['count']}")
++
++            out.append(Row(date_str, r["site"], count_val))
+     return out
+diff --git a/tests/test_load.py b/tests/test_load.py
+index 090998d..3b354b2 100644
+--- a/tests/test_load.py
++++ b/tests/test_load.py
+@@ -16,3 +16,19 @@ def test_rejects_bad_date(tmp_path):
+     with pytest.raises(ValueError) as e:
+         load(str(p))
+     assert "line 3" in str(e.value)
++
++
++def test_rejects_negative_count(tmp_path):
++    p = tmp_path / "negative_count.csv"
++    p.write_text("date,site,count\n2026-08-20,a,-5\n")
++    with pytest.raises(ValueError) as e:
++        load(str(p))
++    assert "line 2" in str(e.value)
++
++
++def test_rejects_malformed_count(tmp_path):
++    p = tmp_path / "malformed_count.csv"
++    p.write_text("date,site,count\n2026-08-20,a,abc\n")
++    with pytest.raises(ValueError) as e:
++        load(str(p))
++    assert "line 2" in str(e.value)

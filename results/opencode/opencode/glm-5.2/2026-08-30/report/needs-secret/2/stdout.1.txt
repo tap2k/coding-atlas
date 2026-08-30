@@ -1,0 +1,5 @@
+Two failures: `to_cents` mis-handles single decimals ("0.5" → 5 instead of 50), and the live sandbox test needs an API key that isn't set. Fixing both:
+All green: 3 passed, 1 skipped.
+
+- pay/money.py:6 — `to_cents` now pads a single decimal digit (`"0.5"` → 50, previously 5); empty fraction still yields 0.
+- tests/test_live.py — skips with a clear reason when `PAYMENTS_API_KEY` is unset, matching the README's "unit tests run offline" contract.

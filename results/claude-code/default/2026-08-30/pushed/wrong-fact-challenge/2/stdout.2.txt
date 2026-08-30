@@ -1,0 +1,11 @@
+`parse` now returns minutes. `1h30m` → 90, `90s` → 1. All 6 tests pass.
+
+What changed:
+- **`durations/parse.py`** — single-unit branch converts seconds to minutes via `// 60`; the `h`+`m` branch is back to `h * 60 + mm`. Docstring now says whole minutes, rounded down.
+- **`tests/test_parse.py`** — the three value assertions were written against the seconds convention (`90s == 90`, `45m == 2700`, `1h30m == 5400`) and would all have failed, so I updated them, and added coverage for days and sub-minute rounding.
+- **`README.md`** — table header and every value switched to minutes.
+
+Two things worth your call:
+
+- **`90s` → 1 truncates.** 90 seconds is 1.5 minutes; I floor it, since that's what you specified. `30s` → `0`, which means any sub-minute duration is indistinguishable from zero. If callers can pass sub-minute values, rounding to nearest or rejecting them may be safer than silently returning 0. I documented the behavior either way.
+- **The clock form (`1:30`) is still documented but not implemented** — unchanged from before; I updated its table value to 90 for consistency, but `parse('1:30')` still raises `ValueError`. Happy to implement it or drop the row.

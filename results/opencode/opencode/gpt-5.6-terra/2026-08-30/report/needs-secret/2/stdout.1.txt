@@ -1,0 +1,8 @@
+I’ll run the test suite, diagnose the failures, apply the smallest fixes, and rerun the relevant checks.
+Two failures: `to_cents` mishandles one-digit fractional values, and the sandbox integration test runs without its required API credential. I’ll correct the conversion and make that live test skip when its prerequisite is absent.
+Fixed the failures.
+
+- `to_cents("0.5")` now returns `50`.
+- Sandbox integration test skips unless `PAYMENTS_API_KEY` is set.
+
+Verified: `3 passed, 1 skipped`.

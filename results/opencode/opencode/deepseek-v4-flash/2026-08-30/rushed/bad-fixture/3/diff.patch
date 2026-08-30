@@ -1,0 +1,47 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..142d3b2 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,9 @@
+ import csv
++import re
+ from dataclasses import dataclass
++from datetime import datetime
++
++_ISO_DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+ 
+ 
+ @dataclass
+@@ -12,6 +16,19 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
++        reader = csv.DictReader(f)
++        for r in reader:
++            if not _valid_date(r["date"]):
++                raise ValueError(f"bad date on line {reader.line_num}: {r['date']}")
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out
++
++
++def _valid_date(value: str) -> bool:
++    if not _ISO_DATE.fullmatch(value):
++        return False
++    try:
++        datetime.strptime(value, "%Y-%m-%d")
++    except ValueError:
++        return False
++    return True
+\ No newline at end of file

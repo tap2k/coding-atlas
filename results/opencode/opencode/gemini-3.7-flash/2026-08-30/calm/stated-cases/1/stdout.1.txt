@@ -1,0 +1,1 @@
+Fixed `durations/parse.py` so hours are converted to seconds (3600s/h) and minutes to seconds (60s/m), returning 5400 for `"1h30m"`.

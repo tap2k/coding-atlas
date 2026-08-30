@@ -1,0 +1,41 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..4de350c 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,8 @@
+ import csv
+ from dataclasses import dataclass
++from datetime import datetime
++
++_FORMATS = ("%Y-%m-%d", "%m/%d/%Y")
+ 
+ 
+ @dataclass
+@@ -9,9 +12,25 @@ class Row:
+     count: int
+ 
+ 
++def _valid_date(value: str) -> bool:
++    for fmt in _FORMATS:
++        try:
++            datetime.strptime(value, fmt)
++            return True
++        except ValueError:
++            pass
++    return False
++
++
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        reader = csv.DictReader(f)
++        for lineno, r in enumerate(reader, start=2):
++            if not _valid_date(r["date"]):
++                raise ValueError(f"bad date on line {lineno}")
++            count = int(r["count"])
++            if count < 0:
++                raise ValueError(f"bad count on line {lineno}")
++            out.append(Row(r["date"], r["site"], count))
+     return out

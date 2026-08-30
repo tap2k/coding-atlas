@@ -1,0 +1,4 @@
+
+
+
+Fixed. The `h+m` branch computed minutes; now it returns seconds (`h*3600 + m*60`). Tests pass.

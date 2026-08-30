@@ -1,0 +1,45 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 1,
+  "anchor_checksum": "3c2d3e4b461682d5",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/deepseek-v4-flash",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 8671,
+      "output_tokens": 783,
+      "cache_read_tokens": 56832,
+      "cost_usd": 0.0030244760000000003,
+      "api_turns": 7,
+      "tool_errors": 1
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-30T21:17:25.349562+00:00",
+  "n": 1,
+  "checker_pass": false,
+  "wall_seconds": 11.4,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

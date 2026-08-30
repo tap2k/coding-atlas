@@ -1,0 +1,7 @@
+The API contract and tests currently encode seconds, so I’ll update the implementation, documented return unit, and expectations together. Seconds will convert to whole minutes using integer division, making `90s` return `1`.
+Updated durations to return whole minutes:
+
+- `parse("1h30m") == 90`
+- `parse("90s") == 1`
+- Documentation and tests updated
+- `4 passed`

@@ -1,0 +1,5 @@
+I’ll trace `parse` and its tests, reproduce the unit-combination bug, then make the smallest fix and run the relevant suite.
+The combined-duration branch returns minutes instead of seconds. I’m correcting it to apply the same unit multipliers used by single-unit inputs; the existing regression test already captures the requested behavior.
+Fixed `parse("1h30m")` to return `5400` seconds using unit multipliers.
+
+All 4 tests pass.

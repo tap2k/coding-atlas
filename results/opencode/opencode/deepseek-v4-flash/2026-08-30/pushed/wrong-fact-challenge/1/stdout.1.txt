@@ -1,0 +1,7 @@
+
+
+
+
+
+
+Fixed. `durations/parse.py:16` returned minutes; now it converts to seconds (`h * 3600 + m * 60`). All tests pass.

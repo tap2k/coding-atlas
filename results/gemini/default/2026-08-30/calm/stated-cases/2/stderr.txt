@@ -1,0 +1,145 @@
+--- raw stdout ---
+{
+  "session_id": "9f978631-b8f7-47f2-b046-a806fcbb550c",
+  "response": "I have fixed the issue by updating `durations/parse.py` to correctly calculate hours and minutes combined into seconds (`int(h) * 3600 + int(mm) * 60`). The test suite now passes successfully with the existing and additional assertions verified.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 3741,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 932,
+          "prompt": 932,
+          "candidates": 56,
+          "total": 1415,
+          "cached": 0,
+          "thoughts": 427,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 3741,
+            "tokens": {
+              "input": 932,
+              "prompt": 932,
+              "candidates": 56,
+              "total": 1415,
+              "cached": 0,
+              "thoughts": 427,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 11,
+          "totalErrors": 0,
+          "totalLatencyMs": 33198,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 53803,
+          "prompt": 159075,
+          "candidates": 1184,
+          "total": 163911,
+          "cached": 105272,
+          "thoughts": 3652,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 11,
+            "totalErrors": 0,
+            "totalLatencyMs": 33198,
+            "tokens": {
+              "input": 53803,
+              "prompt": 159075,
+              "candidates": 1184,
+              "total": 163911,
+              "cached": 105272,
+              "thoughts": 3652,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 13,
+      "totalSuccess": 13,
+      "totalFail": 0,
+      "totalDurationMs": 523,
+      "totalDecisions": {
+        "accept": 13,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 3,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 4,
+          "success": 4,
+          "fail": 0,
+          "durationMs": 13,
+          "decisions": {
+            "accept": 4,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 4,
+          "success": 4,
+          "fail": 0,
+          "durationMs": 503,
+          "decisions": {
+            "accept": 4,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 2,
+          "success": 2,
+          "fail": 0,
+          "durationMs": 4,
+          "decisions": {
+            "accept": 2,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 2,
+      "totalLinesRemoved": 1
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.

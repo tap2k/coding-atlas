@@ -106,11 +106,21 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
 
     def invoke(argv):
         out_file.unlink(missing_ok=True)
+        # own process group: on timeout, kill the whole tree. A surviving grandchild
+        # holding the pipe open would otherwise block us past the timeout forever.
+        proc = subprocess.Popen(argv, cwd=ws, env=env, text=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, stdin=subprocess.DEVNULL, start_new_session=True)
         try:
-            p = subprocess.run(argv, cwd=ws, env=env, text=True, capture_output=True, timeout=timeout, stdin=subprocess.DEVNULL)
-            out, err, rc, to = p.stdout, p.stderr, p.returncode, False
-        except subprocess.TimeoutExpired as e:
-            out, err, rc, to = e.stdout or "", e.stderr or "", None, True
+            out, err = proc.communicate(timeout=timeout)
+            rc, to = proc.returncode, False
+        except subprocess.TimeoutExpired:
+            os.killpg(proc.pid, 15)
+            try:
+                out, err = proc.communicate(timeout=10)
+            except subprocess.TimeoutExpired:
+                os.killpg(proc.pid, 9)
+                out, err = "", ""
+            rc, to = None, True
         raw = out
         out, served, meter = adapter.parse_output(raw, err, out_file.read_text() if out_file.exists() else None)
         served_models.append(served); meters.append(meter or {})

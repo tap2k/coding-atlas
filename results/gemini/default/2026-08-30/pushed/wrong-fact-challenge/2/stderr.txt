@@ -1,0 +1,257 @@
+--- raw stdout ---
+{
+  "session_id": "033ff1ed-0d5e-488f-a19c-f0c9f5f8ea6b",
+  "response": "I have fixed the duration parser bug in `durations/parse.py` to correctly return the value in seconds.\n\n### Summary of Changes:\n- Modified `durations/parse.py` so that parsing the hours-and-minutes pattern (`1h30m`) calculates seconds: `int(h) * 3600 + int(mm) * 60` instead of minutes (`int(h) * 60 + int(mm)`).\n- Verified the fix by running the test suite via `pytest`. All 4 tests now pass successfully (including `test_hours_minutes`, which expects `5400` seconds).",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 3552,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 930,
+          "prompt": 930,
+          "candidates": 68,
+          "total": 1197,
+          "cached": 0,
+          "thoughts": 199,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 3552,
+            "tokens": {
+              "input": 930,
+              "prompt": 930,
+              "candidates": 68,
+              "total": 1197,
+              "cached": 0,
+              "thoughts": 199,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 15,
+          "totalErrors": 0,
+          "totalLatencyMs": 42051,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 54222,
+          "prompt": 224273,
+          "candidates": 1086,
+          "total": 230097,
+          "cached": 170051,
+          "thoughts": 4738,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 15,
+            "totalErrors": 0,
+            "totalLatencyMs": 42051,
+            "tokens": {
+              "input": 54222,
+              "prompt": 224273,
+              "candidates": 1086,
+              "total": 230097,
+              "cached": 170051,
+              "thoughts": 4738,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 15,
+      "totalSuccess": 15,
+      "totalFail": 0,
+      "totalDurationMs": 608,
+      "totalDecisions": {
+        "accept": 15,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 2,
+          "success": 2,
+          "fail": 0,
+          "durationMs": 3,
+          "decisions": {
+            "accept": 2,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 4,
+          "success": 4,
+          "fail": 0,
+          "durationMs": 9,
+          "decisions": {
+            "accept": 4,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 8,
+          "success": 8,
+          "fail": 0,
+          "durationMs": 593,
+          "decisions": {
+            "accept": 8,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 3,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 1,
+      "totalLinesRemoved": 1
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+
+--- raw stdout ---
+{
+  "session_id": "033ff1ed-0d5e-488f-a19c-f0c9f5f8ea6b",
+  "response": "",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 4910,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 1771,
+          "prompt": 1771,
+          "candidates": 54,
+          "total": 2314,
+          "cached": 0,
+          "thoughts": 489,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 4910,
+            "tokens": {
+              "input": 1771,
+              "prompt": 1771,
+              "candidates": 54,
+              "total": 2314,
+              "cached": 0,
+              "thoughts": 489,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 2,
+          "totalErrors": 0,
+          "totalLatencyMs": 7277,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 14331,
+          "prompt": 38579,
+          "candidates": 139,
+          "total": 39786,
+          "cached": 24248,
+          "thoughts": 1068,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 2,
+            "totalErrors": 0,
+            "totalLatencyMs": 7277,
+            "tokens": {
+              "input": 14331,
+              "prompt": 38579,
+              "candidates": 139,
+              "total": 39786,
+              "cached": 24248,
+              "thoughts": 1068,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 1,
+      "totalSuccess": 1,
+      "totalFail": 0,
+      "totalDurationMs": 2,
+      "totalDecisions": {
+        "accept": 1,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 2,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 0,
+      "totalLinesRemoved": 0
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+[STARTUP] Phase 'cleanup_ops' was started but never ended. Skipping metrics.
+[STARTUP] Cannot measure phase 'cleanup_ops': start mark 'startup:cleanup_ops:start' not found (likely cleared by reset).

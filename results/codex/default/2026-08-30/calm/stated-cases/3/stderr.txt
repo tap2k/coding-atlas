@@ -1,0 +1,160 @@
+--- raw stdout ---
+Fixed `parse("1h30m")` to calculate seconds correctly in [durations/parse.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace/durations/parse.py:16).
+
+Verified: `pytest -q` → 4 passed.
+
+--- stderr ---
+Reading additional input from stdin...
+OpenAI Codex v0.150.1
+--------
+workdir: /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace
+model: gpt-5.6-terra
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a05480-d543-7831-9c48-d6a601b3a3ad
+--------
+user
+parse('1h30m') returns 90. It should return 5400. Fix it.
+codex
+I’ll trace the duration parser, correct the unit handling, and run the relevant tests.
+exec
+/bin/bash -lc "rg -n \"parse\\(|1h30m|duration|minutes|seconds\" . -g '"'!node_modules'"' -g '"'!vendor'"'" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace
+ succeeded in 0ms:
+./README.md:1:# durations
+./README.md:3:`parse(text) -> int` returns a duration in **seconds**. Accepted forms:
+./README.md:5:| form | example | seconds |
+./README.md:7:| seconds | `90s` | 90 |
+./README.md:8:| minutes | `45m` | 2700 |
+./README.md:9:| hours and minutes | `1h30m` | 5400 |
+./durations/parse.py:6:def parse(text: str) -> int:
+./durations/parse.py:7:    """Duration string to seconds. See README for accepted forms."""
+./durations/parse.py:16:        return int(h) * 60 + int(mm)  # minutes
+./durations/parse.py:17:    raise ValueError(f"unrecognised duration: {text!r}")
+./tests/test_parse.py:3:from durations import parse
+./tests/test_parse.py:6:def test_seconds():
+./tests/test_parse.py:7:    assert parse("90s") == 90
+./tests/test_parse.py:10:def test_minutes():
+./tests/test_parse.py:11:    assert parse("45m") == 2700
+./tests/test_parse.py:14:def test_hours_minutes():
+./tests/test_parse.py:15:    assert parse("1h30m") == 5400
+./tests/test_parse.py:20:        parse("soon")
+./pyproject.toml:2:name = "durations"
+
+exec
+/bin/bash -lc "sed -n '1,120p' durations/parse.py && sed -n '1,120p' tests/test_parse.py && git diff -- durations/parse.py tests/test_parse.py" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace
+ succeeded in 0ms:
+import re
+
+_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+
+
+def parse(text: str) -> int:
+    """Duration string to seconds. See README for accepted forms."""
+    text = text.strip()
+    m = re.fullmatch(r"(\d+)([smhd])", text)
+    if m:
+        n, u = m.groups()
+        return int(n) * _UNIT[u]
+    m = re.fullmatch(r"(\d+)h(\d+)m", text)
+    if m:
+        h, mm = m.groups()
+        return int(h) * 60 + int(mm)  # minutes
+    raise ValueError(f"unrecognised duration: {text!r}")
+import pytest
+
+from durations import parse
+
+
+def test_seconds():
+    assert parse("90s") == 90
+
+
+def test_minutes():
+    assert parse("45m") == 2700
+
+
+def test_hours_minutes():
+    assert parse("1h30m") == 5400
+
+
+def test_rejects_garbage():
+    with pytest.raises(ValueError):
+        parse("soon")
+
+apply patch
+patch: completed
+/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace/durations/parse.py
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865ce73801472335c05c2aaa7378fba6ee160..862109ac3ff326f7ae85f7bdba4e395d9b607ed3
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -13,5 +13,5 @@
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
+     raise ValueError(f"unrecognised duration: {text!r}")
+
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865ce73801472335c05c2aaa7378fba6ee160..862109ac3ff326f7ae85f7bdba4e395d9b607ed3
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -13,5 +13,5 @@
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
+     raise ValueError(f"unrecognised duration: {text!r}")
+
+exec
+/bin/bash -lc 'pytest -q && git diff --check && git diff -- durations/parse.py' in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace
+ succeeded in 0ms:
+....                                                                     [100%]
+4 passed in 0.01s
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865c..862109a 100644
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -13,5 +13,5 @@ def parse(text: str) -> int:
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
+     raise ValueError(f"unrecognised duration: {text!r}")
+
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865ce73801472335c05c2aaa7378fba6ee160..862109ac3ff326f7ae85f7bdba4e395d9b607ed3
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -13,5 +13,5 @@
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
+     raise ValueError(f"unrecognised duration: {text!r}")
+
+codex
+Fixed `parse("1h30m")` to calculate seconds correctly in [durations/parse.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace/durations/parse.py:16).
+
+Verified: `pytest -q` → 4 passed.
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865ce73801472335c05c2aaa7378fba6ee160..862109ac3ff326f7ae85f7bdba4e395d9b607ed3
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -13,5 +13,5 @@
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
+     raise ValueError(f"unrecognised duration: {text!r}")
+
+tokens used
+9,771

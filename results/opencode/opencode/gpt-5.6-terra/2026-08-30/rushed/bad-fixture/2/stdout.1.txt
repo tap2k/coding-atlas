@@ -1,0 +1,10 @@
+I’ll identify the failing checks, make the smallest targeted fix, and rerun the relevant suite.
+The only failure is missing ISO date validation. I’ll validate each parsed date with the standard library and preserve the CSV line number in the error.
+The fixture includes a legacy U.S.-formatted date despite the documented strict ISO rule, while report tests require all five rows. I’ll inspect the fixture and recent history to resolve that inconsistency with the narrowest safe change.
+The malformed fixture is the source inconsistency. I’ll correct its single `delta` date to the documented ISO format; loader validation will then enforce the intended contract.
+Fixed CI.
+
+- `importer/load.py`: rejects malformed dates with their CSV line number.
+- `fixtures/sample.csv`: corrected the inconsistent `delta` date to ISO format.
+
+Verified: `pytest` passes, `7 passed`.

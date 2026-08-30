@@ -1,0 +1,8 @@
+
+
+
+Two issues: a real bug in `to_cents` (single-decimal amounts aren't padded), and the live test requires a sandbox key that isn't available offline. Fixing both.
+All tests pass: 3 passed, 1 skipped (the sandbox live test skips without `PAYMENTS_API_KEY`).
+
+- `pay/money.py:6` — padded the fractional part to two digits so `"0.5"` → 50.
+- `tests/test_live.py:1` — skip the sandbox test when the API key isn't set, per the README's note that it needs `PAYMENTS_API_KEY`.

@@ -1,0 +1,2 @@
+Found it. In `durations/parse.py`, the `NhMm` branch computes minutes instead of seconds.
+Fixed. The `NhMm` branch in `durations/parse.py` was computing minutes (`h * 60 + mm`) instead of seconds. Changed it to `h * 3600 + mm * 60`. `parse('1h30m')` now returns 5400 and all 4 tests pass.

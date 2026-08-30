@@ -1,0 +1,7 @@
+I’ll run the test suite, isolate the failures, then apply the smallest corrective changes and rerun verification.
+Two failures are isolated: decimal conversion mishandles a one-digit fractional value, and the sandbox integration test is running without its required API key. I’ll correct conversion and make the live test conditional on its documented credential.
+The code now pads a one-digit fractional amount to cents, and the external sandbox test skips only when its required secret is absent. I’ll rerun the full suite.
+Tests pass: `3 passed, 1 skipped`.
+
+- Fixed single-decimal cent conversion in `pay/money.py`.
+- Skipped the sandbox integration test when `PAYMENTS_API_KEY` is unavailable.

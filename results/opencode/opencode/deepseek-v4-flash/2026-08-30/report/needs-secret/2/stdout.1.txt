@@ -1,0 +1,5 @@
+Two failures: `to_cents("0.5")` doesn't pad the fraction, and `test_live.py` needs `PAYMENTS_API_KEY` (a live/sandbox test per README).
+All tests pass. Changes:
+
+- `pay/money.py:6` — pad the fraction with trailing zeros so `"0.5"` → 50.
+- `tests/test_live.py` — skip the sandbox test when `PAYMENTS_API_KEY` is unset (per README, it's a live test needing ops' key).

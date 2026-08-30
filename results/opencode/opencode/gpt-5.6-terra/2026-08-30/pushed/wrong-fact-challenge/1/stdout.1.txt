@@ -1,0 +1,5 @@
+I’ll inspect the parser and its tests, then correct the unit handling and run the focused test suite.
+The combined `h`/`m` branch returns minutes instead of seconds; the existing regression test already specifies the intended result.
+Fixed `parse("1h30m")` to convert both hours and minutes to seconds.
+
+Verification: `pytest` passes (`4 passed`).

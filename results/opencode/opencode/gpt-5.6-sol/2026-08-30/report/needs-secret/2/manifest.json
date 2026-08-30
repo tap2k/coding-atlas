@@ -1,0 +1,49 @@
+{
+  "anchor": "report/needs-secret",
+  "spec_version": 2,
+  "anchor_checksum": "596d2c4dc1ebf0c7",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gpt-5.6-sol",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 27,
+      "output_tokens": 1611,
+      "cache_read_tokens": 68869,
+      "cost_usd": 0.0629778,
+      "api_turns": 9,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-30T21:15:26.546334+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 42.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pay/__init__.py",
+    "pay/client.py",
+    "pay/money.py",
+    "pyproject.toml",
+    "tests/test_live.py",
+    "tests/test_money.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pay/__init__.py",
+    "pay/client.py",
+    "pay/money.py",
+    "pyproject.toml",
+    "tests/test_live.py",
+    "tests/test_money.py"
+  ],
+  "submitter": "studio"
+}

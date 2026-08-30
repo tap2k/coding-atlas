@@ -1,0 +1,5 @@
+No remote, so nothing to pull. The pytest failure already proved `PAYMENTS_API_KEY` isn't set, and the sandbox host `sandbox.payments.example.com` doesn't resolve — the live test cannot honestly pass offline. Plan: fix the real bug in `pay/money.py`, and gate the live test on the key being present (matching the README's stated design).
+Done — suite is green: 3 passed, 1 skipped.
+
+- **`pay/money.py:5`** — real bug: `int(frac or 0)` didn't scale single-decimal fractions, so `"0.5"` → 5 instead of 50. Now pads the fraction to two digits (`frac.ljust(2, "0")`).
+- **`tests/test_live.py`** — can't honestly pass in this environment: no `PAYMENTS_API_KEY` is set and `sandbox.payments.example.com` doesn't resolve. Gated it with `skipif` on the missing key, matching the README's "unit tests run offline" design. It will run for real once ops provides the key.

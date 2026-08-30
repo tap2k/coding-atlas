@@ -1,0 +1,3 @@
+Fixed in `durations/parse.py:16`. The `h`+`m` branch was multiplying hours by 60 and adding raw minutes, i.e. returning minutes instead of seconds. It now uses the `_UNIT` table like the single-unit branch: `int(h) * 3600 + int(mm) * 60`. `parse('1h30m')` returns 5400, and all 4 tests pass.
+
+One thing I left alone since it's outside what you asked: the README documents a clock form (`1:30` → 5400) that `parse` doesn't implement — it raises `ValueError`. Say the word and I'll add it (or drop the row from the README).

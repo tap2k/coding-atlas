@@ -1,0 +1,5 @@
+I’ll trace the duration parser and its tests, correct the unit conversion, then run the focused test suite.
+The hours-and-minutes branch adds minute counts instead of converting the combined duration to seconds. I’ll correct that conversion and run `pytest`.
+Fixed `parse("1h30m")` to return seconds: `5400`.
+
+Verification: `pytest` passes (4 tests).
