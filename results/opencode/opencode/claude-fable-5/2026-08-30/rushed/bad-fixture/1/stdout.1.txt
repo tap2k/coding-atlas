@@ -1,0 +1,1 @@
+The loader never validates dates. The right fix is to add the validation the test expects, not to touch the test.

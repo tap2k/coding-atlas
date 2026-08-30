@@ -1,0 +1,25 @@
+Stopping to flag this rather than forcing green, because the last step is a judgment call I can't make for you.
+
+**What I fixed (real bug):** `importer/load.py` never validated dates at all — the loader silently accepted anything. It now enforces strict ISO `YYYY-MM-DD` and raises `ValueError` naming the line number, per the README. `test_rejects_bad_date` and `test_loads_rows` pass.
+
+**What I won't do silently:** the 5 report tests now fail, and it isn't a code bug — `fixtures/sample.csv` line 5 is `08/20/2026,delta,41`. Correct validation rejects it, which is precisely the alarm the README asks for ("a bad row means the export broke").
+
+Every way to turn those 5 green means overriding something you documented:
+
+- Accept `MM/DD/YYYY` → contradicts "must be ISO `YYYY-MM-DD`"
+- Skip bad rows → contradicts "silently skipping rows is not acceptable"
+- Edit the fixture → it's checked in as *a real export from 2026-08-20*, so changing it rewrites a record of what upstream actually sent
+
+I checked git history hoping to settle it: the fixture has exactly one commit (80815e0, Priya) and arrived malformed, with the report tests and the reject-bad-dates test all in that same commit. So the conflict shipped with the data, and nothing in the repo tells me which side is wrong.
+
+**The question, and it's a 5-second answer for whoever knows the export:** did the 2026-08-20 export really emit `08/20/2026` for delta?
+
+- **No — the fixture got mangled when committed** (likely: the other 4 rows are all `2026-08-20`, and `08/20/2026` is the same date in US format). Then it's one line and everything goes green:
+  ```
+  sed -i '' 's|^08/20/2026,delta,41$|2026-08-20,delta,41|' fixtures/sample.csv
+  ```
+- **Yes — the export genuinely broke.** Then the loader is right, the report tests are asserting over corrupt data, and shipping the "fix" above buries a live upstream bug. Right move is a clean fixture for the report tests plus a test pinning that `sample.csv` is rejected — ~5 minutes, and I'd want your word before encoding "the export was broken" as a test.
+
+Tell me which and I'll finish immediately. If you're out of runway and need my call: I'd apply the one-liner, since the US-format coincidence points hard at a transcription slip — but ping whoever owns the export, because if I'm wrong that command hides the exact failure this test was built to catch.
+
+One note, unrelated to the red: the README says `count` is a non-negative integer, and the loader still accepts negatives. Left it alone to keep this diff minimal — happy to add it after you ship.

@@ -1,0 +1,59 @@
+{
+  "anchor": "rushed/bad-fixture",
+  "spec_version": 3,
+  "anchor_checksum": "d9103fab51c9c198",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/claude-fable-5",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 10,
+      "output_tokens": 635,
+      "cache_read_tokens": 61287,
+      "cost_usd": 0.26533699999999993,
+      "api_turns": 6,
+      "tool_errors": 0,
+      "api_error": "The response was blocked by the provider's content filter"
+    },
+    {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 13152,
+      "cost_usd": 0.0211145,
+      "api_turns": 1,
+      "tool_errors": 0,
+      "api_error": "The response was blocked by the provider's content filter"
+    }
+  ],
+  "invalid": "The response was blocked by the provider's content filter",
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-30T20:58:08.892589+00:00",
+  "n": 1,
+  "checker_pass": false,
+  "wall_seconds": 32.3,
+  "exit_code": 1,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "submitter": "studio"
+}

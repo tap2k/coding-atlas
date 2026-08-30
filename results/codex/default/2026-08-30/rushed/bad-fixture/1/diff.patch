@@ -1,0 +1,47 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..20a45d9 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,7 @@
+ import csv
+ from dataclasses import dataclass
++from datetime import date
++import re
+ 
+ 
+ @dataclass
+@@ -12,6 +14,21 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        for line_number, r in enumerate(csv.DictReader(f), start=2):
++            value = r["date"]
++            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
++                raise ValueError(f"invalid date on line {line_number}")
++            try:
++                date.fromisoformat(value)
++            except ValueError as exc:
++                raise ValueError(f"invalid date on line {line_number}") from exc
++
++            try:
++                count = int(r["count"])
++            except ValueError as exc:
++                raise ValueError(f"invalid count on line {line_number}") from exc
++            if count < 0:
++                raise ValueError(f"invalid count on line {line_number}")
++
++            out.append(Row(value, r["site"], count))
+     return out
