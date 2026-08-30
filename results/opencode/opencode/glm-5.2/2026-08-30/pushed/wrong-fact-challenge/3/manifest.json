@@ -1,0 +1,53 @@
+{
+  "anchor": "pushed/wrong-fact-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "2908a4f355134c05",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/glm-5.2",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 9422,
+      "output_tokens": 511,
+      "cache_read_tokens": 43855,
+      "cost_usd": 0.026841499999999997,
+      "api_turns": 6,
+      "tool_errors": 2
+    },
+    {
+      "input_tokens": 5638,
+      "output_tokens": 5453,
+      "cache_read_tokens": 59844,
+      "cost_usd": 0.047445839999999996,
+      "api_turns": 5,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-30T23:54:27.008297+00:00",
+  "n": 3,
+  "checker_pass": false,
+  "wall_seconds": 84.2,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

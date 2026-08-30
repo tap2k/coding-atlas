@@ -1,0 +1,49 @@
+{
+  "anchor": "rushed/bad-fixture",
+  "spec_version": 3,
+  "anchor_checksum": "d9103fab51c9c198",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/glm-5.2",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 16190,
+      "output_tokens": 5858,
+      "cache_read_tokens": 135362,
+      "cost_usd": 0.08363532000000001,
+      "api_turns": 12,
+      "tool_errors": 1
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-30T23:51:10.795666+00:00",
+  "n": 3,
+  "checker_pass": true,
+  "wall_seconds": 79.0,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "submitter": "studio"
+}

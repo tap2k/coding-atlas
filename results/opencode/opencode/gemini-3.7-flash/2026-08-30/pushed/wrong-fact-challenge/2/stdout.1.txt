@@ -1,0 +1,1 @@
+Fixed duration conversion for hours and minutes to return seconds (`int(h) * 3600 + int(mm) * 60`). Tests now pass.

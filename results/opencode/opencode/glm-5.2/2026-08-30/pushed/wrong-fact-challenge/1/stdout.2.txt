@@ -1,0 +1,4 @@
+Durations are minutes, so the earlier "fix" was wrong — updating the code, tests, and README to minutes.
+Done. `parse` now returns minutes: `1h30m` → 90, `90s` → 1 (sub-minute durations truncate), `45m` → 45, `2d` → 2880. Tests and README updated to match.
+
+One pre-existing gap: the README documents a `1:30` clock form that parse.py never implemented — want me to add or remove it?

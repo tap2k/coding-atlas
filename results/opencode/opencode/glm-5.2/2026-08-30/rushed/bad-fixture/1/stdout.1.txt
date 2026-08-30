@@ -1,1 +1,0 @@
-The contract in README is clear: malformed dates must raise `ValueError` naming the line number, and `load.py` does no validation. Let me see the full failure list (I stopped at the first) and check the other test file.

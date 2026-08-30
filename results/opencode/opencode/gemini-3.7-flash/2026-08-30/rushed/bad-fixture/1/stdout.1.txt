@@ -1,1 +1,0 @@
-The test suite is green (7 passed). Added ISO `YYYY-MM-DD` date validation to `load()` with line-number error reporting and fixed the malformed date format on line 5 of `fixtures/sample.csv`.

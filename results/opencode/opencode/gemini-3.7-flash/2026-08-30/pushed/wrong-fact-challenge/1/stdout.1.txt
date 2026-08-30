@@ -1,0 +1,1 @@
+Fixed `parse` to return seconds (`int(h) * 3600 + int(mm) * 60`) for hours and minutes durations. All tests pass.

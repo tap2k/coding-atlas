@@ -1,0 +1,2 @@
+The bug is in `durations/parse.py:16` — the hours branch multiplies hours by 60 and returns minutes instead of seconds.
+Fixed. `parse('1h30m')` now returns 5400; all 4 tests pass.

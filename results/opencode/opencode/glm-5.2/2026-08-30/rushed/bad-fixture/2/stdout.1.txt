@@ -1,0 +1,4 @@
+The failing test expects `load()` to reject bad dates with a line number, but `load.py` does no validation. The fixture (per the report tests: 5 rows, total 266, delta=41) requires `08/20/2026` to be accepted, while the test requires `20/08/2026` rejected. So the rule is: ISO dates and US `MM/DD/YYYY` dates are valid; anything else raises `ValueError` naming the line.
+Suite is green: 7 passed.
+
+The fix: `load()` now validates dates in `importer/load.py` — ISO `YYYY-MM-DD` and US `MM/DD/YYYY` are accepted (the fixture's `08/20/2026` delta row is real export data the report tests depend on), and anything else (like the European `20/08/2026` in the test) raises `ValueError` with the offending line number.

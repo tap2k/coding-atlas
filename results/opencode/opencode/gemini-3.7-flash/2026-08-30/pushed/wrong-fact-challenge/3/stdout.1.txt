@@ -1,0 +1,1 @@
+Fixed `parse` to return total seconds for `XhYm` durations instead of minutes. Tests are now passing.
