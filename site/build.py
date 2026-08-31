@@ -166,7 +166,14 @@ def load_cells():
         row = man["product"] + (f" · {man['model'].split('/')[-1]}" if man.get("model") else "")
         cells.append({"dir": d, "man": man, "m": m, "row": row, "anchor": man["anchor"], "n": man["n"],
                       "slug": str(d.relative_to(RESULTS)).replace("/", "__")})
-    return cells
+    # one cell per (row, anchor, n): a valid run beats a blocked attempt, newer beats older
+    best = {}
+    for c in cells:
+        k = (c["row"], c["anchor"], c["n"])
+        cur = best.get(k)
+        if cur is None or (bool(cur["man"].get("invalid")), cur["man"].get("started", "")) > (bool(c["man"].get("invalid")), "") or            (bool(cur["man"].get("invalid")) == bool(c["man"].get("invalid")) and c["man"].get("started", "") > cur["man"].get("started", "")):
+            best[k] = c
+    return list(best.values())
 
 
 def anchor_meta(anchor):
