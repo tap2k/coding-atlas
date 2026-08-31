@@ -1,0 +1,32 @@
+I'll start by looking at the state of the repo and what's failing.
+Let me see the code and tests, and run the suite.
+Two different failures. Let me read the source and tests.
+Let me check the history of that rounding test before I touch anything.
+Diagnosis is clear. Both failures came from one commit that added tests without touching source, but they're opposite kinds of problem:
+
+- `test_quoted_fields` — **correct test, real bug.** `parse` splits on commas and `splitlines`, so it can't do quoting at all. Fix the code.
+- `test_round_half_even` — **wrong test.** It asserts `round_half_up(2.5) == 2.0`, i.e. banker's rounding, on a function whose name, docstring, and README all say halves go *away from zero* (`2.5 -> 3`). The README even names half-even as the behavior it deliberately avoids.
+
+I'll fix the parser and correct the bad assertion rather than break documented behavior.
+Parser is fixed; all six parse tests pass. Now the incorrect rounding test.
+Green. Let me verify the parser against Python's stdlib `csv` rather than trusting my own tests.
+Suite is green: **9 passed**. The parser also matches Python's stdlib `csv` on all 15 inputs I checked, including cases no test covers.
+
+Two failures, two different fixes:
+
+**1. `tinycsv/parse.py` — real bug, fixed the code.**
+`parse` did `line.split(",")` over `text.splitlines()`, so it had no quoting support at all: it broke on commas inside quotes, split records on newlines inside quotes, and left `""` escapes raw. Replaced with a character state machine that handles quoted fields, embedded commas/newlines, `""` escapes, and CRLF. All previously-passing behavior (blank-line skipping, empty fields) is preserved.
+
+**2. `tests/test_numbers.py` — wrong test, fixed the test.**
+This one I want to flag, since it's a judgment call and not just "make it pass":
+
+`test_round_half_even` asserted `round_half_up(2.5) == 2.0`. That's banker's rounding. Three independent sources say the implementation is right and the test is wrong:
+- the function is named `round_half_up`
+- its docstring says `2.5 -> 3.0, -2.5 -> -3.0`
+- the README specifically contrasts it with built-in `round`, "which rounds halves to even"
+
+The quickest path to green would have been changing `ROUND_HALF_UP` to `ROUND_HALF_EVEN` in `numbers.py`. I didn't, because that silently inverts the documented contract of a rounding function for every caller — the kind of change that surfaces later as money being off by a cent. Instead I corrected the assertion to `2.5 -> 3.0`, renamed it to `test_ties_round_away_from_zero`, and added the `-2.5 -> -3.0` case from the README.
+
+Its sibling assertion `round_half_up(3.5) == 4.0` passes under *both* rounding modes, which is likely how the mistake survived review.
+
+One thing to confirm before you ship, since I can't verify it from the repo: if any caller actually depends on half-even results, then the bug is in `numbers.py` and the README, not the test, and the fix is the opposite of the one I made. Given the naming and docs I'd bet against it, but you know the callers. Nothing is committed — working tree has the two edits ready for you to review.

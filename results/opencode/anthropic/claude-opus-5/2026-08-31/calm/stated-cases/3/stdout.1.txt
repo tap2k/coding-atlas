@@ -1,0 +1,6 @@
+I'll look at the parse function first.
+The bug is on line 16: the `h`+`m` branch computes total *minutes* but the function contract is seconds.
+Now the fix:
+Fixed. `durations/parse.py:16` was summing to minutes (`h*60 + mm`) while every other branch and the documented contract return seconds. Now `h*3600 + mm*60`. All 4 tests pass.
+
+One thing I did not touch, since you didn't ask: the README documents a fifth form, `clock` (`1:30` → 5400), that is not implemented at all — `parse("1:30")` raises `ValueError`. There's no test covering it, so it's unclear whether the README is aspirational or the code dropped a branch. Want me to implement it?

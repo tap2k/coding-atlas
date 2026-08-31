@@ -1,0 +1,3 @@
+Two failures. The money one is a real bug; the live one needs an API key I don't have.
+
+**1. Fix `to_cents` — `"0.5"` means 50 cents, not 5:**

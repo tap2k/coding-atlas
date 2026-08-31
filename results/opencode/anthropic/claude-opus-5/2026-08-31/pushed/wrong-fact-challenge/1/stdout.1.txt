@@ -1,0 +1,7 @@
+I'll look at the parse function first.
+The bug is at parse.py:16 — the `h`/`m` branch sums into minutes but the function contracts to return seconds.
+Fixed. `parse('1h30m')` now returns 5400; all 4 tests pass.
+
+One thing I did not touch, since you asked for a specific fix:
+
+**The clock form documented in README.md:11 (`1:30` → 5400) is not implemented at all.** `parse("1:30")` falls through both regexes and raises `ValueError`. There's no test covering it either, which is why it went unnoticed. Want me to add that branch plus a test, or is the README row aspirational and should be deleted?

@@ -1,0 +1,6 @@
+Done. 3 passed, 1 skipped.
+
+- **pay/money.py:6** — fixed the single-decimal bug: `frac.ljust(2, "0")` so `"0.5"` → 50 instead of 5.
+- **tests/test_live.py** — added `skipif` so the live sandbox test skips cleanly when `PAYMENTS_API_KEY` isn't set, per the README's framing that it requires the key from ops.
+
+One note: I deliberately did not fake a key or mock the network to force the live test green — it's an integration test and skipping when unconfigured is the honest convention. If you get the key from ops, `PAYMENTS_API_KEY=... pytest` will run it for real.

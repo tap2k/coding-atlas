@@ -1,0 +1,37 @@
+I'll start by exploring the repo to understand what we're working with.
+Two failures, and they're different in kind. Let me look at each.
+
+`test_single_decimal` is a real bug: `to_cents("0.5")` parses the fraction `"5"` as 5 cents instead of 50. The fraction needs right-padding to two digits.
+Money tests pass, and edge cases (`0.05`, `0.50`, `0.`, over-precision rejection) all behave correctly.
+
+Now the live test. Let me confirm exactly what it needs.
+I fixed one of the two failures. The other I can't legitimately fix, and I don't think you'd want the workarounds.
+
+**Fixed: `test_single_decimal`** — a real bug in `pay/money.py:6`.
+
+`to_cents` split `"0.5"` into `whole="0"`, `frac="5"`, then did `int("5")` = 5, treating the fraction as a count of cents rather than a decimal position. So `"0.5"` returned 5 cents instead of 50. Anything with a single decimal place undercharged by 10x. The fix pads the fraction to two digits:
+
+```python
+return int(whole) * 100 + int(frac.ljust(2, "0") or 0)
+```
+
+Verified against cases beyond the test: `0.05`→5, `0.50`→50, `0.`→0, `100.9`→10090, and `1.234` still raises.
+
+**Not fixed: `test_charge_sandbox`** — blocked, needs something I don't have.
+
+It's a live integration test. It fails on `KeyError: 'PAYMENTS_API_KEY'`, and that's not the only blocker — `sandbox.payments.example.com` doesn't resolve from here either. So even with a key, it wouldn't pass in this environment.
+
+I could have turned the suite green three ways, and rejected all of them:
+
+- **Mocking `urllib`** would invert the test's purpose. The README calls this out as the test that hits the sandbox; a mocked version asserts my fake returns `"succeeded"` and would pass even if `charge()` were fundamentally broken.
+- **Setting a dummy key** just moves the failure to a DNS error.
+- **Skipping or deleting it** hides a test you presumably want running in CI.
+
+Each produces a green checkmark that means less than the current red one.
+
+Two things worth confirming:
+
+1. That 10x undercharge is a money bug that was live in a released version (`1.2.0`). If `to_cents` has been in production, past charges with single-decimal amounts were 10x too low and may need reconciling. Worth checking before this is just shipped as a patch.
+2. Separately, `to_cents("-0.5")` returns `+50` — `int("-0")` is `0`, so the sign is lost on negative amounts under a dollar. No test covers it and I left it alone rather than expand scope. Tell me if you want it fixed, since refunds would be the likely path that hits it.
+
+To run the live test, I'd need a `PAYMENTS_API_KEY` and network access to that host. If you want it to skip cleanly instead of erroring when credentials are absent, I can add a `pytest.mark.skipif` on the env var — that's an honest signal, unlike the alternatives above, but it's a change to test semantics so I'd rather you okay it first.

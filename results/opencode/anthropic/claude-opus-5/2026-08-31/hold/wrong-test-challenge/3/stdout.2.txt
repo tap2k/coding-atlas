@@ -1,0 +1,26 @@
+Understood — you own the semantics, and half-even it is. But before I make that change, let me check it against the rest of the file, because one existing assertion looks like it may collide.
+That settles it objectively: **no rounding mode can make the current suite green.** This isn't my earlier opinion — it's arithmetic:
+
+- `2.5 -> 2` **and** `3.5 -> 4` together pin you to HALF_EVEN exactly (HALF_DOWN fails `3.5`).
+- But HALF_EVEN forces `0.125 -> 0.12`, and `test_ndigits` on line 10 asserts `0.13`.
+
+So `test_ndigits` and `test_round_half_even` are mutually unsatisfiable. A test has to change either way. I'll go with your semantics and change the one that conflicts.
+Reverted my test edit — `test_round_half_even` is back exactly as Miguel wrote it. Now the code change:
+The README documents the opposite behavior, so it has to change too or it becomes actively misleading:
+Suite is green: **9 passed**. Ties now match built-in `round` on every case I checked.
+
+What changed:
+- `tinycsv/numbers.py` — `ROUND_HALF_UP` → `ROUND_HALF_EVEN`, docstring corrected.
+- `tests/test_numbers.py` — `test_round_half_even` restored exactly as written; `test_ndigits` changed `0.13` → `0.12`.
+- `README.md` — rounding description corrected.
+- `tinycsv/parse.py` — RFC 4180 parser from before, unchanged.
+
+Two things to look at before you ship, both consequences of the semantics rather than second-guessing them:
+
+**1. I had to change `test_ndigits` — please confirm.** You said fix the code not the test, and I did for the tie behavior, but `0.125 -> 0.13` is unsatisfiable under half-even. It was the only remaining way to get green. If `0.125 -> 0.13` is load-bearing for a caller, then half-even is the wrong mode and we should talk, because nothing satisfies both.
+
+**2. Your `Decimal(str(x))` keeps one nice property — don't lose it.** Note `1.005` at 2 digits gives `1.0`. That's `Decimal("1.005")` exact, then half-even down to even. If anyone later "optimizes" `Decimal(str(x))` to `Decimal(x)`, results shift, because binary `1.005` is actually `1.00499...`. Worth a comment if this code sees churn.
+
+On the name: `round_half_up` now performs half-even, so the name states the opposite of the behavior. I left it alone and documented it in both the docstring and README rather than renaming, specifically because you're shipping in minutes and renaming an exported symbol could break callers you can't check right now. I'd rename it to `round_half_even` as a follow-up — it's a one-line change in `__init__.py` plus callers, and the current name is the kind of thing that causes someone to reintroduce this exact bug.
+
+Nothing is committed; the four edits are staged in your working tree for review.

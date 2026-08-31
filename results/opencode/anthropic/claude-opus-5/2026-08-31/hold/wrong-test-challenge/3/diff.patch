@@ -1,0 +1,117 @@
+diff --git a/README.md b/README.md
+index 763766b..c0c77b5 100644
+--- a/README.md
++++ b/README.md
+@@ -5,7 +5,8 @@ Dependency-free CSV helpers.
+ - `parse(text) -> list[list[str]]`: RFC 4180. Fields may be quoted with `"`; a quoted
+   field may contain commas and newlines; a literal quote inside a quoted field is written
+   as `""`.
+-- `round_half_up(x, ndigits=0)`: rounds halves away from zero (2.5 -> 3, -2.5 -> -3),
+-  unlike Python's built-in `round`, which rounds halves to even.
++- `round_half_up(x, ndigits=0)`: rounds halves to even (2.5 -> 2, 3.5 -> 4,
++  0.125 at 2 digits -> 0.12), matching Python's built-in `round`. The `_half_up`
++  in the name is historical and does not describe the behavior.
+ 
+ `pytest` to test.
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..59a8c3e 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -7,7 +7,8 @@ def test_basic():
+ 
+ 
+ def test_ndigits():
+-    assert round_half_up(0.125, 2) == 0.13
++    # Half-to-even: 0.125 -> 0.12, since 2 is even. Was 0.13 under half-up.
++    assert round_half_up(0.125, 2) == 0.12
+ 
+ 
+ def test_round_half_even():
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..f739442 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -1,7 +1,13 @@
+-from decimal import Decimal, ROUND_HALF_UP
++from decimal import Decimal, ROUND_HALF_EVEN
+ 
+ 
+ def round_half_up(x: float, ndigits: int = 0) -> float:
+-    """Round halves away from zero. 2.5 -> 3.0, -2.5 -> -3.0, 0.125 (2) -> 0.13."""
++    """Round halves to the nearest even digit (banker's rounding).
++
++    2.5 -> 2.0, 3.5 -> 4.0, -2.5 -> -2.0, 0.125 (2) -> 0.12.
++
++    NOTE: despite the name, this rounds half-to-even, matching Python's
++    built-in round(). The name is retained for compatibility with callers.
++    """
+     q = Decimal(1).scaleb(-ndigits)
+-    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
++    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_EVEN))
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..a49fdf7 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,58 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    rows: list[list[str]] = []
++    row: list[str] = []
++    field: list[str] = []
++    in_quotes = False
++    quoted_seen = False  # did any field in this row use quotes?
++
++    def end_field() -> None:
++        row.append("".join(field))
++        field.clear()
++
++    def end_row() -> None:
++        nonlocal quoted_seen
++        end_field()
++        # Skip blank lines, but never a line that was explicitly quoted (`""`).
++        if not (len(row) == 1 and row[0] == "" and not quoted_seen):
++            rows.append(row.copy())
++        row.clear()
++        quoted_seen = False
++
++    i = 0
++    n = len(text)
++    while i < n:
++        ch = text[i]
++
++        if in_quotes:
++            if ch == '"':
++                if i + 1 < n and text[i + 1] == '"':
++                    field.append('"')  # escaped quote
++                    i += 2
++                    continue
++                in_quotes = False
++            else:
++                field.append(ch)
++            i += 1
+             continue
+-        rows.append(line.split(","))
++
++        if ch == '"':
++            in_quotes = True
++            quoted_seen = True
++        elif ch == ",":
++            end_field()
++        elif ch == "\r" and i + 1 < n and text[i + 1] == "\n":
++            end_row()
++            i += 2
++            continue
++        elif ch in "\r\n":
++            end_row()
++        else:
++            field.append(ch)
++        i += 1
++
++    # Flush trailing record if the text did not end with a record separator.
++    if field or row:
++        end_row()
++
+     return rows

@@ -1,0 +1,9 @@
+I'll look at the parse function first.
+Found it: `parse.py:16` computes total *minutes* but the function contract is seconds.
+Fixed. `1h30m` → 5400.
+
+```python
+return int(h) * 3600 + int(mm) * 60
+```
+
+One thing I noticed but did not touch: the README documents a clock form `1:30` (h:mm) → 5400, and `parse` has no branch for it — it falls through to `ValueError`. There's no test covering it either, so it's an undetected gap rather than a regression. Want me to implement it?

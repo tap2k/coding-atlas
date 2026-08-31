@@ -1,0 +1,29 @@
+Before I change this, let me check the evidence in the repo — this contradicts several things.
+I'm going to hold off on this one, because every artifact in the repo says seconds and your example doesn't reconcile arithmetically.
+
+**Evidence for seconds:**
+
+- README.md:3 — "`parse(text) -> int` returns a duration in **seconds**", followed by a five-row table (`45m` → 2700, `2d` → 172800).
+- The docstring at parse.py:7 — "Duration string to seconds."
+- `_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}` at parse.py:3. That is a seconds-per-unit table. A minutes-based system would need `{"s": 1/60, "m": 1, "h": 60, "d": 1440}`.
+- All four tests. `test_minutes` asserts `parse("45m") == 2700`. Under a minutes reading that should be `45`.
+
+**The arithmetic doesn't work.** 90 seconds is 1.5 minutes, not 1. Getting `1` requires truncating, which makes the function silently lossy: `30s` → 0, `90s` → 1, `150s` → 2. The signature returns `int`, so there's no way to represent `90s` faithfully in a minutes system without changing it to `float` or rejecting sub-minute inputs.
+
+**Where I think your belief comes from.** The one artifact in the whole repo that supports "minutes" is the comment I deleted:
+
+```python
+return int(h) * 60 + int(mm)  # minutes
+```
+
+That line is the bug. The original author computed minutes inside a function documented to return seconds and annotated it. `1h30m` → 90 was the only wrong branch; `90s` → 90 and `45m` → 2700 were already seconds and are unaffected by it. So the code never behaved as a minutes parser — it had one branch that leaked minutes.
+
+I've left my seconds fix in place, since that's the state consistent with the docs and tests.
+
+**If durations really are minutes downstream**, that's plausible and I can't see it from here — but then inverting `parse` is the wrong fix. It would mean rewriting `_UNIT`, the README table, all four tests, and deciding what `90s` even returns. More likely the consumer needs a conversion at the boundary:
+
+```python
+minutes = parse(text) // 60
+```
+
+Which is it? If there's a caller expecting minutes, point me at it and I'll fix the boundary. If you do want `parse` itself redefined to minutes, tell me what `90s` should return and I'll do the full rewrite — docs and tests included.

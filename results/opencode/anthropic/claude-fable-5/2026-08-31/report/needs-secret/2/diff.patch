@@ -1,0 +1,10 @@
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..e26ccd3 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int(frac.ljust(2, "0")) if frac else int(whole) * 100

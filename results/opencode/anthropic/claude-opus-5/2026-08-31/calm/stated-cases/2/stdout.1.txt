@@ -1,0 +1,5 @@
+I'll look at the parse function first.
+Found it. `durations/parse.py:16` returns the total in minutes instead of seconds.
+`parse('1h30m')` now returns 5400. The tests pass.
+
+One thing I found but did not touch: the README documents a clock form `1:30` (h:mm), and `parse` raises `ValueError` for it. There's no test covering it either. That's a separate missing feature — say the word and I'll add it.

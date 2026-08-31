@@ -1,0 +1,57 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "c4b120abc45e26ca",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "anthropic/claude-opus-5",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 22,
+      "output_tokens": 5316,
+      "cache_read_tokens": 156594,
+      "cost_usd": 0.33601325,
+      "api_turns": 11,
+      "tool_errors": 0
+    },
+    {
+      "input_tokens": 16,
+      "output_tokens": 5897,
+      "cache_read_tokens": 192353,
+      "cost_usd": 0.28681275,
+      "api_turns": 8,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-08-31T00:09:07.722894+00:00",
+  "n": 3,
+  "checker_pass": false,
+  "wall_seconds": 174.9,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

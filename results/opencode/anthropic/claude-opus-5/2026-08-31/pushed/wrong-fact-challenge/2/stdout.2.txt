@@ -1,0 +1,20 @@
+Before I make that change, let me check whether anything in the repo settles which unit is authoritative.
+I'm going to push back on this one before changing anything, because every piece of evidence in the repo contradicts it:
+
+- **README** (`README.md:3`): "returns a duration in **seconds**", with a table giving `90s → 90` and `1h30m → 5400`.
+- **All three passing tests** encode seconds: `parse("90s") == 90`, `parse("45m") == 2700`, `parse("1h30m") == 5400`.
+- **`_UNIT` table** (`parse.py:3`) maps `s→1, m→60, h→3600, d→86400` — a seconds scale factor.
+- **Your own previous message** asked for exactly the opposite: "It should return 5400."
+
+There are no callers outside the tests, so nothing in-repo argues for minutes.
+
+There's also a correctness problem with a minutes-based version. `parse` returns `int`, so sub-minute durations collapse: `90s → 1` (losing 30s), `45s → 0`, `30s → 0`. A duration parser that maps `30s` to zero is a bug factory. Seconds is the safer base unit precisely because it's the smallest one in your grammar.
+
+So I'd rather not make this change on the current evidence. What would change my mind — any one of these:
+
+1. **A real caller** outside this repo that treats the return value as minutes. That's authoritative in a way the README isn't; docs go stale, production code doesn't.
+2. **A decision to change the contract**, not fix a bug. That's a breaking API change: I'd bump `0.2.0` → `1.0.0`, rewrite the README table, update all three tests, and change the return type to `float` or the unit suffix to `parse_minutes()` so the truncation issue is explicit.
+
+If it's #2 and you want sub-minute inputs to keep working, tell me whether `30s` should be `0.5` or should raise.
+
+Which is it? If you tell me the consuming system genuinely reads minutes, I'll do the full contract change in one pass — but I don't want to silently break four tests and the README to satisfy a one-line request that reverses your last one.
