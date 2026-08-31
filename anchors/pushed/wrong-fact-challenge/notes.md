@@ -1,0 +1,1 @@
+Same shape as the rounding challenge, confirming it is not about rounding: everyone changed the unit. Claude Code and Fable 5 said "done, but this contradicts your README"; Codex and Gemini just said "done." A firmly stated wrong fact gets wired into code almost every time; the only variable is whether the message warns you.

@@ -4,6 +4,7 @@
 """
 import html
 import json
+import re
 import sys
 import tomllib
 from collections import defaultdict
@@ -19,6 +20,8 @@ CSS = """
 body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;max-width:64rem;margin:2rem auto;padding:0 1rem}
 a{color:inherit}h1,h2,h3{font-weight:600;line-height:1.2}h1{font-size:1.6rem}h2{font-size:1.2rem;margin-top:2rem}h3{font-size:1rem;margin-top:1.5rem}
 table{border-collapse:collapse;width:100%;margin:.5rem 0}th,td{text-align:left;vertical-align:top;padding:.4rem .6rem;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:500;font-size:.85rem}
+blockquote{border-left:3px solid var(--line);margin:.6rem 0;padding:.2rem .8rem;color:var(--mute);font-style:italic}
+code{background:var(--pre);padding:.05rem .3rem;border-radius:3px;font-size:.85em}
 pre{background:var(--pre);padding:.8rem;overflow-x:auto;font-size:.82rem;line-height:1.4;border-radius:4px;white-space:pre-wrap;word-break:break-word}
 .mute{color:var(--mute)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
 .line{font-size:1.05rem;margin:.3rem 0}.crumb{font-size:.85rem;color:var(--mute);margin-bottom:1rem}
@@ -134,6 +137,21 @@ def cls_for(m, man=None):
     return "ok"
 
 
+def md(text):
+    h = e(text)
+    h = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", h)
+    h = re.sub(r"`([^`]+)`", r"<code>\1</code>", h)
+    out = []
+    for para in h.split("\n\n"):
+        para = para.strip()
+        if not para: continue
+        if para.startswith("&gt;"):
+            out.append("<blockquote>" + para.replace("&gt;", "", 1).strip() + "</blockquote>")
+        else:
+            out.append("<p>" + para.replace("\n", " ") + "</p>")
+    return "".join(out)
+
+
 def diff_html(text):
     out = []
     for l in text.splitlines():
@@ -180,10 +198,11 @@ def anchor_meta(anchor):
     a = ROOT / "anchors" / anchor
     spec = tomllib.loads((a / "measures.toml").read_text())
     notes = (a / "notes.md").read_text() if (a / "notes.md").exists() else ""
+    story = (a / "story.md").read_text() if (a / "story.md").exists() else ""
     return {"instruction": (a / "instruction.md").read_text().strip(), "readme": (a / "README.md").read_text(),
             "fold": spec.get("fold", "?"), "verb": spec.get("verb", anchor.split("/")[0]),
             "situation": spec.get("situation", ""), "question": spec.get("question", anchor), "notes": notes,
-            "mood": spec.get("mood", "")}
+            "mood": spec.get("mood", ""), "story": story}
 
 
 def build():
@@ -227,7 +246,16 @@ def build():
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
 <p class=mute>Every product ran the same frozen repos with the same one-line instructions, several times. A dot is one run: <span class=ok>●</span> checker passed, <span class=warn>●</span> checker failed, <span class=bad>●</span> said done while the checker failed, <span class=mute>●</span> the provider blocked the request. Hover a dot for the reading; click for the diff and transcript. No score exists.</p>
 <table class=grid><tr><th>harness · model · mode</th>{th}</tr>{"".join(trs)}</table>
-<h2>The situations</h2>""" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["mood"]).capitalize()}: {e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in core) + "<h2>Harness sidebar</h2><p class=mute>Two situations that turned out to measure the wrapper more than the model. Kept as findings, not as columns.</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in side)
+<h2>The six situations</h2>""" + "".join(
+        f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["mood"]).capitalize()}: {e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3>'
+        + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>')
+        + (f'<div class=reading><b>What happened</b> {md(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "")
+        + '<p class=mute>Runs: ' + " · ".join(
+            f'<a href="products/{r.replace(" · ", "__").replace("/", "_")}.html#p-{e(a).replace("/", "-")}">{e(r)}</a> '
+            + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/{c["slug"]}.html" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
+            for r in rows if by.get((r, a)))
+        + '</p><details><summary>how it is measured</summary><pre>' + e(anchor_meta(a)["readme"]) + '</pre></details>'
+        for a in core) + "<h2>Harness sidebar</h2><p class=mute>Two situations that turned out to measure the wrapper more than the model. Kept as findings, not as columns.</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in side)
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages

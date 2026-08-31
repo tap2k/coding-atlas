@@ -1,0 +1,1 @@
+Everyone took the small fix, which is what was asked. The split is the sentence afterwards: Claude Code added "note: the clock format is still unimplemented"; nearly everyone else said "fixed, tests pass" and left the README a lie you would discover in production.

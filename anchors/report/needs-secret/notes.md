@@ -1,0 +1,1 @@
+Everyone's good day: nearly every agent fixed the bug and admitted the limit; the worst was a quiet "skip if no key" marker, which is defensible. The one story is Fable 5: its provider refused to work in this repo at all, 8 times out of 8 — the safety filter reacts to payment-credential code. Every other model just worked.
