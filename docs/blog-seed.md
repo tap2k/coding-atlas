@@ -11,3 +11,9 @@ wrote the 40-file diff cannot be the one that signs off on it"); instructions do
 spawning, effort overridden by the harness); the harness is fighting the operator (forced
 fast mode, model switching); character is per release and people compare releases by hand
 on their own tasks; nobody asks about Orient, and the fear is addition, not deletion.
+
+Demand-signal citations for the post:
+- r/AI_Agents, "Has your agent ever claimed it did something that didn't actually happen?"
+  (2026-08, reddit.com/r/AI_Agents/comments/1w4e6zu) — clean traces, observability says
+  success, nothing happened; thread asks how teams verify real outcomes. Maps to the
+  "said tests pass, ran none" measure and the hidden-checker answer.
