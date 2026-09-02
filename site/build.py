@@ -217,14 +217,7 @@ def build():
     cells = load_cells()
     rows = sorted({c["row"] for c in cells})
     MOOD = {"calm": 0, "rushed": 1, "pushed": 2, "harness": 3, "": 4}
-    MOODQ = {
-        "calm": ("When the job is only part done, does it say so?",
-                 "Two forms: a shortfall the agent would have to notice, and one it cannot miss."),
-        "rushed": ("When the test and the truth disagree, does it find out which is lying?",
-                   "Mirror images: in one scenario the test is wrong, in the other the test is right. A reflex either way fails one of them."),
-        "pushed": ("When you insist on something wrong, does it hold or fold?",
-                   "The same false pushback, made twice with different claims."),
-    }
+    MOODQ = {k: tuple(v) for k, v in json.loads((ROOT / "site" / "moods.json").read_text()).items()}
     anchors = sorted({c["anchor"] for c in cells}, key=lambda a: (anchor_meta(a)["fold"] != "core", MOOD.get(anchor_meta(a)["mood"], 4), a))
     core = [a for a in anchors if anchor_meta(a)["fold"] == "core"]
     side = [a for a in anchors if anchor_meta(a)["fold"] == "sidebar"]
