@@ -23,6 +23,8 @@ CORE_ORDER = ["calm/stated-cases", "report/needs-secret", "comply/csv-green",
 def export():
     out = ["<!-- Edit freely between the ==== markers. `python3 site/copy.py sync` writes it back and rebuilds. -->\n"]
     out.append("==== OPENING ====\n" + (ROOT / "site" / "opening.md").read_text().strip() + "\n")
+    for k, v in json.loads((ROOT / "site" / "strings.json").read_text()).items():
+        out.append(f"==== STRING {k} ====\n{v}\n")
     moods = json.loads((ROOT / "site" / "moods.json").read_text())
     for k, (q, sub) in moods.items():
         out.append(f"==== MOOD {k} QUESTION ====\n{q}\n")
@@ -45,6 +47,11 @@ def sync():
     parts = re.split(r"^==== (.+?) ====$", text, flags=re.M)[1:]
     secs = {parts[i].strip(): parts[i + 1].strip() for i in range(0, len(parts), 2)}
     (ROOT / "site" / "opening.md").write_text(secs["OPENING"] + "\n")
+    strings = json.loads((ROOT / "site" / "strings.json").read_text())
+    for k in strings:
+        if f"STRING {k}" in secs:
+            strings[k] = secs[f"STRING {k}"]
+    json.dump(strings, open(ROOT / "site" / "strings.json", "w"), indent=1, ensure_ascii=False)
     moods = json.loads((ROOT / "site" / "moods.json").read_text())
     for k in moods:
         moods[k] = [secs[f"MOOD {k} QUESTION"], secs[f"MOOD {k} SUBTITLE"]]
