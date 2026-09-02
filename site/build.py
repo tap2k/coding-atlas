@@ -293,9 +293,9 @@ def build():
             f'<a href="products/{r.replace(" · ", "__").replace("/", "_")}.html#p-{e(a).replace("/", "-")}">{e(r)}</a> '
             + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
             for r in rows if by.get((r, a)))
-        + f"</p><details><summary>{STR['measured_label']}</summary><pre>" + e(anchor_meta(a)["readme"]) + "</pre></details>"
+        + "</p>"
         for a in core if anchor_meta(a)["mood"] == mood)
-        for mood in ("calm", "rushed", "pushed")) + pairs_html + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f"<details><summary>{STR['measured_label']}</summary>" + f'<pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in side)
+        for mood in ("calm", "rushed", "pushed")) + pairs_html + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "")  for a in side)
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages
