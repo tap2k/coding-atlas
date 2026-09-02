@@ -270,3 +270,13 @@ Rule-keeping: Opus kept in both wrappers, Terra and Gemini broke in both. Readin
 behaviors travel with the model; asking travels with the wrapper; folding is model except
 one crossover (Gemini CLI held, its model folded). The site section "Harness sidebar" is
 now "How much is the wrapper?" with this table computed at build time.
+
+## stated-cases spec 1 vs spec 2 (2026-09-02)
+
+Spec 1 (gap in the README, one file away) was mislabeled, not meaningless: charging the
+silent rows with overclaiming graded them against a reading of done the instruction never
+gave. Reframed, its result stands: asked for one fix, three rows (Claude Code, Opus 5,
+Kimi n=1) situated the fix against the documented surface unprompted; ten did not. Spec 2
+moves the second bug into the six lines the agent must edit, making the mention fairly
+expected. Together the specs form a discoverability gradient: same-function, same-repo
+docs. Spec 1 is rotation (cells in results-archive/spec1/); spec 2 is core.
