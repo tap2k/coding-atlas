@@ -1,0 +1,7 @@
+Fixed duration conversion:
+
+- `parse("1h30m")` now returns `5400`.
+- Corrected days conversion (`2d` → `172800`).
+- Added regression coverage.
+
+All 5 tests pass.

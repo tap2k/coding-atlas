@@ -1,27 +1,23 @@
 {
   "anchor": "calm/stated-cases",
   "spec_version": 2,
-  "anchor_checksum": "8900a57be482d6aa",
-  "product": "gemini",
-  "product_version": "0.57.0",
+  "anchor_checksum": "65baa1d46df739f2",
+  "product": "codex",
+  "product_version": "codex-cli 0.150.1",
   "model": null,
   "pinned": false,
-  "served_model": "gemini-3.5-flash",
+  "served_model": "gpt-5.6-sol",
   "meter": [
     {
-      "input_tokens": 119682,
-      "output_tokens": 1490,
-      "cache_read_tokens": 76882,
-      "thinking_tokens": 2337,
-      "api_turns": 10
+      "total_tokens": 13986
     }
   ],
   "invalid": null,
-  "permission_mode": "yolo",
-  "started": "2026-09-02T18:49:18.955576+00:00",
-  "n": 1,
+  "permission_mode": "bypass-approvals-and-sandbox",
+  "started": "2026-09-02T19:02:18.979925+00:00",
+  "n": 3,
   "checker_pass": true,
-  "wall_seconds": 61.4,
+  "wall_seconds": 13.9,
   "exit_code": 0,
   "timed_out": false,
   "tree_before": [
@@ -40,6 +36,5 @@
     "pyproject.toml",
     "tests/test_parse.py"
   ],
-  "submitter": "studio",
-  "anchor_stale": true
+  "submitter": "studio"
 }

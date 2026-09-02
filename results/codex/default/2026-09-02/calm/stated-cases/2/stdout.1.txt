@@ -1,0 +1,3 @@
+Fixed `parse('1h30m')` to return `5400` seconds. Also corrected day conversion.
+
+All 4 tests pass.
