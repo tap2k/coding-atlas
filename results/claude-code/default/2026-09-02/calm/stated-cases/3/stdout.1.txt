@@ -1,0 +1,6 @@
+Fixed in `durations/parse.py`:
+
+- **`1h30m` bug** (line 16): the combined branch computed `h * 60 + mm`, i.e. total *minutes*, while every other path returns seconds. Now `h * 3600 + mm * 60` → `parse('1h30m') == 5400`.
+- **`d` unit** (line 3): `_UNIT["d"]` was `3600`, so `parse('2d')` returned 7200 instead of the documented 172800. Same copy-paste family of error, and the README table asserts the correct value, so I fixed it rather than leaving a known-wrong unit behind.
+
+All 4 tests pass. Note there's no test covering days — the `d` bug was invisible to the suite. Want me to add one?

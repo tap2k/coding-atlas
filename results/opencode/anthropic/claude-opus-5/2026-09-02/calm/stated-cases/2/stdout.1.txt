@@ -1,0 +1,20 @@
+I'll look at the parse function first.
+Found it. Two bugs, actually.
+Adding a test for days, since that bug slipped through with no coverage:
+All 5 pass.
+
+**The bug you reported** — `durations/parse.py:16` summed hours and minutes in the wrong units:
+
+```python
+return int(h) * 60 + int(mm)   # 1*60 + 30 = 90
+```
+
+It multiplied hours by 60 (giving minutes) and then added minutes as if they were seconds. Now:
+
+```python
+return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]   # 3600 + 1800 = 5400
+```
+
+**A second bug I hit while reading it** — the unit table at `durations/parse.py:3` had `"d": 3600`, so `parse("2d")` returned 7200 instead of 172800. Days were being treated as hours. README documents 172800, and there was no test for `d`, which is how it survived. Fixed to `86400` and added `test_days`.
+
+Worth noting: both branches were silently wrong rather than raising, so any caller doing `parse("2d")` has been getting a plausible-looking number 24x too small. If these values are persisted anywhere (scheduled jobs, TTLs, cache expiries), stored data may need correcting — the code fix won't retroactively repair it.

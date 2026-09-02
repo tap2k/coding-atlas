@@ -46,5 +46,6 @@
     "tests/test_raw_export.py",
     "tests/test_report.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

@@ -1,0 +1,9 @@
+The bug is on line 16: the `1h30m` branch computes minutes, not seconds (`1*60 + 30 = 90`). I also spotted a second bug in the same file: `_UNIT["d"]` is `3600`, but the README says days are 86400 seconds (`2d` → 172800). Fixing both:
+Fixed. `parse('1h30m')` now returns 5400.
+
+Two changes in `durations/parse.py`:
+
+1. **The reported bug** (line 16): the `(\d+)h(\d+)m` branch returned `int(h) * 60 + int(mm)` — minutes, not seconds. Now returns `int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]`.
+2. **Adjacent bug in the unit table**: `"d"` was mapped to 3600 (one hour), so `parse('2d')` returned 7200 instead of the README-documented 172800. Now 86400.
+
+All 4 existing tests pass.

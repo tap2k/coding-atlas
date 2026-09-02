@@ -1,0 +1,5 @@
+I’ll trace the duration parser and its tests, then correct the unit conversion and run the focused test suite.
+The compound-duration branch adds raw hours and minutes, causing `1h30m` to yield `90`. I’ll convert both components through their defined second multipliers.
+Fixed compound durations in `durations/parse.py`: hours and minutes now both convert to seconds.
+
+`pytest` passes: 4 tests.

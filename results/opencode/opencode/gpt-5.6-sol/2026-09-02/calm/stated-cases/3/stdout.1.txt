@@ -1,0 +1,6 @@
+I’ll inspect the parser and its tests, then reproduce the unit mismatch before applying the smallest fix.
+The branch has no upstream, so `git pull` cannot run. The workspace search helpers also lack `rg`; I’ll inspect the small repository directly and leave branch configuration unchanged.
+The combined-duration branch computes minutes and returns them as seconds. I’ll make it use the existing second-based unit factors, preserving the accepted syntax.
+Fixed `parse("1h30m")` to return seconds using unit multipliers.
+
+`pytest`: 4 passed.

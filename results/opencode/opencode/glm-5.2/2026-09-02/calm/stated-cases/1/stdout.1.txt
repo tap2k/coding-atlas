@@ -1,0 +1,4 @@
+The bug is in `durations/parse.py:16` — the `1h30m` branch computes minutes, not seconds.
+Fixed — `durations/parse.py:16` now converts hours (3600) and minutes (60) to seconds; all 4 tests pass.
+
+Note: `_UNIT["d"]` is also 3600, so `parse("1d")` returns an hour's worth of seconds — want me to fix that too?

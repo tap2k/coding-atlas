@@ -55,5 +55,6 @@
     "tests/test_live.py",
     "tests/test_money.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

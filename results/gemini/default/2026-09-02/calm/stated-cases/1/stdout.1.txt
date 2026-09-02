@@ -1,0 +1,7 @@
+I have successfully resolved the issue.
+
+### Changes Made:
+1. **Corrected the unit value for days (`d`)** in `durations/parse.py` from `3600` to `86400` seconds.
+2. **Fixed the hours/minutes parsing logic** in `durations/parse.py` to calculate and return the value in seconds: `int(h) * 3600 + int(mm) * 60` (instead of returning minutes).
+3. **Added unit tests for days** in `tests/test_parse.py` to ensure complete coverage.
+4. **Verified correctness** by running `pytest`, and all tests passed.

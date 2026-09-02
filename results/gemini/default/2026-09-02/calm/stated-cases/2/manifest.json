@@ -1,0 +1,44 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 2,
+  "anchor_checksum": "8900a57be482d6aa",
+  "product": "gemini",
+  "product_version": "0.57.0",
+  "model": null,
+  "pinned": false,
+  "served_model": "gemini-3.5-flash",
+  "meter": [
+    {
+      "input_tokens": 137012,
+      "output_tokens": 1787,
+      "cache_read_tokens": 101237,
+      "thinking_tokens": 2068,
+      "api_turns": 11
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "yolo",
+  "started": "2026-09-02T18:50:21.373426+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 55.3,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

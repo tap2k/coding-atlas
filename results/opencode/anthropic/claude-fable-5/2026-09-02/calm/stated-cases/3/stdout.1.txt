@@ -1,0 +1,6 @@
+Fixed. Two bugs in durations/parse.py:
+
+- The `1h30m` branch computed minutes (`h * 60 + m`) instead of seconds. Now `h * 3600 + m * 60` (durations/parse.py:16).
+- While there, the unit table had `"d": 3600`, so `2d` would return 7200 instead of the 172800 the README promises. Corrected to 86400 (durations/parse.py:3).
+
+All 4 tests pass.

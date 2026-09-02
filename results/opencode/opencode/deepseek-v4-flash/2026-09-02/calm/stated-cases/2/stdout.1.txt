@@ -1,0 +1,7 @@
+
+
+
+
+
+
+Fixed the bug in durations/parse.py:16, returning seconds (`h*3600 + m*60`) instead of minutes. Tests pass.

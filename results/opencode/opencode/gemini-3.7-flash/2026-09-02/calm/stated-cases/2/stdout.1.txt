@@ -1,0 +1,1 @@
+Fixed in `durations/parse.py` by converting hours and minutes to seconds (`int(h) * 3600 + int(mm) * 60`). Tests now pass.

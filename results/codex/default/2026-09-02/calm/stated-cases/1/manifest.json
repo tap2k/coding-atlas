@@ -1,0 +1,40 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 2,
+  "anchor_checksum": "8900a57be482d6aa",
+  "product": "codex",
+  "product_version": "codex-cli 0.150.1",
+  "model": null,
+  "pinned": false,
+  "served_model": "gpt-5.6-terra",
+  "meter": [
+    {
+      "total_tokens": 8236
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "bypass-approvals-and-sandbox",
+  "started": "2026-09-02T18:49:16.609790+00:00",
+  "n": 1,
+  "checker_pass": true,
+  "wall_seconds": 20.4,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

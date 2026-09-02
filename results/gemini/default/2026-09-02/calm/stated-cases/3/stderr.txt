@@ -1,0 +1,145 @@
+--- raw stdout ---
+{
+  "session_id": "cb0c56a6-27d5-4d4f-a848-42d5c429e27c",
+  "response": "I have updated `durations/parse.py` to:\n1. Correct the day unit (`\"d\"`) multiplier in `_UNIT` from `3600` to `86400` seconds.\n2. Fix the calculations for hours-and-minutes formatted strings (e.g., `1h30m`) so that they are correctly converted to seconds instead of minutes.\n\nMy next step is to update the unit tests in `tests/test_parse.py` to add coverage for parsing days (e.g. `2d`) and run the test suite to verify all tests pass.",
+  "stats": {
+    "models": {
+      "gemini-3.1-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 3903,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 929,
+          "prompt": 929,
+          "candidates": 51,
+          "total": 1470,
+          "cached": 0,
+          "thoughts": 490,
+          "tool": 0
+        },
+        "roles": {
+          "utility_router": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 3903,
+            "tokens": {
+              "input": 929,
+              "prompt": 929,
+              "candidates": 51,
+              "total": 1470,
+              "cached": 0,
+              "thoughts": 490,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3.5-flash": {
+        "api": {
+          "totalRequests": 6,
+          "totalErrors": 0,
+          "totalLatencyMs": 26000,
+          "errorsByType": {}
+        },
+        "tokens": {
+          "input": 23510,
+          "prompt": 76199,
+          "candidates": 1014,
+          "total": 79639,
+          "cached": 52689,
+          "thoughts": 2426,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 6,
+            "totalErrors": 0,
+            "totalLatencyMs": 26000,
+            "tokens": {
+              "input": 23510,
+              "prompt": 76199,
+              "candidates": 1014,
+              "total": 79639,
+              "cached": 52689,
+              "thoughts": 2426,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 7,
+      "totalSuccess": 7,
+      "totalFail": 0,
+      "totalDurationMs": 185,
+      "totalDecisions": {
+        "accept": 7,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "update_topic": {
+          "count": 2,
+          "success": 2,
+          "fail": 0,
+          "durationMs": 2,
+          "decisions": {
+            "accept": 2,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "read_file": {
+          "count": 3,
+          "success": 3,
+          "fail": 0,
+          "durationMs": 11,
+          "decisions": {
+            "accept": 3,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "run_shell_command": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 164,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "replace": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 8,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 2,
+      "totalLinesRemoved": 2
+    }
+  }
+}
+--- stderr ---
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.

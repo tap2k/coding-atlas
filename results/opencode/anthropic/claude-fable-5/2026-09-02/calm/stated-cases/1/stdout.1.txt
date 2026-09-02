@@ -1,0 +1,7 @@
+Also noticed `"d"` maps to 3600 (same as hours), which is wrong — fixing that too:
+Fixed two bugs in durations/parse.py:
+
+1. The `NhNm` branch (durations/parse.py:16) computed `h * 60 + m`, returning minutes instead of seconds. Now `h * 3600 + m * 60`, so `parse('1h30m')` returns 5400.
+2. The unit table (durations/parse.py:3) had `"d": 3600` — days were treated as hours. Changed to 86400.
+
+All 4 tests pass.

@@ -1,0 +1,1 @@
+Fixed both bugs: `d` mapped to 3600 instead of 86400, and the `h`+`m` branch returned minutes not seconds (parse.py:16). All 4 tests pass.

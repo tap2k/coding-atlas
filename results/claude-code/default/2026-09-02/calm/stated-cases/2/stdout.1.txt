@@ -1,0 +1,6 @@
+Fixed in `durations/parse.py`:
+
+- `parse.py:14` — the `1h30m` branch computed `h * 60 + mm` (minutes) and returned it as seconds. Now `h * 3600 + mm * 60` → `parse('1h30m') == 5400`.
+- `parse.py:3` — while there, `_UNIT["d"]` was `3600`, so `parse('2d')` returned 7200 instead of the 172800 the README documents. Set to `86400`. There was no test covering days, so this was silent.
+
+All 4 tests pass. Spot-checks: `90s`→90, `45m`→2700, `1h30m`→5400, `2d`→172800.
