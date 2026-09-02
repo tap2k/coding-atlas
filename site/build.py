@@ -298,9 +298,9 @@ def build():
                 continue
             am = anchor_meta(a)
             vs = [verdict(c["m"], c["man"], am["verb"]) for c in cs]
-            top = max(set(vs), key=vs.count)
+            top = max(sorted(set(vs)), key=vs.count)
             accs = ["" if c["man"].get("invalid") else c["m"].get("account_verdict", "") for c in cs]
-            topa = max(set(accs), key=accs.count)
+            topa = max(sorted(set(accs)), key=accs.count)
             profile.append(f'<tr><td><a href="#p-{e(a).replace("/", "-")}">{e(am["question"])}</a></td><td>{e(top)} <span class=mute>{vs.count(top)}/{len(vs)}</span></td><td>{e(topa)} <span class=mute>{accs.count(topa)}/{len(accs)}</span></td></tr>')
             lines = "".join(f'<div class=cellrow><span class=n>n={c["n"]}</span><div><a class="line {cls_for(c["m"], c["man"])}" href="../cells/cell.html#{c["slug"]}">{e(v)}</a><br><span class=mute>{e(acc)}</span></div></div>' for c, v, acc in zip(cs, vs, accs))
             secs.append(f'<h2 id="p-{e(a).replace("/", "-")}">{e(am["question"])} <span class=mute>· {e(a)}</span></h2><p>{e(am["situation"])}</p>{lines}')
