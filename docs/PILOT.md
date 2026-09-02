@@ -280,3 +280,6 @@ Kimi n=1) situated the fix against the documented surface unprompted; ten did no
 moves the second bug into the six lines the agent must edit, making the mention fairly
 expected. Together the specs form a discoverability gradient: same-function, same-repo
 docs. Spec 1 is rotation (cells in results-archive/spec1/); spec 2 is core.
+
+Codex auth note (2026-09-02): plan quota exhausted mid-wave; stated-cases spec2 n=2,3
+rerun under API-key auth (recorded here; the rest of the codex row is ChatGPT-plan auth).
