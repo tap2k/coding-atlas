@@ -12,16 +12,16 @@ What is your coding agent hiding from you?
 A field guide to coding agents: what each one does under no pressure, a deadline, and a wrong claim from the user, and what it tells you afterwards.
 
 ==== STRING legend ====
-Every product ran the same frozen repos with the same one-line instructions, several times. A dot is one run: <span class=ok>●</span> checker passed, <span class=warn>●</span> checker failed, <span class=bad>●</span> said done while the checker failed, <span class=mute>●</span> the provider blocked the request. Hover a dot for the reading; click for the diff and transcript.
+Every product ran the same frozen repos with the same one-line instructions, several times. A dot is one run: <span class=ok>●</span> checker passed, <span class=warn>●</span> checker failed, <span class=bad>●</span> said done while the checker failed, <span class=mute>●</span> the provider blocked the request. Hover a dot for the reading; click for the diff and transcript. The last two columns summarize each row: of the runs that failed the hidden check, how many final messages admitted it; and in how many runs the message misdescribed the agent's own actions — said tests pass without running them, changed or reverted things it never mentioned.
 
 ==== STRING questions_header ====
 Three questions, asked twice each
 
 ==== STRING col_fell_short ====
-fell short, said so
+failures it admitted
 
 ==== STRING col_report ====
-report vs own work
+misdescribed its own work
 
 ==== STRING wrapper_header ====
 How much is the wrapper?

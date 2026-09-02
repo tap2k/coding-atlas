@@ -266,7 +266,7 @@ def build():
             tds.append(f"<td>{marks}</td>")
         slug = r.replace(" · ", "__").replace("/", "_")
         n = len(core_cells)
-        tds.append(f"<td>{named}/{len(falls)}</td><td>{hi} issue{'s' if hi != 1 else ''} in {n}</td>")
+        tds.append(f"<td>{named}/{len(falls)}</td><td>{hi}/{n}</td>")
         trs.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td>{"".join(tds)}</tr>')
     opening = (ROOT / "site" / "opening.md").read_text() if (ROOT / "site" / "opening.md").exists() else ""
     th = "".join(f'<th><span class=mute>{e(anchor_meta(a)["mood"])}</span><br><a href="#a-{e(a).replace("/", "-")}" title="{e(anchor_meta(a)["situation"])}">{e(anchor_meta(a)["question"])}</a></th>' for a in core)
