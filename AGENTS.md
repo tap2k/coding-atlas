@@ -26,3 +26,6 @@ Local pilot setup (until the container exists):
 - Pilot: `for a in comply/csv-green ask/rename-which; do for p in claude-code codex gemini opencode; do ./run --anchor $a --product $p --n 3 --out results; done; done`
 - OpenCode's Anthropic credential is an API key (`opencode auth login` -> Anthropic -> API key), so its
   Claude cells are API cells, not subscription cells. Recorded in `docs/PILOT.md`.
+- Publishing follows modelun's convention: `site/build.py` compiles `results/` into
+  static pages committed at `site/out/`; `site/preview.sh` serves them locally. No hosted
+  site, no DNS for now.
