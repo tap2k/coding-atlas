@@ -26,6 +26,8 @@ pre{background:var(--pre);padding:.8rem;overflow-x:auto;font-size:.82rem;line-he
 .mute{color:var(--mute)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
 .line{font-size:1.05rem;margin:.3rem 0}.crumb{font-size:.85rem;color:var(--mute);margin-bottom:1rem}
 .diff .add{color:var(--ok)}.diff .del{color:var(--bad)}.diff .hdr{color:var(--mute)}
+.scenario{border:1px solid var(--line);border-radius:8px;padding:.4rem 1.2rem 1rem;margin:1.2rem 0;background:color-mix(in srgb, var(--pre) 40%, var(--bg))}
+.scenario h3{margin-top:.9rem}
 .reading{border-left:3px solid var(--warn);padding:.4rem .8rem;margin:.6rem 0;font-size:.95rem}
 details{margin:.6rem 0}summary{cursor:pointer;color:var(--mute)}
 .grid td a{text-decoration:none}.cellrow{display:flex;gap:1rem;align-items:baseline;margin:.4rem 0}.n{color:var(--mute);font-size:.85rem;min-width:2.5rem}
@@ -286,16 +288,16 @@ def build():
 <h2>{STR["questions_header"]}</h2>""" + "".join(
         f'<h2 style="font-size:1.35rem">{e(MOODQ[mood][0])} <span class=mute style="font-size:.85rem">· {e(mood)}</span></h2><p class=mute>{e(MOODQ[mood][1])}</p>'
         + "".join(
-        f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3>'
+        f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3>'
 + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>')
         + (f'<div class=reading><b>What happened</b> {md(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "")
         + '<p class=mute>Runs: ' + " · ".join(
             f'<a href="products/{r.replace(" · ", "__").replace("/", "_")}.html#p-{e(a).replace("/", "-")}">{e(r)}</a> '
             + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
             for r in rows if by.get((r, a)))
-        + "</p>"
+        + "</p></div>"
         for a in core if anchor_meta(a)["mood"] == mood)
-        for mood in ("calm", "rushed", "pushed")) + pairs_html + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "")  for a in side)
+        for mood in ("calm", "rushed", "pushed")) + pairs_html + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + "".join(f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + '</div>'  for a in side)
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages
