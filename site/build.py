@@ -233,6 +233,27 @@ def build():
         by[(c["row"], c["anchor"])].append(c)
 
     # index: grid
+    # paired native-vs-OpenCode table: how much is the wrapper?
+    PAIRS = [("claude-code", "opencode · claude-opus-5", "Claude Opus 5"),
+             ("codex", "opencode · gpt-5.6-terra", "GPT-5.6 Terra"),
+             ("gemini", "opencode · gemini-3.5-flash", "Gemini 3.5 Flash")]
+    def pstats(r):
+        cs = [c["m"] for a in core for c in by.get((r, a), [])]
+        falls = [m for m in cs if not m["checker_pass"]]
+        named = sum(1 for m in falls if m["mentions_not_done"] or not m["claims_done"])
+        pushed = [m for m in cs if m.get("turns", 1) > 1]
+        return (f"{sum(m['checker_pass'] for m in cs)}/{len(cs)}", f"{named}/{len(falls)}",
+                f"{sum(1 for m in pushed if m['checker_pass'])}/{len(pushed)}",
+                f"{sum(1 for m in cs if m.get('honesty_issues'))}/{len(cs)}")
+    prows = ""
+    for nat, oc, name in PAIRS:
+        if not any(by.get((nat, a)) for a in core) or not any(by.get((oc, a)) for a in core):
+            continue
+        a, b = pstats(nat), pstats(oc)
+        prows += f"<tr><td>{e(name)}</td>" + "".join(f"<td>{x} → {y}</td>" for x, y in zip(a, b)) + "</tr>"
+    pairs_html = ("<h2>How much is the wrapper?</h2><p>Three models run both in their native product and in OpenCode, same situations, same counts. "
+                  "Native → OpenCode:</p><table><tr><th>model</th><th>task done</th><th>fell short, said so</th><th>held under pushback</th><th>report issues</th></tr>"
+                  + prows + "</table><p class=mute>Truth-telling travels with the model; whether it asks first travels with the wrapper. The one crossover: Gemini CLI held under pushback while the same model in OpenCode folded.</p>")
     th = "".join(f"<th>{e(a)}<br><span class=mute>{e(anchor_meta(a)['fold'])}</span></th>" for a in anchors)
     trs = []
     for r in rows:
@@ -271,7 +292,7 @@ def build():
             for r in rows if by.get((r, a)))
         + '</p><details><summary>how it is measured</summary><pre>' + e(anchor_meta(a)["readme"]) + '</pre></details>'
         for a in core if anchor_meta(a)["mood"] == mood)
-        for mood in ("calm", "rushed", "pushed")) + "<h2>Harness sidebar</h2><p class=mute>Two situations that turned out to measure the wrapper more than the model. Kept as findings, not as columns.</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in side)
+        for mood in ("calm", "rushed", "pushed")) + pairs_html + "<h2>Two situations about the wrapper</h2><p class=mute>These measure interaction style rather than trust; the wrapper moves them where the trust columns barely move.</p>" + "".join(f'<h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)} · {e(anchor_meta(a)["fold"])}</span></h3><p>{e(anchor_meta(a)["situation"])}</p><p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + f'<details><summary>how it is measured</summary><pre>{e(anchor_meta(a)["readme"])}</pre></details>' for a in side)
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages

@@ -259,3 +259,14 @@ final messages said so. claude-code 12/12, opus-5 11/11, kimi 5/9, glm 3/7, sol 
 terra 2/9, deepseek 2/10, fable-5 1/6, gemini-3.7 1/7, gemini-3.5 1/8, gemini-cli 0/8,
 codex 0/11, grok 0/8. Note Fable 5 (the model that built this study) near the bottom.
 Authorship disclosure added to the site footer.
+
+## Wrapper vs model, quantified (2026-09-02)
+
+Paired rows, native product vs OpenCode, core anchors, n=18 each side. Checker pass:
+Opus 6->7, Terra 7->9, Gemini-3.5 10->10. Fell-short-said-so: Opus 12/12->11/11, Terra
+0/11->2/9, Gemini 0/8->1/8. Held: Opus 0->1 of 6, Terra 0->0, Gemini CLI 3 -> model 0.
+Honesty issues: 3->1, 10->7, 5->6. Asked before deleting: Opus 0/3 -> 2/2, others 0.
+Rule-keeping: Opus kept in both wrappers, Terra and Gemini broke in both. Reading: trust
+behaviors travel with the model; asking travels with the wrapper; folding is model except
+one crossover (Gemini CLI held, its model folded). The site section "Harness sidebar" is
+now "How much is the wrapper?" with this table computed at build time.
