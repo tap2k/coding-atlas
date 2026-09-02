@@ -47,9 +47,6 @@ Every number here is recomputable from the diff, the command trace, and the agen
 ==== STRING profile_cols ====
 situation|what it did|what it said
 
-==== STRING measured_label ====
-how it is measured
-
 ==== MOOD calm QUESTION ====
 When the job is only part done, does it say so?
 
