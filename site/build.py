@@ -244,7 +244,7 @@ def build():
             if not cs:
                 tds.append("<td class=mute>–</td>")
                 continue
-            marks = " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/{c["slug"]}.html" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))} {e(c["m"].get("account_verdict", ""))}">●</a>' for c in cs)
+            marks = " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))} {e(c["m"].get("account_verdict", ""))}">●</a>' for c in cs)
             tds.append(f"<td>{marks}</td>")
         slug = r.replace(" · ", "__").replace("/", "_")
         n = len(core_cells)
@@ -265,7 +265,7 @@ def build():
         + (f'<div class=reading><b>What happened</b> {md(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "")
         + '<p class=mute>Runs: ' + " · ".join(
             f'<a href="products/{r.replace(" · ", "__").replace("/", "_")}.html#p-{e(a).replace("/", "-")}">{e(r)}</a> '
-            + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/{c["slug"]}.html" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
+            + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
             for r in rows if by.get((r, a)))
         + '</p><details><summary>how it is measured</summary><pre>' + e(anchor_meta(a)["readme"]) + '</pre></details>'
         for a in core if anchor_meta(a)["mood"] == mood)
@@ -286,7 +286,7 @@ def build():
             accs = ["" if c["man"].get("invalid") else c["m"].get("account_verdict", "") for c in cs]
             topa = max(set(accs), key=accs.count)
             profile.append(f'<tr><td><a href="#p-{e(a).replace("/", "-")}">{e(am["question"])}</a></td><td>{e(top)} <span class=mute>{vs.count(top)}/{len(vs)}</span></td><td>{e(topa)} <span class=mute>{accs.count(topa)}/{len(accs)}</span></td></tr>')
-            lines = "".join(f'<div class=cellrow><span class=n>n={c["n"]}</span><div><a class="line {cls_for(c["m"], c["man"])}" href="../cells/{c["slug"]}.html">{e(v)}</a><br><span class=mute>{e(acc)}</span></div></div>' for c, v, acc in zip(cs, vs, accs))
+            lines = "".join(f'<div class=cellrow><span class=n>n={c["n"]}</span><div><a class="line {cls_for(c["m"], c["man"])}" href="../cells/cell.html#{c["slug"]}">{e(v)}</a><br><span class=mute>{e(acc)}</span></div></div>' for c, v, acc in zip(cs, vs, accs))
             secs.append(f'<h2 id="p-{e(a).replace("/", "-")}">{e(am["question"])} <span class=mute>· {e(a)}</span></h2><p>{e(am["situation"])}</p>{lines}')
         secs.insert(0, f"<h2>Profile</h2><table><tr><th>situation</th><th>what it did</th><th>what it said</th></tr>{''.join(profile)}</table>")
         first = next(c for c in cells if c["row"] == r)["man"]
@@ -294,31 +294,50 @@ def build():
         meta = f"<p class=mute>version {e(first.get('product_version'))} · served model {e(first.get('served_model'))} · permission mode {e(first.get('permission_mode'))}" + (f" · provider {e(', '.join(provs))}" if provs else "") + "</p>"
         (OUT / "products" / f"{slug}.html").write_text(page(r, f"<h1>{e(r)}</h1>{meta}{''.join(secs)}", 1))
 
-    # cell pages
+    # cells: one data.js + one viewer page (modelun convention), links stay deep via #slug
+    data = {}
     for c in cells:
         d, man, m = c["dir"], c["man"], c["m"]
-        turns = sorted(d.glob("stdout.*.txt"))
+        turns = [t.read_text() for t in sorted(d.glob("stdout.*.txt"))]
         tr = [json.loads(l) for l in (d / "trace.jsonl").read_text().splitlines() if l.strip()] if (d / "trace.jsonl").exists() else []
         cmds = [f'{t["cmd"]} {" ".join(t["args"])}' for t in tr if not ("core.hooksPath=" in " ".join(t["args"]) or "/.claude/" in " ".join(t["args"]) or "--no-optional-locks" in " ".join(t["args"]) or "/opencode/snapshot/" in " ".join(t["args"]))]
-        reply = (ROOT / "anchors" / man["anchor"] / "reply.md")
-        turn_html = ""
-        for i, t in enumerate(turns, 1):
-            if i == 2 and reply.exists():
-                turn_html += f"<h3>frozen reply</h3><pre>{e(reply.read_text().strip())}</pre>"
-            turn_html += f"<h3>agent, turn {i}</h3><pre>{e(t.read_text())}</pre>"
+        am = anchor_meta(man["anchor"])
+        reply = ROOT / "anchors" / man["anchor"] / "reply.md"
         skip = {"files_touched_list", "gold_lines"}
-        mrows = "".join(f"<tr><td>{e(k)}</td><td>{e(json.dumps(v) if isinstance(v, (list, dict)) else v)}</td></tr>" for k, v in m.items() if k not in skip)
-        body = f"""<h1>{e(c["row"])} · {e(man["anchor"])} · n={man["n"]}</h1>
-<p class="line {cls_for(m, man)}">{e(verdict(m, man, anchor_meta(man["anchor"])["verb"]))}</p><p class=line>{"" if man.get("invalid") else e(m.get("account_verdict", ""))}</p><p class=mute>{e(sentence(m, man))}</p>
-<p>{e(anchor_meta(man["anchor"])["situation"])} <b>{e(anchor_meta(man["anchor"])["question"])}</b></p>
-<p class=mute>{e(man.get("started", ""))} · version {e(man.get("product_version"))} · served model {e(man.get("served_model"))} · mode {e(man.get("permission_mode"))} · {m.get("wall_seconds")}s · anchor {e(man["anchor_checksum"])} spec {man.get("spec_version")}</p>
-<h2>Instruction</h2><pre>{e(anchor_meta(man["anchor"])["instruction"])}</pre>
-<h2>What the agent said</h2>{turn_html}
-<h2>Diff</h2>{diff_html((d / "diff.patch").read_text()) if (d / "diff.patch").read_text().strip() else "<p class=mute>no changes</p>"}
-<h2>Commands ({len(cmds)})</h2><details><summary>show</summary><pre>{e(chr(10).join(cmds))}</pre></details>
-<h2>Measures</h2><table>{mrows}</table>
-<h2>Files</h2><p class=mute>{e(str(d.relative_to(ROOT)) if str(d).startswith(str(ROOT)) else str(d))}</p>"""
-        (OUT / "cells" / f"{c['slug']}.html").write_text(page(f"{c['row']} {man['anchor']} {man['n']}", body, 1))
+        data[c["slug"]] = {
+            "row": c["row"], "anchor": man["anchor"], "n": man["n"], "cls": cls_for(m, man),
+            "verdict": verdict(m, man, am["verb"]), "account": "" if man.get("invalid") else m.get("account_verdict", ""),
+            "sentence": sentence(m, man), "situation": am["situation"], "question": am["question"],
+            "instruction": am["instruction"], "turns": turns, "reply": reply.read_text().strip() if reply.exists() else "",
+            "meta": f'{man.get("started", "")} · version {man.get("product_version")} · served model {man.get("served_model")} · mode {man.get("permission_mode")} · {m.get("wall_seconds")}s · anchor {man["anchor_checksum"]} spec {man.get("spec_version")}',
+            "diff": (d / "diff.patch").read_text(), "cmds": cmds,
+            "measures": {k: v for k, v in m.items() if k not in skip},
+        }
+    (OUT / "cells" / "data.js").write_text("window.CELLS = " + json.dumps(data) + ";")
+    viewer = """<h1 id=t></h1><p class=line id=v></p><p class=line id=acc></p><p class=mute id=sent></p><p id=sit></p><p class=mute id=meta></p>
+<h2>Instruction</h2><pre id=ins></pre><div id=turns></div>
+<h2>Diff</h2><div id=diff></div><h2 id=ch></h2><details><summary>show</summary><pre id=cmds></pre></details>
+<h2>Measures</h2><table id=ms></table>
+<script src=data.js></script>
+<script>
+const el = i => document.getElementById(i), esc = t => { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; };
+function render() {
+  const c = window.CELLS[location.hash.slice(1)];
+  if (!c) { el('t').textContent = 'cell not found'; return; }
+  document.title = c.row + ' · ' + c.anchor + ' · n=' + c.n;
+  el('t').textContent = c.row + ' · ' + c.anchor + ' · n=' + c.n;
+  el('v').textContent = c.verdict; el('v').className = 'line ' + c.cls;
+  el('acc').textContent = c.account; el('sent').textContent = c.sentence;
+  el('sit').innerHTML = esc(c.situation) + ' <b>' + esc(c.question) + '</b>'; el('meta').textContent = c.meta;
+  el('ins').textContent = c.instruction;
+  el('turns').innerHTML = c.turns.map((t, i) => (i == 1 && c.reply ? '<h3>frozen reply</h3><pre>' + esc(c.reply) + '</pre>' : '') + '<h3>agent, turn ' + (i + 1) + '</h3><pre>' + esc(t) + '</pre>').join('');
+  el('diff').innerHTML = c.diff.trim() ? '<pre class=diff>' + c.diff.split('\\n').map(l => { const k = l.startsWith('+') && !l.startsWith('+++') ? 'add' : l.startsWith('-') && !l.startsWith('---') ? 'del' : /^(diff |index |@@|\\+\\+\\+|---)/.test(l) ? 'hdr' : ''; return k ? '<span class=\"' + k + '\">' + esc(l) + '</span>' : esc(l); }).join('\\n') + '</pre>' : '<p class=mute>no changes</p>';
+  el('ch').textContent = 'Commands (' + c.cmds.length + ')'; el('cmds').textContent = c.cmds.join('\\n');
+  el('ms').innerHTML = Object.entries(c.measures).map(([k, v]) => '<tr><td>' + esc(k) + '</td><td>' + esc(typeof v == 'object' ? JSON.stringify(v) : String(v)) + '</td></tr>').join('');
+}
+window.onhashchange = render; render();
+</script>"""
+    (OUT / "cells" / "cell.html").write_text(page("cell", viewer, 1))
     print(f"{len(cells)} cells, {len(rows)} rows, {len(anchors)} anchors -> {OUT}")
 
 
