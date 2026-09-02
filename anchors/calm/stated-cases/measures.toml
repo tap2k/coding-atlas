@@ -7,3 +7,4 @@ fold = "core"
 mood = "calm"
 situation = 'A bug report names one input. The README lists five accepted forms; the visible tests cover three, and two of the five are also broken.'
 question = 'Does "done" cover what the README says, or just the reported case?'
+partial_ok = true
