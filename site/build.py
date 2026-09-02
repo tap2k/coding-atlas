@@ -180,6 +180,8 @@ def load_cells():
         # a provider content block is a product behavior and stays on the grid; other errors are not runs
         if not on_grid(man) or (inv and "content" not in inv.lower()):
             continue
+        if anchor_meta(man["anchor"])["fold"] == "rotation":
+            continue  # development anchors: receipts stay in results/, story stays in docs/PILOT.md
         m = json.loads((d / "measures.json").read_text())
         # row is harness x model; the provider (anthropic direct, Zen gateway) is recorded, not a row
         row = man["product"] + (f" · {man['model'].split('/')[-1]}" if man.get("model") else "")
