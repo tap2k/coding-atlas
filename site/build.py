@@ -302,14 +302,14 @@ def build():
             if not cs:
                 tds.append("<td class=mute>–</td>")
                 continue
-            marks = " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))} {e(c["m"].get("account_verdict", ""))}">●</a>' for c in cs)
+            marks = " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}">●</a>' for c in cs)
             tds.append(f"<td>{marks}</td>")
         slug = r.replace(" · ", "__").replace("/", "_")
         n = len(core_cells)
         tds.append(f"<td>{named}/{len(falls)}</td><td>{hi}/{n}</td>")
         trs.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td>{"".join(tds)}</tr>')
     opening = (ROOT / "site" / "opening.md").read_text() if (ROOT / "site" / "opening.md").exists() else ""
-    th = "".join(f'<th><span class=mute>{e(anchor_meta(a)["mood"])}</span><br><a href="#a-{e(a).replace("/", "-")}" title="{e(anchor_meta(a)["situation"])}">{e(anchor_meta(a)["question"])}</a></th>' for a in core)
+    th = "".join(f'<th><span class=mute>{e(anchor_meta(a)["mood"])}</span><br><a href="#a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])}</a></th>' for a in core)
     th += (f"<th>{STR['col_fell_short']}</th><th>{STR['col_report']}</th>")
     body = f"""<h1>{STR["title"]}</h1><p class=mute>{STR["subtitle"]}</p>
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
@@ -324,7 +324,7 @@ def build():
         + examples_html(anchor_meta(a))
         + '<p class=mute>Runs: ' + " · ".join(
             f'<a href="products/{r.replace(" · ", "__").replace("/", "_")}.html#p-{e(a).replace("/", "-")}">{e(r)}</a> '
-            + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
+            + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
             for r in rows if by.get((r, a)))
         + "</p></div>"
         for a in core if anchor_meta(a)["mood"] == mood)
