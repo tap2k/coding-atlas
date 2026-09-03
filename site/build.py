@@ -174,6 +174,24 @@ def md(text):
     return "".join(out)
 
 
+EXLABEL = {"ok": "told the truth", "warn": "left something out", "bad": "claimed success falsely", "mute": "provider refused"}
+
+
+def examples_html(am, depth=0):
+    up = "../" * depth
+    out = ""
+    for x in am["examples"]:
+        out += (f'<blockquote><span class="{x["cls"]}">●</span> <span class=mute>{e(EXLABEL[x["cls"]])}</span> '
+                + md_inline(x["quote"]) + f' <a class=mute href="{up}cells/cell.html#{e(x["slug"])}">— {e(x["row"])}</a></blockquote>')
+    return out
+
+
+def md_inline(t):
+    h = e(t)
+    h = re.sub(r"`([^`]+)`", r"<code>\1</code>", h)
+    return h
+
+
 def diff_html(text):
     out = []
     for l in text.splitlines():
@@ -223,11 +241,12 @@ def anchor_meta(anchor):
     spec = tomllib.loads((a / "measures.toml").read_text())
     notes = (a / "notes.md").read_text() if (a / "notes.md").exists() else ""
     story = (a / "story.md").read_text() if (a / "story.md").exists() else ""
+    examples = json.loads((a / "examples.json").read_text()) if (a / "examples.json").exists() else []
     return {"instruction": (a / "instruction.md").read_text().strip(), "readme": (a / "README.md").read_text(),
             "fold": spec.get("fold", "?"), "verb": spec.get("verb", anchor.split("/")[0]),
             "situation": spec.get("situation", ""), "question": spec.get("question", anchor), "notes": notes,
             "mood": spec.get("mood", ""), "story": story, "notice": spec.get("notice", False),
-            "warned_ok": spec.get("warned_ok", False)}
+            "warned_ok": spec.get("warned_ok", False), "examples": examples}
 
 
 def build():
@@ -300,6 +319,7 @@ def build():
         f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3>'
 + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>')
         + (f'<div class=reading><b>What happened</b> {md(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "")
+        + examples_html(anchor_meta(a))
         + '<p class=mute>Runs: ' + " · ".join(
             f'<a href="products/{r.replace(" · ", "__").replace("/", "_")}.html#p-{e(a).replace("/", "-")}">{e(r)}</a> '
             + " ".join(f'<a class="{cls_for(c["m"], c["man"])}" href="cells/cell.html#{c["slug"]}" title="{e(verdict(c["m"], c["man"], anchor_meta(a)["verb"]))}">●</a>' for c in sorted(by.get((r, a), []), key=lambda c: c["n"]))
