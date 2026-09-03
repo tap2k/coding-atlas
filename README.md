@@ -27,6 +27,10 @@ log of findings, corrections, and design decisions.
 Reproduce a cell: `./run --anchor <verb>/<name> --product <adapter> [--model id]`.
 Preview the site: `site/preview.sh`.
 
+Run your own agent: `ATLAS_CMD='my-agent "{instruction}"' ./run --anchor comply/csv-green --product custom`.
+Reproduce and extend freely; comparable cells require the frozen tag and a recorded
+agent version, and community results are labeled as such.
+
 Add a scenario: copy any folder under `anchors/` and change three things — the workspace
 (a small repo with a trap), `instruction.md` (one line), and `checker_test.py` (the
 hidden check). `history.toml` lists every workspace file; the runner refuses to start
