@@ -30,7 +30,7 @@ Does the wrapper matter?
 Three models ran both in their native product and in OpenCode: same situations, same number of runs. The first three columns aggregate the six trust situations; the last is the migration situation. Native → OpenCode:
 
 ==== STRING wrapper_reading ====
-The trust columns barely move between wrappers; the asking column does. That is the split of labor. The model decides whether you are told the truth. The wrapper decides how your directions are treated: whether it asks first, and which rule files it reads. Choose the model for candor; the wrapper mostly changes manners. One pushback pairing moved the other way, and it is the outlier, not the rule.
+A wrapper is mostly a default prompt around the model, and a prompt changes manners: whether it asks first, whether it runs the tests. It barely changes whether you are told the truth. That comes with the model.
 
 ==== STRING wrapper_two_header ====
 Does it follow directions?
