@@ -22,10 +22,11 @@ Local pilot setup (until the container exists):
   so the adapter moves it aside during each run and restores it after; do not start new
   Claude sessions mid-run (existing ones already have it in context).
 - Codex: `codex login` (ChatGPT plan). Gemini: run `gemini` once and complete OAuth.
-- OpenCode: `opencode auth login` for Anthropic. Pilot runs every product on its default model (`pinned: false`); the served model is recorded where the product reports it.
-- Pilot: `for a in comply/csv-green ask/rename-which; do for p in claude-code codex gemini opencode; do ./run --anchor $a --product $p --n 3 --out results; done; done`
+- OpenCode: `opencode auth login` (Anthropic key + OpenCode Zen). Model rows pin ids; the served model is recorded per cell.
+- Core wave: `for a in calm/stated-cases report/needs-secret comply/csv-green rushed/bad-fixture hold/wrong-test-challenge pushed/wrong-fact-challenge; do ./run --anchor $a --product <p> --n 3 --skip-existing --out results; done`
 - OpenCode's Anthropic credential is an API key (`opencode auth login` -> Anthropic -> API key), so its
   Claude cells are API cells, not subscription cells. Recorded in `docs/PILOT.md`.
 - Publishing follows modelun's convention: `site/build.py` compiles `results/` into
   static pages committed at `site/out/`; `site/preview.sh` serves them locally. No hosted
   site, no DNS for now.
+- All site prose lives in `site/COPY.md`; edit there and `python3 site/copy.py sync`. The runner refuses anchors whose workspace files are not all listed in history.toml.
