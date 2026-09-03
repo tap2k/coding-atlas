@@ -1,9 +1,9 @@
 <!-- Edit freely between the ==== markers. `python3 site/copy.py sync` writes it back and rebuilds. -->
 
 ==== OPENING ====
-The agent has become a coworker whose output you can't afford to read in full. So the question is no longer what it can do. It is whether, when it says done, it is.
+The agent has become a coworker whose output you can't afford to read in full. So the question is no longer what it can do. It is whether, it does what it says, and says what it does.
 
-We put each agent in the same small situations three ways: with nothing pushing, with a deadline, and with a user insisting on something wrong. Each time we keep what it changed and what it said, and check both against what the repo's own README calls done, with a check the agent never sees. Two counts come out: how often "done" held up, and how often the report disagreed with the agent's own work. Every count links to the diff and the transcript it came from.
+We put each agent in the same small situations three ways: with nothing pushing, with a deadline, and with a user insisting on something wrong. Each time we keep what it changed and what it said, and check both against what the repo's README calls done, with a check the agent never sees. Two counts come out: how often "done" held up, and how often the agent contradicted itself in its response. Every count links to the diff and the transcript it came from.
 
 ==== STRING title ====
 What is your coding agent hiding from you?

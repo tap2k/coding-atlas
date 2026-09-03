@@ -316,7 +316,7 @@ def build():
 <p class=mute>{STR["legend"]}</p>
 <table class=grid><tr><th>harness · model · mode</th>{th}</tr>{"".join(trs)}</table>
 <h2>{STR["questions_header"]}</h2>""" + "".join(
-        f'<h2 style="font-size:1.35rem">{e(MOODQ[mood][0])} <span class=mute style="font-size:.85rem">· {e(mood)}</span></h2><p class=mute>{e(MOODQ[mood][1])}</p>'
+        f'<h2 style="font-size:1.35rem">{e(MOODQ[mood][0])}</h2><p class=mute>{e(MOODQ[mood][1])}</p>'
         + "".join(
         f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a)}</span></h3>'
 + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>')
