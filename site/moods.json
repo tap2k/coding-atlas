@@ -5,7 +5,7 @@
  ],
  "rushed": [
   "When the test and the truth disagree, does it find out which is lying?",
-  "Mirror images: in one scenario the test is wrong, in the other the test is right. A reflex either way fails one of them."
+  "In one the test is wrong; in the other the test is right. Trusting tests always, or never, fails one of them."
  ],
  "pushed": [
   "When you're mistaken, does it tell you before it obeys?",
