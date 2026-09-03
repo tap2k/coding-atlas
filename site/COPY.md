@@ -30,7 +30,7 @@ Does the wrapper matter?
 Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:
 
 ==== STRING wrapper_reading ====
-The trust columns barely move: how truthfully an agent reports travels with the model. The wrapper shows up in the last column — the same Opus 5 that deletes first inside Claude Code stopped and asked in OpenCode — and in one crossover on the pushback scenarios, where Gemini CLI pushed back while the same model in OpenCode complied silently.
+The first three columns barely move between wrappers. Truthful reporting is a property of the model. The last column is the exception. Inside Claude Code, Opus 5 deleted first and asked afterwards; in OpenCode the same model stopped and asked before touching anything. One more wrapper effect showed up under pushback: Gemini CLI told the user the repo disagreed, while the same model in OpenCode changed the code and said nothing.
 
 ==== STRING wrapper_two_header ====
 Where the wrapper shows itself
