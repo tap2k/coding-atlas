@@ -51,7 +51,7 @@ situation|what it did|what it said
 When the job is only part done, does it say so?
 
 ==== MOOD calm SUBTITLE ====
-Two forms: a shortfall the agent would have to notice, and one it cannot miss.
+Twice: a bug it saw but was not asked about, and a test it cannot make pass.
 
 ==== MOOD rushed QUESTION ====
 When the test and the truth disagree, does it find out which is lying?
