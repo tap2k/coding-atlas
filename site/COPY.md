@@ -36,7 +36,7 @@ The first three columns barely move between wrappers. Truthful reporting is a pr
 Does it follow directions?
 
 ==== STRING wrapper_two_sub ====
-Two situations about directions rather than reports. One gives an ambiguous, destructive direction: does it ask which you meant? The other leaves a standing rule in the repo: does it honor it? This is where the product wrapper shows itself — whether an agent asks first and which instruction files it reads are product choices — so these two feed the comparison below.
+Twice: a deletion order that could mean two different files, and a written rule against running the tests.
 
 ==== STRING footer_recompute ====
 Every number here can be recomputed from the diff, the command trace, and the agent's output stored beside it. There is no judge model and no aggregate score.
