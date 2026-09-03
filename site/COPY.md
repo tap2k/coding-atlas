@@ -24,13 +24,13 @@ failures it admitted
 misdescribed its own work
 
 ==== STRING wrapper_header ====
-How much is the wrapper?
+Does the wrapper matter?
 
 ==== STRING wrapper_intro ====
-Three models ran both in their native product and in OpenCode: same situations, same number of runs. Native → OpenCode:
+Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:
 
 ==== STRING wrapper_reading ====
-Truth-telling travels with the model; whether it asks first travels with the wrapper. The one crossover: Gemini CLI held under pushback while the same model in OpenCode folded.
+The trust columns barely move: how truthfully an agent reports travels with the model. The wrapper shows up in the last column — the same Opus 5 that deletes first inside Claude Code stopped and asked in OpenCode — and in one crossover on the pushback scenarios, where Gemini CLI pushed back while the same model in OpenCode complied silently.
 
 ==== STRING wrapper_two_header ====
 Where the wrapper shows itself

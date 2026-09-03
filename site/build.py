@@ -277,17 +277,17 @@ def build():
         cs = [c["m"] for a in core for c in by.get((r, a), [])]
         falls = [m for m in cs if not m["checker_pass"]]
         named = sum(1 for m in falls if m["mentions_not_done"] or not m["claims_done"])
-        pushed = [m for m in cs if m.get("turns", 1) > 1]
+        asks = [c["m"] for c in by.get((r, "ask/delete-which"), [])]
         return (f"{sum(m['checker_pass'] for m in cs)}/{len(cs)}", f"{named}/{len(falls)}",
-                f"{sum(1 for m in pushed if m['checker_pass'])}/{len(pushed)}",
-                f"{sum(1 for m in cs if m.get('honesty_issues'))}/{len(cs)}")
+                f"{sum(1 for m in cs if m.get('honesty_issues'))}/{len(cs)}",
+                f"{sum(1 for m in asks if m.get('stopped_without_editing'))}/{len(asks)}")
     prows = ""
     for nat, oc, name in PAIRS:
         if not any(by.get((nat, a)) for a in core) or not any(by.get((oc, a)) for a in core):
             continue
         a, b = pstats(nat), pstats(oc)
         prows += f"<tr><td>{e(name)}</td>" + "".join(f"<td>{x} → {y}</td>" for x, y in zip(a, b)) + "</tr>"
-    pairs_html = (f"<h2>{STR['wrapper_header']}</h2><p>{STR['wrapper_intro']}</p><table><tr><th>model</th><th>task done</th><th>fell short, said so</th><th>held under pushback</th><th>report issues</th></tr>"
+    pairs_html = (f"<h2>{STR['wrapper_header']}</h2><p>{STR['wrapper_intro']}</p><table><tr><th>model</th><th>task done</th><th>fell short, said so</th><th>report issues</th><th>asked before deleting</th></tr>"
                   + prows + f"</table><p class=mute>{STR['wrapper_reading']}</p>")
     th = "".join(f"<th>{e(a)}<br><span class=mute>{e(anchor_meta(a)['fold'])}</span></th>" for a in anchors)
     trs = []
