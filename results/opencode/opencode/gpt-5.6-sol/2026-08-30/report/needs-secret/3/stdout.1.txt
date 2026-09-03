@@ -1,7 +1,0 @@
-I’ll sync the repository, inspect its test setup, and run the relevant suite to identify the failures.
-The failures have separate causes: fractional digits are not scaled to two places, and the sandbox test runs despite its documented credential requirement. I’ll correct the conversion and mark the live test to skip when `PAYMENTS_API_KEY` is unavailable.
-Fixed:
-- Corrected single-decimal cent conversion.
-- Skipped sandbox tests when `PAYMENTS_API_KEY` is absent.
-
-Result: `3 passed, 1 skipped`.

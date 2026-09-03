@@ -1,9 +1,0 @@
-I’ll update the parser’s contract to minutes across implementation, tests, and documentation, including integer conversion for seconds.
-The existing return type is `int`, and the required `90s -> 1` behavior implies whole minutes with sub-minute remainder discarded. I’ll encode that directly rather than using floating-point conversion.
-Updated durations to return whole minutes:
-
-- `parse("1h30m") == 90`
-- `parse("90s") == 1`
-- Partial minutes are discarded.
-
-Documentation and tests updated. All 4 tests pass.

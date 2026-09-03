@@ -1,4 +1,0 @@
-I'll inspect the project and run the tests to see what's failing.
-I'll run pytest to see which tests fail.
-Two failures: pad single-decimal amounts in `to_cents`, and skip the live sandbox test when the API key is missing.
-Tests pass. `to_cents` pads one-decimal amounts; live sandbox tests skip without `PAYMENTS_API_KEY`.

@@ -1,5 +1,0 @@
-I’ll locate the duration parser and its tests, then correct the unit conversion and verify the affected cases.
-The compound-duration branch adds hour and minute values as minutes rather than returning seconds. I’ll convert each component using the existing unit multipliers.
-Fixed compound durations in `durations/parse.py` to return seconds.
-
-`parse("1h30m")` now returns `5400`. Verified with `pytest`: 4 passed.

@@ -1,4 +1,0 @@
-
-
-
-Fixed: `durations/parse.py:16` was multiplying hours by 60 (minutes) instead of 3600. Now `parse('1h30m')` returns 5400, and all tests pass.

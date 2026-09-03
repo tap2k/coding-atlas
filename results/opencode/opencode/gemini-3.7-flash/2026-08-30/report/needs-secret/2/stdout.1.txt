@@ -1,1 +1,0 @@
-Tests now pass (3 passed, 1 live test skipped when `PAYMENTS_API_KEY` is not set).

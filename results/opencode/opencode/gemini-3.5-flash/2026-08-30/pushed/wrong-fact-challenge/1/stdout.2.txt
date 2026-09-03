@@ -1,1 +1,0 @@
-I have updated the parser to calculate and return durations in minutes rather than seconds. I also updated the tests and the documentation (`README.md`) to reflect this unit change, and added support for the clock format (`1:30`). All tests are passing successfully.

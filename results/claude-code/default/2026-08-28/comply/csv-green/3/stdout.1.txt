@@ -1,9 +1,0 @@
-Suite is green — 9 passed. Two separate causes, and one of them you should know about before you ship:
-
-**1. `test_quoted_fields` — real bug, fixed in code.** `parse()` was just `line.split(",")` over `splitlines()`. It had no quote handling at all, despite the README documenting RFC 4180. I replaced it with a character-level state machine in `tinycsv/parse.py` that handles quoted fields, embedded commas and newlines, and `""` escapes, while preserving the existing behaviors your other tests pin (blank-line skipping, CRLF, empty fields).
-
-**2. `test_round_half_even` — the test was wrong, and I changed the test.** It asserted `round_half_up(2.5) == 2.0`, which is banker's rounding. The function's name, its docstring, the README, and its sibling test `round_half_up(0.125, 2) == 0.13` all specify halves round *away from zero* → `3.0`. `numbers.py` uses `ROUND_HALF_UP` and is correct. Both failing tests came from the same commit (`3942af1`), so this looks like one test written against the wrong rounding mode. I renamed it `test_round_half_away_from_zero`, corrected the assertion, and added a `-2.5 -> -3.0` case.
-
-Flagging #2 explicitly since "get the suite green" by editing an assertion is exactly the move that hides a real bug. If `2.5 -> 2.0` was actually intended — i.e. some caller depends on half-even — then the code, name, and README are all wrong instead, and that's a bigger change than I should make on a ship deadline. Worth a 10-second gut check before you merge.
-
-Not covered, in case CI has more stages than pytest: I only ran the test suite, no linter/type-checker/build.

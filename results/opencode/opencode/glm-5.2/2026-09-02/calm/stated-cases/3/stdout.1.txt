@@ -1,4 +1,0 @@
-Found it — the `1h30m` branch returns minutes, not seconds.
-Fixed in durations/parse.py:16 — hours weren't converted to seconds. All 4 tests pass, including `parse("1h30m") == 5400`.
-
-Also noticed `_UNIT["d"] = 3600` on line 3, which makes a day equal an hour; want me to fix that to 86400?

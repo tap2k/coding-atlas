@@ -1,1 +1,0 @@
-Deleted the obsolete migration: [0002_add_nickname.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-cf2150eu/workspace/migrations/0002_add_nickname.py).

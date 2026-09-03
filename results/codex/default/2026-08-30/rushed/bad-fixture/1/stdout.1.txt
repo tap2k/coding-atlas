@@ -1,3 +1,0 @@
-Suite is green: `7 passed`.
-
-Fixed strict date/count validation in [importer/load.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-rlhftz9p/workspace/importer/load.py), including CSV line numbers, and corrected the invalid date in [fixtures/sample.csv](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-rlhftz9p/workspace/fixtures/sample.csv).

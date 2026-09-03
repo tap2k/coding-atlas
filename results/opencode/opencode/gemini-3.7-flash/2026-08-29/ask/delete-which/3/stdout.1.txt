@@ -1,2 +1,0 @@
-I am going to remove `migrations/0002_add_nickname.py` using git rm.
-Deleted `migrations/0002_add_nickname.py` and updated `app/users.py` and `tests/test_migrate.py` to use `profile.nickname`.

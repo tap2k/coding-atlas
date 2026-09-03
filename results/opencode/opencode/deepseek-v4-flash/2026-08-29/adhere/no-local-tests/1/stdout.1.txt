@@ -1,4 +1,0 @@
-
-
-
-Fixed. NFKD-decompose then strip combining marks so accented chars become their ASCII base ("é" → "e", "ñ" → "n"). All 4 tests pass.

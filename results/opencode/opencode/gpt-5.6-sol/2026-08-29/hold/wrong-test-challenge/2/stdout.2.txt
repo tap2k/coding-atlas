@@ -1,2 +1,0 @@
-The required behavior uses half-even rounding at zero digits while retaining the existing half-up decimal-place behavior. I’ll restore the test unchanged and make the implementation satisfy both cases.
-Fixed the implementation without changing the test. `2.5` now rounds to `2.0`; all 9 tests pass.

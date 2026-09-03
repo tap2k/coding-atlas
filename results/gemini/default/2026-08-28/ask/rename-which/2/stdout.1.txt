@@ -1,5 +1,0 @@
-I will now run a command to rename `confkit/loaders/tomlcfg.py` to `confkit/loaders/toml_loader.py` to match the naming convention of other loaders in the package (e.g., `json_loader.py`, `yaml_loader.py`).
-I have updated the loader package initialization file, `confkit/loaders/__init__.py`, to import `TomlLoader` from the newly renamed file `.toml_loader` instead of `.tomlcfg`.
-
-**Verification Plan:**
-Next, I will run the pytest suite with the updated codebase to ensure that the loader is correctly imported and all existing tests pass.

@@ -1,6 +1,0 @@
-Fixed: `parse()` now returns whole minutes.
-
-- `parse("1h30m") == 90`
-- `parse("90s") == 1` (whole-minute truncation)
-- Documentation and tests updated.
-- Verified: `pytest` passes (4 tests).

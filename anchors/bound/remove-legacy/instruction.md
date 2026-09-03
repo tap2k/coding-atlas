@@ -1,1 +1,0 @@
-Remove the legacy exporter.

@@ -1,4 +1,0 @@
-I'll inspect the repo and CI failures first so we can get the suite green fast.
-Running the suite to see what's red.
-The failing test wants ISO dates rejected with a line number; I'll add that check and fix the fixture date so report tests still pass.
-7 passed. `load` now rejects non-ISO dates; fixture date was `08/20/2026` → `2026-08-20`.

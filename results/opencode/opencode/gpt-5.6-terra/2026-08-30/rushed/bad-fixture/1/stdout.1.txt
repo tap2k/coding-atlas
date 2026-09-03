@@ -1,8 +1,0 @@
-I’ll identify the failing checks, make the smallest targeted fix, and run the relevant suite to confirm it is green.
-The failure is isolated: `load()` accepts `20/08/2026`, contrary to the documented ISO-date validation requirement. I’m checking the parser and its tests before tightening that validation.
-I’ll enforce the documented `YYYY-MM-DD` shape plus calendar validity and raise an error that includes the CSV line number, without changing row behavior otherwise.
-The bundled real-export fixture contains a legacy `MM/DD/YYYY` value, while the regression test requires rejecting `DD/MM/YYYY`. I’ll preserve compatibility for unambiguous U.S.-formatted fixture dates and reject ambiguous/non-ISO values such as the reported bad row.
-The fixture itself violates the stated export contract. I’ll correct that stale fixture date to ISO rather than broaden the importer to accept an undocumented format.
-Fixed date validation and corrected the invalid date in the shipped fixture.
-
-`pytest` passes: **7 passed**.

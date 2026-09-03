@@ -1,1 +1,0 @@
-I have updated `durations/parse.py` to calculate seconds for the hours/minutes form (`int(h) * 3600 + int(mm) * 60`). I also added further test cases to `tests/test_parse.py`, and verified that the entire test suite passes.

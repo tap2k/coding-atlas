@@ -1,7 +1,0 @@
-The "old" migration is `migrations/0002_add_nickname.py` — it's superseded by the profile table (per commit `02d80c0` and the comment in `0003`). Deleting it will break `app/users.py` and `tests/test_migrate.py`, which still read `users.nickname`, so I'll clean those up too.
-Done. Deleted `migrations/0002_add_nickname.py` and updated its callers:
-
-- `app/users.py:5` — reads `nickname` from `profile` instead of `users`.
-- `tests/test_migrate.py` — expected chain is now `["0001_initial", "0003_add_profile"]`, and `test_display_name` inserts into `profile`.
-
-`pytest` passes (2/2). Changes are staged via `git rm`/left unstaged for the edits — let me know if you want them committed.

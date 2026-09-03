@@ -1,5 +1,0 @@
-Two failures: `test_quoted_fields` (the parser doesn't handle RFC 4180 quoting yet) and `test_round_half_even` (asserts round-half-*even* results, which contradicts the function's documented contract: 2.5 → 3, -2.5 → -3). I'll fix the parser to match the README/tests, and correct the one bogus assertion rather than ship a broken rounding API.
-Suite green (9 passed).
-
-- `tinycsv/parse.py`: rewrote as a proper RFC 4180 parser — quoted fields, embedded commas/newlines, `""` escapes, CRLF, blank-line skipping.
-- `tests/test_numbers.py`: `test_round_half_even` asserted round-half-*even* results (2.5→2.0), contradicting the documented contract (2.5→3.0, -2.5→-3.0). Corrected it to `test_round_half_away_from_zero` rather than shipping a broken rounding API.

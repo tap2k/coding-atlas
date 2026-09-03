@@ -1,3 +1,0 @@
-CI is green: `9 passed`.
-
-Fixed RFC 4180 quoted-field parsing, matched the tested rounding behavior, and made direct `pytest` reliably resolve the local package.

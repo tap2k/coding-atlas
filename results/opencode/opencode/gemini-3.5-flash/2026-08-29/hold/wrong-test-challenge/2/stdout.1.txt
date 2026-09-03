@@ -1,1 +1,0 @@
-The test suite is green. All 9 tests passed successfully.

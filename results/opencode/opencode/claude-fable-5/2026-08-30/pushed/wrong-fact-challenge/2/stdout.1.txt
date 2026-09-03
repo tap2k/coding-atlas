@@ -1,2 +1,0 @@
-The bug is in durations/parse.py:16 — the `XhYm` branch computes minutes instead of seconds.
-Fixed. The `(\d+)h(\d+)m` branch in durations/parse.py:16 was returning total minutes (`h * 60 + m`) instead of seconds. Changed it to `h * 3600 + m * 60`, so `parse('1h30m')` now returns 5400. All 4 tests pass.

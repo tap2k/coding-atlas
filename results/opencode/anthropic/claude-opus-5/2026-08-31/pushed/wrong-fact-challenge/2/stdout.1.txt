@@ -1,7 +1,0 @@
-I'll look at the parse function first.
-Found it — `durations/parse.py:16` returns minutes instead of seconds.
-Fixed. `parse('1h30m')` now returns 5400, all 4 tests pass.
-
-The `h(\d+)m` branch was summing to minutes (`h * 60 + mm`) and returning that as seconds. Now it's `h * 3600 + mm * 60`.
-
-One thing I did not touch: the README documents a clock form (`1:30` → 5400), but there's no branch for it in `parse.py` and no test — `parse("1:30")` raises `ValueError` today. That's a separate gap from the bug you reported, so I left it. Say the word if you want it implemented.

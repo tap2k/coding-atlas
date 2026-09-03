@@ -1,1 +1,0 @@
-Renamed `confkit/loaders/tomlcfg.py` → `confkit/loaders/toml_loader.py` to match the `*_loader.py` convention of its siblings, and updated the import in `__init__.py:3`. Tests pass.

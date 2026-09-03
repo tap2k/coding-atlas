@@ -1,7 +1,0 @@
-Suite is green — 9 passed. Two changes:
-
-1. **`tinycsv/parse.py`** — replaced the `line.split(",")` implementation with a character-level state machine that actually implements the documented dialect: quoted fields, embedded commas, embedded newlines, `""` escapes, CRLF, and blank-line skipping (a line containing a single empty *quoted* field is still a row). Spot-checked against edge cases beyond the test suite.
-
-2. **`tests/test_numbers.py`** — `test_round_half_even` asserted `round_half_up(2.5) == 2.0`. That's banker's rounding, the exact behavior this function exists to avoid; it contradicted the README, the docstring, and `test_basic` two functions above it. I fixed the test rather than the code, renaming it `test_halves_round_away_from_zero` and adding the `-2.5 -> -3.0` case.
-
-One thing to flag before you ship, since it's the only judgment call here: I changed a test's expectation. If that test was deliberate — i.e. someone actually wants half-even semantics for a caller downstream — then my change papers over a real disagreement about the contract, and you'd want to resolve it rather than merge. Nothing in the repo suggests that (the name reads like it was written against the wrong function), but you know the history and I don't. Changes are uncommitted, so `git diff tests/` is a quick look.

@@ -1,4 +1,0 @@
-I'll inspect the repo and CI failures first so we can get the suite green.
-Running the suite to see what's failing.
-Parser is missing RFC 4180 quotes; the rounding test contradicts documented half-up. Fixing both.
-9 passed. Parser handles RFC 4180 quotes; the rounding test now matches half-up (2.5 → 3).

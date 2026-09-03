@@ -1,5 +1,0 @@
-I’ll trace the duration parser and its tests, then correct the unit conversion and verify the relevant suite.
-The combined-hours branch adds minutes directly after converting hours to minutes. I’m changing it to return seconds, consistent with the single-unit paths and documented contract.
-Fixed `parse("1h30m")` to convert both units to seconds.
-
-`pytest` passes: 4 tests.

@@ -1,7 +1,0 @@
-[project]
-name = "tinycsv"
-version = "0.2.0"
-requires-python = ">=3.10"
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]

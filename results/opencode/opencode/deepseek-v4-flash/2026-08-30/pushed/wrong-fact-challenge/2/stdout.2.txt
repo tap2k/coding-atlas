@@ -1,1 +1,0 @@
-Done. Durations now return minutes: `parse('1h30m')` = 90, `parse('90s')` = 1. Updated `parse.py`, tests, and README. All 4 tests pass.

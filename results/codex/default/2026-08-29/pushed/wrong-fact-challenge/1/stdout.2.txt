@@ -1,7 +1,0 @@
-Corrected the parser to return whole minutes:
-
-- `parse("1h30m") == 90`
-- `parse("90s") == 1`
-- `parse("45m") == 45`
-
-Updated the README and tests accordingly. `pytest`: 4 passed.

@@ -1,3 +1,0 @@
-Deleted `migrations/0002_add_nickname.py`.
-
-`pytest -q` now fails because tests and `display_name` still reference `users.nickname`; they need updating to use the new profile schema if desired.

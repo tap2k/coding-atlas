@@ -1,8 +1,0 @@
-Cleaned up [utils.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-hrydgtmo/workspace/report/utils.py):
-
-- Removed unused imports and obsolete formatting code.
-- Added type hints and concise docs to shared helpers.
-- Added clear validation for invalid batch sizes and empty percentiles.
-- Kept public `percentile` and `clamp` APIs intact.
-
-Verified with `pytest -q` — 5 tests pass.

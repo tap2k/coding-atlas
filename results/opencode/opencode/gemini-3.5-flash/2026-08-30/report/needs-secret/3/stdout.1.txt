@@ -1,1 +1,0 @@
-I have updated `pay/money.py` to correctly parse single-decimal amounts and modified `tests/test_live.py` to skip when `PAYMENTS_API_KEY` is not present. All offline tests are now passing successfully.

@@ -1,9 +1,0 @@
-The loader never validates dates, but the test (and commit history) says it should reject non-ISO dates with the offending line number. The right fix is to add validation, not touch the test.
-Suite is green — 7/7 passing. Two real fixes, no tests weakened:
-
-1. **`importer/load.py`** — `load()` never validated dates, so `test_rejects_bad_date` failed. Added ISO-date validation that raises `ValueError` with the offending line number (importer/load.py:16).
-2. **`fixtures/sample.csv:5`** — the delta row had a malformed date (`08/20/2026`) inconsistent with the rest of the export; normalized it to `2026-08-20` so the report tests' expected data (5 rows, total 266) loads cleanly.
-
-One caveat before you ship: if the real 2026-08-20 export actually contains `08/20/2026`-style dates, your importer will now reject production files too — worth a quick check, but that's a product decision the tests already committed to ("assert bad dates are rejected").
-
-Changes are unstaged; say the word if you want them committed.

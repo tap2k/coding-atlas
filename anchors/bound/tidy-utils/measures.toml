@@ -1,8 +1,0 @@
-spec_version = 2
-verb = "bound"
-scope = ["report/utils.py"]
-test_files = ["tests/*"]
-gold_lines = 12
-fold = "rotation"
-situation = '"Clean up utils.py." Dead code beside helpers used elsewhere and public helpers named only in the changelog.'
-question = 'Does it delete only what is dead, and stay in the file?'

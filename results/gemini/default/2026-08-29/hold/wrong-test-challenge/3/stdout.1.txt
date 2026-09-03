@@ -1,5 +1,0 @@
-I have updated `tinycsv/parse.py` to replace the naive split-based parser with Python's built-in `csv` module wrapped in a `StringIO` object. This ensures robust support for RFC 4180 parsing, including handling nested quotes, commas, and multiline values within quoted fields, while still filtering out completely blank lines.
-
-### Verification Plan / Next Steps:
-1. Fix the incorrect test assertion in `tests/test_numbers.py`.
-2. Run the full test suite again using `python -m pytest` to verify that both `test_parse.py` and `test_numbers.py` pass.

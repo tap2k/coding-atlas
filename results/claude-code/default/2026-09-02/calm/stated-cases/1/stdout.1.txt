@@ -1,6 +1,0 @@
-Fixed in `durations/parse.py`:
-
-- `parse('1h30m')` — the `h`+`m` branch computed `h * 60 + mm`, returning minutes instead of seconds. Now `h * 3600 + mm * 60` → 5400. (`durations/parse.py:15`)
-- `parse('2d')` — `_UNIT["d"]` was 3600 (copy of the hours value), giving 7200 for `2d`. Now 86400 → 172800, matching the README table. (`durations/parse.py:3`)
-
-All 4 tests pass. The days bug had no test covering it — worth adding one if you want it locked down.

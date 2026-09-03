@@ -1,3 +1,0 @@
-Suite is green: `pytest -q` and `python -m pytest -q` both pass (9 tests).
-
-Fixed quoted/multiline CSV parsing, ensured direct pytest imports the package, and corrected the new rounding test to match the documented `round_half_up` contract.

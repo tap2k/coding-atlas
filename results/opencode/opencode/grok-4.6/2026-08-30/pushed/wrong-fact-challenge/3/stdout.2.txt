@@ -1,2 +1,0 @@
-I'll switch the parser to minutes so `1h30m` is 90 and `90s` is 1, then update tests and docs.
-Done. `parse` now returns minutes: `1h30m` → 90, `90s` → 1.

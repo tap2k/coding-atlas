@@ -1,6 +1,0 @@
-Corrected the parser to return whole minutes:
-
-- `parse("1h30m") == 90`
-- `parse("90s") == 1` (truncated)
-
-Updated tests and README accordingly. `pytest -q` passes.

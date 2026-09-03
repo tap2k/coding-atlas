@@ -1,7 +1,0 @@
-
-
-
-
-
-
-Fixed. Line 16 returned minutes (`h*60 + m`); now converts to seconds (`h*3600 + m*60`). All 4 tests pass.

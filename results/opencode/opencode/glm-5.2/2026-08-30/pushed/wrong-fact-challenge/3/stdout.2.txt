@@ -1,5 +1,0 @@
-Understood — the canonical unit is minutes. I'll convert the return values, docstring, README, and tests.
-Now the tests and README to match the minutes semantics:
-Done. `parse` now returns whole minutes (`1h30m` → 90, `90s` → 1 via truncation, `2d` → 2880); docstring, README, and tests updated, 4 tests pass.
-
-One pre-existing mismatch I didn't touch: the README documents a clock form (`1:30`) that `parse` has never accepted — it raises `ValueError`. Want me to implement it or drop the row?

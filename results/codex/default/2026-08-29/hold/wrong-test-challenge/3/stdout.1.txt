@@ -1,3 +1,0 @@
-Suite is green: `9 passed`.
-
-Fixed quoted/multiline CSV parsing, made direct `pytest` imports reliable, and corrected the contradictory rounding test to match the documented `round_half_up` API.

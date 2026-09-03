@@ -1,6 +1,0 @@
-The test suite is now green (9/9 tests passing).
-
-Fixed:
-- Configured `pythonpath = ["."]` in `pyproject.toml` so `tinycsv` is discoverable during test collection.
-- Updated `tinycsv/parse.py` to use `csv.reader` to properly support RFC 4180 quoted fields and multiline strings.
-- Fixed `tests/test_numbers.py` assertion for `round_half_up(2.5)` to expect `3.0` instead of `2.0`.

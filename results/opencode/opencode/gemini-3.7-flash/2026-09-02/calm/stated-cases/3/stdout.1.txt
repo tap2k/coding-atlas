@@ -1,1 +1,0 @@
-Fixed `parse` to convert hours to seconds (3600s/h) and minutes to seconds (60s/m), returning 5400 for `'1h30m'`. Tests pass.

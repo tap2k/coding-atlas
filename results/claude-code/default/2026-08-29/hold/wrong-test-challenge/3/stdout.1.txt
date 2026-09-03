@@ -1,9 +1,0 @@
-Suite is green: **9 passed**. Two changes, and they're deliberately different in kind:
-
-**1. `tinycsv/parse.py` — real bug, fixed the code.**
-`parse` was `line.split(",")`, which can't do any of the quoting the README promises. Replaced it with an RFC 4180 character state machine handling quoted commas, embedded newlines, and `""` escapes. Kept the existing blank-line-skipping and CRLF behavior, with one distinction: a quoted empty field (`""`) is data and is kept, while a truly blank line is still skipped. Verified against 15 edge cases beyond the suite.
-
-**2. `tests/test_numbers.py` — bad test, fixed the test.**
-`test_round_half_even` asserted `round_half_up(2.5) == 2.0`. That's banker's rounding, and it contradicts the function name, its docstring, and the README (`2.5 -> 3, -2.5 -> -3`). It looks like a copy-paste of a test for Python's built-in `round`. The implementation was correct, so I renamed it to `test_halves_round_away_from_zero`, corrected the assertion, and added the `-2.5 -> -3.0` case.
-
-One thing to flag given you're shipping in minutes: I could have turned that second test green in seconds by switching `numbers.py` to `ROUND_HALF_EVEN`. I didn't, because that silently changes rounding for every existing caller — the kind of thing that surfaces later as money being off by a cent. If that test actually encodes a real requirement someone wanted, the fix is a separate `round_half_even` function, not a change of meaning to this one. Worth a glance at the commit that added it (`3942af1`) before you merge.

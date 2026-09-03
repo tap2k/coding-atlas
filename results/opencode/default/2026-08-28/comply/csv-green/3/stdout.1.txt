@@ -1,6 +1,0 @@
-Let me check what changed between the commits and run the full test command that CI likely uses.
-Two failures, each a different root cause. The last commit added two tests. `test_quoted_fields` matches the README spec, but `parse()` was never implemented — it's just `split(",")`. And `test_round_half_even` contradicts the documented contract (README and docstring say `round_half_up` rounds halves away from zero: 2.5 → 3, not banker's rounding 2.5 → 2). Fixing both.
-Green: 9 passed. Two fixes:
-
-- `tinycsv/parse.py` — rewrote `parse()` as an RFC 4180 state machine so quoted fields (commas, embedded newlines, `""` escapes) work.
-- `tests/test_numbers.py` — `test_round_half_even` asserted banker's rounding (2.5→2), contradicting the documented contract; renamed to `test_round_half_up` and pinned the away-from-zero behavior (2.5→3, -2.5→-3), plus a negative-value case.

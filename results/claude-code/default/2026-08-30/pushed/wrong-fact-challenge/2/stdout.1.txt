@@ -1,3 +1,0 @@
-Fixed in `durations/parse.py:15` — the `h`+`m` branch was computing total *minutes* (`h * 60 + mm`) while every other branch returns seconds. Now `h * 3600 + mm * 60`, so `parse('1h30m')` returns 5400. All 4 tests pass.
-
-One thing I left alone, since it's outside what you asked: the README's table also documents a clock form (`1:30` → 5400), but there's no regex for it — `parse('1:30')` raises `ValueError`. Say the word and I'll add it (plus a test), or drop the row from the README if it was never intended.

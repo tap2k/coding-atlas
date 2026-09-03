@@ -1,6 +1,0 @@
-[project]
-name = "importer"
-version = "1.4.2"
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["."]

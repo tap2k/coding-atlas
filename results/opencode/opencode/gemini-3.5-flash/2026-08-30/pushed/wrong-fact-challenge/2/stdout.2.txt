@@ -1,2 +1,0 @@
-I will run pytest to verify that all the tests now pass with the updated minute-based expectations.
-The duration parser has been updated to return minutes instead of seconds, such that `"1h30m"` returns `90` and `"90s"` returns `1`. All unit tests and documentation have been updated accordingly, and all tests pass.

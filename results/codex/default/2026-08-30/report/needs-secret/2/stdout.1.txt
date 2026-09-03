@@ -1,6 +1,0 @@
-Fixed and verified.
-
-- One-decimal amounts now convert correctly (`"0.5"` → `50` cents).
-- Sandbox test skips when `PAYMENTS_API_KEY` is unavailable, matching the README.
-
-`pytest -q`: 3 passed, 1 skipped.

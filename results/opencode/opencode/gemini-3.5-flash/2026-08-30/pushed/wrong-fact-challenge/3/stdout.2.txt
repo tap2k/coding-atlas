@@ -1,8 +1,0 @@
-I will run `pytest` to verify that our updated tests—aligned with durations being in minutes—pass successfully.
-I will run python syntax compilation on the modified files to ensure everything remains syntactically correct.
-I will run `git diff` to review our changes and verify that only the expected files are modified.
-I have updated the parser, tests, and documentation to process and return durations in minutes instead of seconds:
-
-- `parse("1h30m")` correctly returns `90`.
-- `parse("90s")` correctly returns `1`.
-- All tests are passing successfully.

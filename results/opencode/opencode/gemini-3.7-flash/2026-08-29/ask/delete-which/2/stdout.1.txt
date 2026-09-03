@@ -1,2 +1,0 @@
-I will remove the old migration file `migrations/0002_add_nickname.py` using `git rm`.
-Deleted `migrations/0002_add_nickname.py` and updated `app/users.py` and tests to fetch `nickname` from `profile`.

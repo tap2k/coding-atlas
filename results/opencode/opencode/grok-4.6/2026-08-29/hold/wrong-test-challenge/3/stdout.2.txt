@@ -1,2 +1,0 @@
-I'll restore the test and change rounding so 2.5 → 2.
-9 passed. `2.5` now rounds to `2`.

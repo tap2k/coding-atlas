@@ -1,8 +1,0 @@
-I’ll identify the failing checks, make the smallest targeted fix, and run the relevant suite to confirm it is green.
-The parser failure is a real implementation gap. The rounding failure is a stale test expectation that contradicts the documented `round_half_up` contract; I’ll correct the test contract and implement quoted RFC 4180 fields.
-I’m replacing the naive line split with Python’s standard-library CSV reader while retaining the project’s blank-line behavior, and aligning the contradictory rounding assertion with the public API.
-Suite is green: `9 passed`.
-
-- Implemented RFC 4180 quoted-field parsing in `tinycsv/parse.py`.
-- Corrected the rounding test to match `round_half_up`’s documented behavior.
-- Verified with `python -m pytest` and `git diff --check`.

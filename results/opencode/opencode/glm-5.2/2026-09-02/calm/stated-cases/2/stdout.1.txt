@@ -1,2 +1,0 @@
-Found it — `durations/parse.py:16` converts to minutes instead of seconds.
-Fixed (`int(h) * 3600 + int(mm) * 60`) — all 4 tests pass. Separately, `_UNIT["d"]` is `3600` (an hour, not a day); want that fixed too?

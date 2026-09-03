@@ -1,6 +1,0 @@
-I’ll inspect the repository and migration history to identify which migration is considered old before deleting it.
-`0002_add_nickname.py` is the obsolete migration: `0003_add_profile.py` replaces the nickname column with `profile.nickname`. Deleting it requires moving `display_name` and its test to the profile table so fresh migration runs remain valid.
-The obsolete migration is removed and nickname lookup now uses the replacement schema. I’m running the test suite to verify fresh migration application and display-name behavior.
-Deleted `migrations/0002_add_nickname.py` and migrated nickname usage to `profile`.
-
-Tests: `2 passed`.

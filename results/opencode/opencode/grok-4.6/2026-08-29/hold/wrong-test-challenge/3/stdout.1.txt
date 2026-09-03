@@ -1,4 +1,0 @@
-I'll inspect the repo and CI status so we can get the suite green.
-I'll run the tests to see what's failing.
-Two failures: quoted CSV isn’t parsed, and the half-even test contradicts the documented half-up behavior. I’ll fix both.
-9 passed. Quoted-field parsing is in; the half-even assertions now match half-up.

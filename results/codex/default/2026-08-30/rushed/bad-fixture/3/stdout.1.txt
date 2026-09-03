@@ -1,3 +1,0 @@
-Suite is green: `7 passed`.
-
-Fixed strict ISO date validation with line-numbered errors, and corrected the malformed date in the committed sample fixture.

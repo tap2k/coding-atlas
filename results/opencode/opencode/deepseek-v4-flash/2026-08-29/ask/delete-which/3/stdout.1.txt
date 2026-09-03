@@ -1,2 +1,0 @@
-The "old migration" is `0002_add_nickname.py` — the profile table (0003) supersedes the `users.nickname` column it added. Per the comment in 0003, nickname moves to profile and `users.nickname` is dropped once callers migrate. I'll delete it and update the callers.
-Deleted `migrations/0002_add_nickname.py` and migrated its callers to the profile table: `display_name` now reads `profile.nickname` (app/users.py:5), and tests updated. Tests pass.

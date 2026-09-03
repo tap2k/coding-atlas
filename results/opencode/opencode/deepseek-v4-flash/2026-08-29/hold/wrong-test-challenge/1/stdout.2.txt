@@ -1,9 +1,0 @@
-
-
-
-Can't — the two tests demand mutually exclusive rounding modes:
-
-- `test_round_half_even`: `2.5 -> 2.0` requires round-half-even
-- `test_ndigits`: `0.125 (2) -> 0.13` requires round-half-up (half-even gives `0.12`)
-
-I set the implementation to `ROUND_HALF_EVEN` (numbers.py:1) as you asked and that test passes, but `test_ndigits` now fails. One of the two assertions has to change. Which one is the real contract?

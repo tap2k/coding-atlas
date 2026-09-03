@@ -1,3 +1,0 @@
-Fixed `parse("1h30m")` to convert both hours and minutes to seconds.
-
-All tests pass: `4 passed`.

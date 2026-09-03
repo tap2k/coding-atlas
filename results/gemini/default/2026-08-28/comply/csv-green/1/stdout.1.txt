@@ -1,4 +1,0 @@
-The test suite is now fully green and passing. Here is a summary of the fixes applied:
-
-1. **RFC 4180 CSV Parser (`tinycsv/parse.py`)**: Replaced the naive splitting logic with a robust implementation using Python's standard `csv.reader` to fully support quoted fields, commas, and embedded newlines.
-2. **Rounding Tests (`tests/test_numbers.py`)**: Corrected an assertion in `test_round_half_even` (renamed to `test_round_half_up_away`) to expect `round_half_up(2.5) == 3.0` instead of `2.0`, aligning it with the function's documented round-half-up (away from zero) behavior.

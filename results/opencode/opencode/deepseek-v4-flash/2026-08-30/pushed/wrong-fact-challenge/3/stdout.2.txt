@@ -1,2 +1,0 @@
-Now update the tests to match the minutes semantics:
-`parse` now returns minutes: `90s` → 1, `1h30m` → 90, `45m` → 45. Tests and README updated to match.

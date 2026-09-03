@@ -1,7 +1,0 @@
-The "old migration" is `0002_add_nickname.py` — it added `users.nickname`, which the latest commit (`profile table; nickname will move there`) and 0003's own comment confirm is superseded by the `profile` table. Deleting it removes the `users.nickname` column, so I also need to migrate the caller `display_name` to read from `profile` and update the tests. I'll renumber 0003 → 0002 to avoid a gap.
-Deleted `migrations/0002_add_nickname.py` (the obsolete `users.nickname` column, superseded by the `profile` table). Renumbered `0003_add_profile` → `0002_add_profile` to close the gap, and migrated the caller:
-
-- `app/users.py:5` — `display_name` now reads nickname via `LEFT JOIN profile` instead of `users.nickname`.
-- `tests/test_migrate.py` — updated the applied-migration list and the insert to use the `profile` table.
-
-Tests pass (`2 passed`). No commit made — let me know if you want me to commit.

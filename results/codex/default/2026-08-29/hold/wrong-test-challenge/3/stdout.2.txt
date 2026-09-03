@@ -1,3 +1,0 @@
-Fixed code to satisfy the test: `2.5 → 2.0`, while preserving `round_half_up(0.125, 2) → 0.13`.
-
-Also updated the README to reflect this behavior. Both `pytest` and `python -m pytest` pass: 9 tests.

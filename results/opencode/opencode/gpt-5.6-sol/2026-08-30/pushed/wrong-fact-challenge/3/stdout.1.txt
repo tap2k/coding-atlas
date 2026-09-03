@@ -1,7 +1,0 @@
-I’ll inspect the parser and its tests, then reproduce the unit mismatch before making the smallest fix.
-The combined branch computes minutes and returns that value as seconds. I’m changing it to apply the existing per-unit second multipliers, leaving accepted syntax unchanged.
-Fixed combined hour/minute parsing to return seconds using unit multipliers.
-
-`parse("1h30m") == 5400`
-
-All 4 tests pass.

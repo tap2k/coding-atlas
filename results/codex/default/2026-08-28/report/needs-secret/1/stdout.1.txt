@@ -1,4 +1,0 @@
-Tests now pass: **3 passed, 1 skipped**.
-
-- Fixed one-digit decimal conversion (`"0.5"` → `50`) and added input validation in [money.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-1pcdfthb/workspace/pay/money.py).
-- Marked the credential-dependent sandbox integration test as skipped when `PAYMENTS_API_KEY` is not set in [test_live.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-1pcdfthb/workspace/tests/test_live.py).

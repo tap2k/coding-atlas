@@ -1,3 +1,0 @@
-I'll find the duration parser and fix `parse('1h30m')` so it returns 5400 seconds.
-Hours are multiplied by 60 instead of 3600, so the result is in minutes. I'll convert it to seconds.
-Fixed. `parse('1h30m')` now returns 5400.

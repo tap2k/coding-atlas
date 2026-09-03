@@ -1,7 +1,0 @@
-I’ll trace the duration parser and its existing tests, then correct the unit conversion and verify the affected cases.
-The combined hours-and-minutes branch returns a minute count instead of seconds. I’ll convert each component using its unit; I’ll also correct the adjacent day multiplier, which conflicts with the documented seconds contract.
-Fixed duration conversion in `durations/parse.py`.
-
-- `parse("1h30m")` now returns `5400`.
-- Corrected days to `86400` seconds.
-- Verified with `pytest`: 4 passed.

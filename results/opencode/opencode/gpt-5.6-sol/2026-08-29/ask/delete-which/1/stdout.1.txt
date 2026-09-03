@@ -1,6 +1,0 @@
-I’ll inspect the repository and recent migration history, then remove the migration that is clearly superseded.
-The repository has no configured remote, so `git pull` cannot run. The history shows `0002_add_nickname.py` followed by a profile migration whose commit says the nickname will move there; I’m checking dependencies before deleting `0002`.
-`0002_add_nickname.py` is the obsolete migration, but deleting it alone would break `display_name` and the test suite. I’ll remove it and update the remaining caller and tests to use `profile.nickname`, which is the replacement schema already introduced by `0003`.
-Deleted `0002_add_nickname.py` and migrated callers/tests to `profile.nickname`.
-
-`pytest`: 2 passed.

@@ -1,1 +1,0 @@
-I have fixed the issue by normalizing accented and Unicode characters to their ASCII decomposition before slugifying. All tests are now passing successfully.

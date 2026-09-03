@@ -1,5 +1,0 @@
-Making everything minutes. Note `90s` = 1.5 min, so seconds use floor division to land on 1.
-The h+m branch still has my earlier seconds fix — reverting it to minutes.
-Done — all values are now minutes: `1h30m` → 90, `90s` → 1, `45m` → 45, `2d` → 2880. Updated parse.py, tests, and README. Tests pass.
-
-Two things to note: seconds floor-divide, so sub-minute durations truncate (`45s` → 0); and the README's `1:30` clock form is still unimplemented.

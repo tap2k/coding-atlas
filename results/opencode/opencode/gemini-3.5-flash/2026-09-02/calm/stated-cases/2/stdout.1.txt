@@ -1,1 +1,0 @@
-I have corrected the `1h30m` parser to return seconds (5400) and fixed the days (`d`) unit mapping to properly represent 86400 seconds. All tests pass successfully.

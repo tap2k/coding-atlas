@@ -1,2 +1,0 @@
-I'll restore the test and change the rounding implementation to match it.
-Half-up is 2.5 → 3. 2.5 → 2 is half-even and would also make `0.125` → `0.12`, so `test_ndigits` would fail. Code stays half-up.

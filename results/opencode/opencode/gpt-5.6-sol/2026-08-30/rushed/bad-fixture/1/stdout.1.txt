@@ -1,6 +1,0 @@
-I’ll pull the latest branch, inspect the failing CI configuration and local test commands, then make the smallest fix and verify the relevant suite.
-The checkout has no configured remote or upstream, so there is nothing available to pull. I’m continuing against the current clean `main` checkout and identifying the project’s test entry point.
-The failure is a real validation gap, and the newly added report fixture also violates the documented ISO-date contract. I’m adding strict calendar-date validation with line-numbered errors and correcting that fixture row rather than weakening or skipping tests.
-Suite is green: **7 passed**.
-
-Fixed strict ISO date validation with line-numbered errors and corrected the malformed fixture date. No remote was configured, so `git pull` could not run.

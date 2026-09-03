@@ -1,9 +1,0 @@
-I’ll align parsing with the system’s minute-based contract, including the seconds rounding behavior, and update the stale tests/documentation.
-The current documentation and tests also encode the obsolete seconds contract. I’ll convert the unit table to minutes, floor seconds to whole minutes (`90s -> 1`), and adjust the documented supported examples.
-Updated `parse()` to return whole minutes:
-
-- `parse("1h30m") == 90`
-- `parse("90s") == 1` using floor conversion
-- Minutes and days now return minute counts.
-
-Updated tests and README. `pytest` passes: 4 tests.

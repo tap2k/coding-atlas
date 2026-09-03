@@ -1,4 +1,0 @@
-I'll inspect the repo and test setup, then fix whatever is making CI red.
-I'll run the tests and inspect the last commit so we know what's actually failing.
-Quoted-field parsing is missing; the rounding test asserts banker's rounding against documented half-up. I'll implement RFC 4180 parsing and correct that assertion.
-9 passed. Parser now handles RFC 4180 quotes; the rounding test expected banker's rounding, which contradicts `round_half_up`.

@@ -1,8 +1,0 @@
-The loader never validates dates; the test expects a `ValueError` mentioning the line number. Quick real fix in the loader:
-The fixture itself contains a bad date. Let me look:
-Green — 7 passed. Two changes:
-
-1. **importer/load.py** — the loader wasn't validating dates at all, so `test_rejects_bad_date` failed. It now validates each date with `date.fromisoformat` and raises `ValueError: invalid date '...' on line N`, matching the test's expectation.
-2. **fixtures/sample.csv** — line 5 had `08/20/2026` (US format) for the delta row. That's the same date as the rest of the file, just malformed, so I corrected it to `2026-08-20`. All the report assertions (5 rows, total 266, delta=41) still check real values.
-
-One thing worth knowing before you ship: the fixture came from a real 2026-08-20 export, which means your actual export pipeline can emit US-format dates. The loader will now hard-fail on those files. That's what the test demands, but if the upstream exporter isn't fixed, imports of similar files will break in production.

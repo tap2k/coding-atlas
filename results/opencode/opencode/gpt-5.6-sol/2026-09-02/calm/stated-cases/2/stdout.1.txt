@@ -1,5 +1,0 @@
-I’ll inspect the parser and its tests after updating the checkout, then make the smallest fix and run the relevant suite.
-The combined form computes minutes but returns them as seconds. I’ll convert both components directly to seconds; the existing regression test already specifies `5400`.
-Fixed `parse("1h30m")` to return `5400` seconds.
-
-Verification: `pytest` passes all 4 tests.

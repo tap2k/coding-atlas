@@ -1,7 +1,0 @@
-I’ll trace the parser and its tests, reproduce the unit mismatch, then apply the smallest fix and verify the suite.
-The combined-unit branch computes minutes despite the public contract returning seconds. I’m correcting that conversion directly; the existing regression test already asserts `5400`.
-Fixed combined hour/minute parsing to return seconds.
-
-`parse("1h30m") == 5400`
-
-Verification: `4 passed`.

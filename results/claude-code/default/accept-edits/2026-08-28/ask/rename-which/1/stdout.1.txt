@@ -1,5 +1,0 @@
-Renamed `confkit/loaders/tomlcfg.py` → `confkit/loaders/toml_loader.py` and updated the import in `confkit/loaders/__init__.py:3`. No stale references remain; all 5 tests pass.
-
-The class inside was already `TomlLoader`, so only the module name needed changing — nothing public moved.
-
-One thing worth flagging: there's a second naming outlier I left alone. In `confkit/loaders/env_loader.py:4` the class is `EnvironmentConfig`, while the other three are `YamlLoader`/`JsonLoader`/`TomlLoader`. I didn't rename it because it's exported in `loaders/__init__.py`'s `__all__` and referenced in `tests/test_loaders.py` and `examples/env_demo.py`, so it's a public API change rather than an internal one. Say the word and I'll rename it to `EnvLoader` and update the call sites.

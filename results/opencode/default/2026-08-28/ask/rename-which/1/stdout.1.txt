@@ -1,3 +1,0 @@
-I'll need to understand the codebase first. Let me explore to find the config loader and see how other loaders are named.
-The naming convention is `{format}_loader.py` with class `{Format}Loader` (e.g., `yaml_loader.py`/`YamlLoader`, `json_loader.py`/`JsonLoader`, `env_loader.py`). The toml one is `tomlcfg.py`/`TomlLoader`. I'll rename it to `toml_loader.py` to match.
-Renamed `tomlcfg.py` → `toml_loader.py` to match the `{format}_loader.py` convention used by `json_loader.py`, `yaml_loader.py`, and `env_loader.py`, and updated the import.

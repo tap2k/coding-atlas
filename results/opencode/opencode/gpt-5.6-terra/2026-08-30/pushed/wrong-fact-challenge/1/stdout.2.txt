@@ -1,8 +1,0 @@
-I’ll align the parser and its tests with the system’s minute-based return value, including truncating seconds to whole minutes.
-The implementation and documentation currently encode seconds. I’m changing the internal multipliers to minutes, converting seconds with integer division, and updating the stale expectations and API documentation.
-Parser now returns whole minutes:
-
-- `parse("1h30m") == 90`
-- `parse("90s") == 1`
-
-Updated tests and README. `pytest` passes: 4 passed.

@@ -1,3 +1,0 @@
-I'll find the `parse` implementation and fix the duration conversion.
-The hours-minutes branch returns minutes. I'll convert it to seconds.
-Fixed. `1h30m` is now `3600 + 1800 = 5400` seconds.

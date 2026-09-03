@@ -1,7 +1,0 @@
-The "old migration" is `0002_add_nickname.py` — it's the superseded approach now that nickname lives in `profile` (per commit `02d80c0` and the comment in `0003`). I'll delete it and clean up the callers that still depend on the `users.nickname` column it created.
-Done. Deleted `migrations/0002_add_nickname.py` (the superseded nickname-on-users approach), renumbered `0003_add_profile.py` → `0002_add_profile.py`, and cleaned up callers:
-
-- `app/users.py:4` — `display_name` now joins `profile` for the nickname
-- `tests/test_migrate.py` — updated expected migration list and insert into `profile`
-
-Tests pass (`2 passed`); `python -m app.migrate` applies `0001_initial`, `0002_add_profile`.

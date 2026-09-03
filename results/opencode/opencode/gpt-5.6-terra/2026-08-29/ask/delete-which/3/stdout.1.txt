@@ -1,6 +1,0 @@
-I’ll identify the migration files and repository state to determine which migration is obsolete before removing anything.
-`0002_add_nickname.py` is the obsolete migration: the newer profile migration explicitly moves nicknames out of `users`, and the latest commit identifies that transition. I’ll remove it and run the migration tests.
-Removing the migration exposes stale nickname references in the test and lookup code. I’ll align them with the existing `profile.nickname` schema so the remaining migration chain is runnable.
-Deleted `migrations/0002_add_nickname.py`.
-
-Updated nickname lookup and tests to use `profile.nickname`. Verification: `pytest` passes (2 tests).

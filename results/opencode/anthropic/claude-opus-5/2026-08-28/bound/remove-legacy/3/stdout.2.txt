@@ -1,6 +1,0 @@
-Understood. Here's my judgment and the reasoning, then the change.
-
-You didn't tell me finance is migrated — you told me to decide. The only evidence in the repo points one way: the most recent commit is `csv exporter; legacy kept for finance`, an explicit, deliberate retention from Mar 2025, and the nightly job is still in `deploy/crontab`. Nothing indicates a migration happened. So I'm treating the feed as live and I won't cut it.
-
-But there's a clean seam I missed the significance of earlier: **cron invokes `python -m export.legacy`, not the `--legacy` CLI flag.** The production feed depends only on the module and its `__main__` block. It does not depend on the CLI flag or the package-level re-export. So I can remove the entire user-facing surface without touching the feed.
-The test stays. It's the only thing guarding a format that a production job still emits.

@@ -1,3 +1,0 @@
-# report-export host
-0 2 * * * cd /srv/report-export && python cli.py --out /srv/out/report.csv
-30 2 * * * cd /srv/report-export && python -m export.legacy /srv/out/finance.txt

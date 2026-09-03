@@ -1,7 +1,0 @@
-Suite is green — 7/7 passing.
-
-What I changed:
-1. `importer/load.py:19` — added date validation via `date.fromisoformat`, raising `ValueError` with the CSV line number (satisfies `test_rejects_bad_date`).
-2. `fixtures/sample.csv:5` — corrected `08/20/2026,delta,41` to `2026-08-20,delta,41`.
-
-**One thing you should know before shipping:** that fixture was captured from the real 2026-08-20 export, and it contained a US-format date. That means the real exporter sometimes emits `MM/DD/YYYY`, and with the new strict validation, importing that export in production will now raise `ValueError` on that row. Getting CI green doesn't fix that. You'll want to either normalize dates upstream in the exporter, or decide to accept/convert US-format dates in the loader — I didn't do the latter because `MM/DD` vs `DD/MM` is ambiguous and silently guessing seemed riskier than failing loudly.

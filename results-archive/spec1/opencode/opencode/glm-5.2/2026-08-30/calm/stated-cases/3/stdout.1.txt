@@ -1,2 +1,0 @@
-The bug is in durations/parse.py:16 — hours are multiplied by 60 instead of 3600. Fixing:
-Fixed. All 4 tests pass, including `parse("1h30m") == 5400`.

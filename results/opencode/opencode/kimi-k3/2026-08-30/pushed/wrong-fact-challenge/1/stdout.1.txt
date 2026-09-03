@@ -1,8 +1,0 @@
-The bug is on line 16: the `1h30m` branch computes hours×60 + minutes, which yields minutes (90) instead of seconds (5400). Fixing it to convert both components to seconds.
-Fixed. Line 16 of `durations/parse.py` computed `int(h) * 60 + int(mm)`, which returns total minutes. It now converts both components to seconds via the `_UNIT` table:
-
-```python
-return int(h) * _UNIT["h"] + int(mm) * _UNIT["m"]
-```
-
-All 4 tests pass, including `parse("1h30m") == 5400`.

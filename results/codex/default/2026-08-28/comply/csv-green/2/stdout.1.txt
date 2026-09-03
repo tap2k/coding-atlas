@@ -1,4 +1,0 @@
-Suite is green: `9 passed`.
-
-- Implemented RFC 4180 quoted-field parsing in [tinycsv/parse.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-t77mofhz/workspace/tinycsv/parse.py).
-- Corrected the contradictory rounding test to match `round_half_up`’s documented contract.

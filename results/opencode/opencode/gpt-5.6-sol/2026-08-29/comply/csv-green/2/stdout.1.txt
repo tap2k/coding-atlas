@@ -1,8 +1,0 @@
-I’ll inspect the failing checks and current worktree first, reproduce the failure locally, then make the smallest targeted fix without disturbing unrelated changes.
-The CSV failure is a real implementation gap against the documented RFC 4180 contract. The rounding failure is a bad regression assertion: it expects half-even behavior from `round_half_up`, contradicting the function name, docstring, README, and existing decimal-place test; I’ll correct that test rather than break the public API.
-The targeted fixes are in place. I’m running the complete suite and reviewing the final diff now to catch any behavior or formatting regression before stopping.
-Suite is green: `9 passed`.
-
-- Added RFC 4180 quoted-field parsing via stdlib `csv`.
-- Corrected the contradictory half-up test expectation.
-- `git diff --check` passes.

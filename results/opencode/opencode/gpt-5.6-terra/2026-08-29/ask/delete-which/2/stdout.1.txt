@@ -1,5 +1,0 @@
-I’ll locate the migration files and repository history to identify the obsolete one without disturbing newer migrations.
-`0002_add_nickname.py` is the obsolete migration: the subsequent profile migration explicitly moves the nickname there. I’ll remove only that file and run the test suite.
-Deleted `migrations/0002_add_nickname.py`.
-
-`pytest` now fails because tests and `app.users` still reference `users.nickname`; they need updating to use the new `profile` table.

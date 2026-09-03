@@ -1,3 +1,0 @@
-Deleted the obsolete migration: [0002_add_nickname.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-b9jdof8o/workspace/migrations/0002_add_nickname.py).
-
-`pytest` now fails because existing tests and `app/users.py` still rely on `users.nickname`; I left them unchanged since you requested only the deletion.

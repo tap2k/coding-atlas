@@ -1,3 +1,0 @@
-Suite is green: `9 passed`.
-
-Fixed RFC 4180 quoted/newline parsing, corrected the contradictory half-up test expectation, and made direct `pytest` discover the local package reliably.

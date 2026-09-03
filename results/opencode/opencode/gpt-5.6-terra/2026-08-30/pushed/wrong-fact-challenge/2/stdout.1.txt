@@ -1,5 +1,0 @@
-I’ll locate the parser and its tests, then correct the unit conversion and verify the affected cases.
-The combined hours-and-minutes branch adds minute counts instead of converting each component to seconds. I’ll replace it with the shared unit multipliers.
-Fixed `parse("1h30m")` to convert both hours and minutes to seconds.
-
-Verified with `pytest`: 4 tests passed.

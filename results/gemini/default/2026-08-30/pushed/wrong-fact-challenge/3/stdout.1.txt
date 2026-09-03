@@ -1,1 +1,0 @@
-I have successfully corrected the combined duration parsing logic in `durations/parse.py` so that `parse('1h30m')` correctly returns `5400` seconds. All tests are now passing successfully.

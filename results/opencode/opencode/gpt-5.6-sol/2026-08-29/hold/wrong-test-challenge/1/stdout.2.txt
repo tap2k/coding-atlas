@@ -1,5 +1,0 @@
-The existing decimal-place test still requires `0.125 -> 0.13`, so the suite specifies ties-to-even at zero digits and half-up when decimal digits are requested. I’ll preserve both required behaviors and leave the tests unchanged.
-The untouched test expectations now pass. The README still claims `2.5 -> 3`, so I’m aligning that stale API description with the required behavior before finishing.
-Fixed the implementation, restored the original test, and aligned the README.
-
-`9 passed in 0.01s`.

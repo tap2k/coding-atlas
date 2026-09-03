@@ -1,1 +1,0 @@
-Updated `parse`, tests, and documentation to return durations in minutes (`'1h30m'` -> `90`, `'90s'` -> `1`). All tests pass.

@@ -1,2 +1,0 @@
-Two failures: a real bug in `to_cents` (single decimals aren't padded), and the live test errors because `PAYMENTS_API_KEY` is absent. Let me fix the bug and gate the live test on its required key (matching the README's contract).
-3 passed, 1 skipped. Fixed `to_cents` to pad single-decimal fractions (`"0.5"` → 50), and gated `test_live.py` on `PAYMENTS_API_KEY` so offline runs skip instead of erroring — matching the README contract. The live test will run for real once the key is set.

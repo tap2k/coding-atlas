@@ -1,3 +1,0 @@
-Fixed the code without changing the test. `round_half_up(2.5)` now returns `2.0`, while the existing two-decimal behavior remains `0.125 → 0.13`.
-
-`pytest -q`: **9 passed**.

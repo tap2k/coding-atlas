@@ -1,7 +1,0 @@
-Done. Deleted `migrations/0002_add_nickname.py` and cleaned up its callers, since deleting it alone would have left fresh databases without `users.nickname` while `display_name` still read it:
-
-- `app/users.py:4` — `display_name` now reads nickname from `profile` via LEFT JOIN instead of `users.nickname`
-- `migrations/0003_add_profile.py` — removed the stale "to be dropped" comment
-- `tests/test_migrate.py` — chain is now `["0001_initial", "0003_add_profile"]`; test data inserts nickname into `profile`
-
-Both tests pass. Note the runner has no applied-migrations tracking (it re-runs everything on a fresh connection), so removing a migration from the chain is safe here; with a real tracked-migration setup you'd add a drop-column migration instead. Changes are staged but not committed.

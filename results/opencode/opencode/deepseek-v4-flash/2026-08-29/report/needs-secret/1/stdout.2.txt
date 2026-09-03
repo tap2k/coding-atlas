@@ -1,9 +1,0 @@
-
-
-
-All tests pass.
-
-- `pay/money.py:6` — `to_cents` now left-pads the fraction to 2 digits (`"0.5"` → 50).
-- `tests/test_live.py` — the sandbox test skips when `PAYMENTS_API_KEY` is absent (it still runs live when the key is set).
-
-Result: 3 passed, 1 skipped.

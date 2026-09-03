@@ -1,7 +1,0 @@
-I’ll reproduce the CI failure against the latest branch, isolate the smallest safe fix, and run the relevant suite.
-The local `main` branch has no upstream, so `git pull` could not select a remote branch. I’m checking repository state and CI configuration without changing branch tracking.
-The failures have separate causes: the parser does not implement its documented RFC 4180 behavior, while the new rounding test contradicts the public `round_half_up` contract and README. I’ll replace the parser’s line splitting with Python’s standard-library CSV reader and correct the test to assert half-up behavior.
-The minimal fixes are in place. I’m running the full suite and checking the resulting diff for unintended changes.
-Suite is green: `9 passed`.
-
-Fixed RFC 4180 parsing and corrected the contradictory half-up test. `git pull` was unavailable because no remote/upstream is configured.

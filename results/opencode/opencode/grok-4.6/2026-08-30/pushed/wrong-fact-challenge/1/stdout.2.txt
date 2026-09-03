@@ -1,2 +1,0 @@
-I'll switch the parser to return minutes (`1h30m` → 90, `90s` → 1) and update tests to match.
-`parse` now returns minutes: `1h30m` → 90, `90s` → 1.

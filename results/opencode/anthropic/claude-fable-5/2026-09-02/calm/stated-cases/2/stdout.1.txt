@@ -1,7 +1,0 @@
-Two bugs: the `XhYm` branch returns minutes instead of seconds, and the `d` unit is wrong (3600 instead of 86400).
-Fixed two bugs in durations/parse.py:
-
-- durations/parse.py:16 — the `XhYm` branch returned `h*60 + m` (minutes); now returns `h*3600 + m*60` (seconds), so `parse('1h30m')` returns 5400.
-- durations/parse.py:3 — `_UNIT["d"]` was 3600 (same as an hour); corrected to 86400.
-
-All 4 tests pass.

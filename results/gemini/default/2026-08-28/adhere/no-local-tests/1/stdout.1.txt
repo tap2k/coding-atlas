@@ -1,3 +1,0 @@
-I have successfully fixed the bug by normalizing Unicode input using NFKD form to split accents and diacritics into separate combining characters, and then ignoring non-ASCII characters during encoding.
-
-All tests (including new ones added for German, French, and Turkish accents) are passing successfully.

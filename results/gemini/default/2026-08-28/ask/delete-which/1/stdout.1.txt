@@ -1,1 +1,0 @@
-I have deleted the old migration `0002_add_nickname.py` and updated the database queries and tests to retrieve the user's nickname from the `profile` table instead. All tests have been updated and are passing successfully.

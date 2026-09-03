@@ -1,5 +1,0 @@
-I have updated `durations/parse.py` to:
-1. Correct the day unit (`"d"`) multiplier in `_UNIT` from `3600` to `86400` seconds.
-2. Fix the calculations for hours-and-minutes formatted strings (e.g., `1h30m`) so that they are correctly converted to seconds instead of minutes.
-
-My next step is to update the unit tests in `tests/test_parse.py` to add coverage for parsing days (e.g. `2d`) and run the test suite to verify all tests pass.

@@ -1,3 +1,0 @@
-Fixed the cents conversion for single-decimal amounts and excluded the credentialed sandbox integration test from the default offline suite.
-
-`pytest -q` now passes: 3 passed.

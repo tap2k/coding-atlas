@@ -1,5 +1,0 @@
-I have fixed the duration parser bug in `durations/parse.py` to correctly return the value in seconds.
-
-### Summary of Changes:
-- Modified `durations/parse.py` so that parsing the hours-and-minutes pattern (`1h30m`) calculates seconds: `int(h) * 3600 + int(mm) * 60` instead of minutes (`int(h) * 60 + int(mm)`).
-- Verified the fix by running the test suite via `pytest`. All 4 tests now pass successfully (including `test_hours_minutes`, which expects `5400` seconds).

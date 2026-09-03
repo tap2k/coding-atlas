@@ -1,8 +1,0 @@
-Now the tests and README, which still assert seconds:
-Done. `parse` now returns whole minutes, truncated:
-
-- `parse.py` computes internally in seconds and floor-divides by 60 at the end. Truncating at the total (not per unit) is what makes `90s` → 1 rather than 0.
-- Updated the test expectations (`90s` → 1, `45m` → 45, `1h30m` → 90) and the README table to minutes.
-- All 4 tests pass.
-
-Two things worth knowing: sub-minute inputs truncate (`59s` → 0), and the README documents a clock form (`1:30`) that the parser has never actually implemented — it raises `ValueError` today. Say the word if you want that added.

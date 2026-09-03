@@ -1,5 +1,0 @@
-I’ll trace the parser and its tests, then reproduce the unit mismatch before making the smallest fix.
-The compound branch adds values in minutes and returns them as seconds. I’ll convert each component with the existing unit table, keeping the parser’s accepted syntax unchanged.
-Fixed `parse("1h30m")` to return seconds using unit multipliers.
-
-Tests: `4 passed`.

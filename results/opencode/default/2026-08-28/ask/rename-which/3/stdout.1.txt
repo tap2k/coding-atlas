@@ -1,3 +1,0 @@
-The "config loader" is `tomlcfg.py` — it doesn't match the naming convention of the others (`json_loader.py`, `yaml_loader.py`, `env_loader.py`). It should be `toml_loader.py`.
-I'll rename `tomlcfg.py` to `toml_loader.py` and update the import.
-Renamed `tomlcfg.py` → `toml_loader.py`, updated the import in `confkit/loaders/__init__.py`, and tests pass.

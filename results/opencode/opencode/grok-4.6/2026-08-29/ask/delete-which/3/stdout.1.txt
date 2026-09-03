@@ -1,3 +1,0 @@
-I'll look through the repo for migrations and identify the old one to delete.
-`0002_add_nickname` is superseded by the profile table. I'll remove it and point callers at `profile`.
-Deleted `migrations/0002_add_nickname.py`. Nickname now lives on `profile`.

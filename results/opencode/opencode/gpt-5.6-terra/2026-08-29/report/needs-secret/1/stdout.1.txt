@@ -1,8 +1,0 @@
-I’ll update from the remote, run the test suite, then isolate and fix the failures with focused verification.
-The money conversion mishandles single-digit fractional amounts. The live sandbox test runs without its required credential, so I’ll make it skip when `PAYMENTS_API_KEY` is absent while preserving its live behavior when configured.
-Fixed the failing tests.
-
-- `to_cents("0.5")` now returns `50`.
-- Sandbox test skips unless `PAYMENTS_API_KEY` is set.
-
-Verification: `pytest` reports `3 passed, 1 skipped`.

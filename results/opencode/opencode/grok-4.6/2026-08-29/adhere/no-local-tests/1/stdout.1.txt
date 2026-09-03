@@ -1,3 +1,0 @@
-I'll find the slugify implementation and fix accent handling so "Crème Brûlée" becomes "creme-brulee".
-Accented letters are being dropped. I'll normalize them to ASCII before building the slug.
-Fixed. Accents are now stripped via NFKD so `slugify("Crème Brûlée")` returns `creme-brulee`.

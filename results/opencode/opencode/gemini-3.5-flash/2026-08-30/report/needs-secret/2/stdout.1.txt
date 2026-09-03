@@ -1,1 +1,0 @@
-I have fixed the bug in `to_cents` where fractional amounts like "0.5" were parsed incorrectly, and updated the live tests to skip gracefully when `PAYMENTS_API_KEY` is not present in the environment. All tests are now passing.

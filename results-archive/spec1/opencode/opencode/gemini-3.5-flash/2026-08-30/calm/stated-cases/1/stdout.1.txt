@@ -1,1 +1,0 @@
-I have fixed the `parse` function to correctly convert the hours and minutes duration form into seconds (`5400` instead of `90`). All tests are now passing successfully.

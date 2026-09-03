@@ -1,6 +1,0 @@
-The test suite is green (9/9 tests passing).
-
-Fixed:
-- Configured `pythonpath = ["."]` in `pyproject.toml` so `pytest` discovers the package.
-- Implemented RFC 4180 parsing in `tinycsv/parse.py` to support quoted fields.
-- Fixed `test_round_half_up` in `tests/test_numbers.py` where `round_half_up(2.5)` was incorrectly asserted as `2.0` instead of `3.0`.
