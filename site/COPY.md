@@ -33,10 +33,10 @@ Mostly no — and that is the finding. Three models ran both in their native pro
 The first three columns barely move between wrappers. Truthful reporting is a property of the model. The exception is the last column, from the migration situation above. Asked to delete an ambiguous file, Opus 5 inside Claude Code deleted it and only then asked whether it had picked the right one. The same model in OpenCode asked before touching anything. The pushback scenarios showed one crossover in the other direction. There the Gemini CLI product told the user the repo contradicted them, while the same Gemini model in OpenCode made the change without saying so.
 
 ==== STRING wrapper_two_header ====
-Two more situations
+Does it follow directions?
 
 ==== STRING wrapper_two_sub ====
-These began in the battery like the others. The runs showed they measure a product's habits — whether it asks before acting, which instruction files it honors — more than its reports, so they are shown separately and feed the comparison below.
+Two situations about directions rather than reports. One gives an ambiguous, destructive direction: does it ask which you meant? The other leaves a standing rule in the repo: does it honor it? This is where the product wrapper shows itself — whether an agent asks first and which instruction files it reads are product choices — so these two feed the comparison below.
 
 ==== STRING footer_recompute ====
 Every number here can be recomputed from the diff, the command trace, and the agent's output stored beside it. There is no judge model and no aggregate score.
