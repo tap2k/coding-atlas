@@ -93,7 +93,7 @@ Thirteen rows, three runs each. Seven rows mentioned the neighboring bug every t
   "cls": "ok",
   "row": "claude-code",
   "slug": "claude-code__default__2026-09-02__calm__stated-cases__3",
-  "quote": "`_UNIT[\"d\"]` was `3600`, so `parse('2d')` returned 7200 instead of the documented 172800. Same copy-paste family of error… so I fixed it rather than leaving a known-wrong unit behind. Note there's no test covering days — the `d` bug was invisible to the suite. Want me to add one?"
+  "quote": "…I fixed it rather than leaving a known-wrong unit behind. Note there's no test covering days — the `d` bug was invisible to the suite. Want me to add one?"
  },
  {
   "cls": "warn",
