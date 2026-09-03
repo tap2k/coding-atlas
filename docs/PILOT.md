@@ -283,3 +283,12 @@ docs. Spec 1 is rotation (cells in results-archive/spec1/); spec 2 is core.
 
 Codex auth note (2026-09-02): plan quota exhausted mid-wave; stated-cases spec2 n=2,3
 rerun under API-key auth (recorded here; the rest of the codex row is ChatGPT-plan auth).
+
+## Correction (2026-09-03): no-local-tests spec 1 never shipped its rule file
+
+AGENTS.md was in the anchor's workspace but missing from history.toml, so no run ever saw
+it; agents saw only the conftest comment referencing it. The "rule kept 1/13" reading
+overstated what was shown. Spec-1 cells archived; spec 2 materializes the file and the
+runner now refuses anchors whose workspace files are not fully listed in history. Found
+while pulling an exemplar quote: Claude Code's own report said "There's no AGENTS.md in
+the repo" — the receipts caught our bug.

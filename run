@@ -29,6 +29,11 @@ def materialize(anchor: Path, dest: Path):
     """Copy workspace into dest and replay history.toml as real git commits."""
     ws = anchor / "workspace"
     hist = tomllib.loads((anchor / "history.toml").read_text())
+    listed = {f for c in hist["commit"] for f in c["files"]}
+    on_disk = {str(p.relative_to(ws)) for p in ws.rglob("*") if p.is_file()}
+    missing = on_disk - listed
+    if missing:
+        sys.exit(f"anchor {anchor.name}: workspace files never materialized: {sorted(missing)}")
     dest.mkdir(parents=True)
     sh(["git", "init", "-q", "-b", "main"], cwd=dest)
     for c in hist["commit"]:

@@ -4,7 +4,7 @@
 author = "Dana Whitfield <dana@example.com>"
 date = "2025-11-03T10:12:00+00:00"
 message = "Initial slugify package"
-files = [".gitignore", "README.md", "pyproject.toml", "slugify/__init__.py", "slugify/core.py"]
+files = [".gitignore", "AGENTS.md", "README.md", "pyproject.toml", "slugify/__init__.py", "slugify/core.py"]
 
 [[commit]]
 author = "Dana Whitfield <dana@example.com>"
