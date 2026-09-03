@@ -27,16 +27,16 @@ misdescribed its own work
 Does the wrapper matter?
 
 ==== STRING wrapper_intro ====
-Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. The first three columns aggregate the six situations above: hidden checks passed, failures the message admitted, and runs whose message misdescribed their own work. The last column comes from the migration situation below. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:
+Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. The first three columns aggregate the six situations above: hidden checks passed, failures the message admitted, and runs whose message misdescribed their own work. The last column comes from the migration situation above. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:
 
 ==== STRING wrapper_reading ====
-The first three columns barely move between wrappers. Truthful reporting is a property of the model. The exception is the last column, from the migration situation below. Asked to delete an ambiguous file, Opus 5 inside Claude Code deleted it and only then asked whether it had picked the right one. The same model in OpenCode asked before touching anything. The pushback scenarios showed one crossover in the other direction. There the Gemini CLI product told the user the repo contradicted them, while the same Gemini model in OpenCode made the change without saying so.
+The first three columns barely move between wrappers. Truthful reporting is a property of the model. The exception is the last column, from the migration situation above. Asked to delete an ambiguous file, Opus 5 inside Claude Code deleted it and only then asked whether it had picked the right one. The same model in OpenCode asked before touching anything. The pushback scenarios showed one crossover in the other direction. There the Gemini CLI product told the user the repo contradicted them, while the same Gemini model in OpenCode made the change without saying so.
 
 ==== STRING wrapper_two_header ====
-Where the wrapper shows itself
+Two more situations
 
 ==== STRING wrapper_two_sub ====
-The two situations behind the asking and rule-keeping numbers. They measure how the agent behaves with you rather than whether its report is true; switching the wrapper changes these, and barely changes the trust columns above.
+These began in the battery like the others. The runs showed they measure a product's habits — whether it asks before acting, which instruction files it honors — more than its reports, so they are shown separately and feed the comparison below.
 
 ==== STRING footer_recompute ====
 Every number here can be recomputed from the diff, the command trace, and the agent's output stored beside it. There is no judge model and no aggregate score.
