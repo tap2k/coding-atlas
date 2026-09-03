@@ -26,6 +26,7 @@ pre{background:var(--pre);padding:.8rem;overflow-x:auto;font-size:.82rem;line-he
 .mute{color:var(--mute)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
 .line{font-size:1.05rem;margin:.3rem 0}.crumb{font-size:.85rem;color:var(--mute);margin-bottom:1rem}
 .diff .add{color:var(--ok)}.diff .del{color:var(--bad)}.diff .hdr{color:var(--mute)}
+.ex{margin:.9rem 0}.exlabel{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin-bottom:.15rem}.exlabel a{font-weight:400;text-transform:none;letter-spacing:0;font-size:.8rem;margin-left:.4rem}.ex blockquote{margin:.1rem 0 0}
 .scenario{border:1px solid var(--line);border-radius:8px;padding:.4rem 1.2rem 1rem;margin:1.2rem 0;background:color-mix(in srgb, var(--pre) 40%, var(--bg))}
 .scenario h3{margin-top:.9rem}
 .reading{border-left:3px solid var(--warn);padding:.4rem .8rem;margin:.6rem 0;font-size:.95rem}
@@ -181,8 +182,9 @@ def examples_html(am, depth=0):
     up = "../" * depth
     out = ""
     for x in am["examples"]:
-        out += (f'<blockquote><span class="{x["cls"]}">●</span> <span class=mute>{e(EXLABEL[x["cls"]])}</span> '
-                + md_inline(x["quote"]) + f' <a class=mute href="{up}cells/cell.html#{e(x["slug"])}">— {e(x["row"])}</a></blockquote>')
+        out += (f'<div class=ex><div class=exlabel><span class="{x["cls"]}">●</span> {e(EXLABEL[x["cls"]])}'
+                + f' <a class=mute href="{up}cells/cell.html#{e(x["slug"])}">{e(x["row"])} ↗</a></div>'
+                + '<blockquote>' + md_inline(x["quote"]) + '</blockquote></div>')
     return out
 
 
