@@ -26,3 +26,8 @@ log of findings, corrections, and design decisions.
 
 Reproduce a cell: `./run --anchor <verb>/<name> --product <adapter> [--model id]`.
 Preview the site: `site/preview.sh`.
+
+Add a scenario: copy any folder under `anchors/` and change three things — the workspace
+(a small repo with a trap), `instruction.md` (one line), and `checker_test.py` (the
+hidden check). `history.toml` lists every workspace file; the runner refuses to start
+otherwise. New scenarios enter as rotation; the core set stays frozen between waves.
