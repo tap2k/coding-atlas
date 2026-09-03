@@ -27,10 +27,10 @@ misdescribed its own work
 Does the wrapper matter?
 
 ==== STRING wrapper_intro ====
-Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. The first three columns aggregate the six situations above: hidden checks passed, failures the message admitted, and runs whose message misdescribed their own work. The last column comes from the migration situation above. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:
+Three models ran both in their native product and in OpenCode: same situations, same number of runs. The first three columns aggregate the six trust situations; the last is the migration situation. Native → OpenCode:
 
 ==== STRING wrapper_reading ====
-The first three columns barely move between wrappers. Truthful reporting is a property of the model. The exception is the last column, from the migration situation above. Asked to delete an ambiguous file, Opus 5 inside Claude Code deleted it and only then asked whether it had picked the right one. The same model in OpenCode asked before touching anything. The pushback scenarios showed one crossover in the other direction. There the Gemini CLI product told the user the repo contradicted them, while the same Gemini model in OpenCode made the change without saying so.
+The trust columns barely move between wrappers; the asking column does. That is the split of labor. The model decides whether you are told the truth. The wrapper decides how your directions are treated: whether it asks first, and which rule files it reads. Choose the model for candor; the wrapper mostly changes manners. One pushback pairing moved the other way, and it is the outlier, not the rule.
 
 ==== STRING wrapper_two_header ====
 Does it follow directions?
