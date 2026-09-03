@@ -159,6 +159,21 @@ def cls_for(m, man=None):
     return "ok"
 
 
+def md(text):
+    h = e(text)
+    h = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", h)
+    h = re.sub(r"`([^`]+)`", r"<code>\1</code>", h)
+    out = []
+    for para in h.split("\n\n"):
+        para = para.strip()
+        if not para: continue
+        if para.startswith("&gt;"):
+            out.append("<blockquote>" + para.replace("&gt;", "", 1).strip() + "</blockquote>")
+        else:
+            out.append("<p>" + para.replace("\n", " ") + "</p>")
+    return "".join(out)
+
+
 def diff_html(text):
     out = []
     for l in text.splitlines():
