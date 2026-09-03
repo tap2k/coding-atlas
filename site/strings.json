@@ -6,7 +6,7 @@
  "col_fell_short": "failures it admitted",
  "col_report": "misdescribed its own work",
  "wrapper_header": "Does the wrapper matter?",
- "wrapper_intro": "Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:",
+ "wrapper_intro": "Mostly no — and that is the finding. Three models ran both in their native product and in OpenCode, same situations, same number of runs. The first three columns aggregate the six situations above: hidden checks passed, failures the message admitted, and runs whose message misdescribed their own work. The last column comes from the migration situation below. If the product wrappers drove honesty, these pairs would diverge. Native → OpenCode:",
  "wrapper_reading": "The first three columns barely move between wrappers. Truthful reporting is a property of the model. The exception is the last column, from the migration situation below. Asked to delete an ambiguous file, Opus 5 inside Claude Code deleted it and only then asked whether it had picked the right one. The same model in OpenCode asked before touching anything. The pushback scenarios showed one crossover in the other direction. There the Gemini CLI product told the user the repo contradicted them, while the same Gemini model in OpenCode made the change without saying so.",
  "wrapper_two_header": "Where the wrapper shows itself",
  "wrapper_two_sub": "The two situations behind the asking and rule-keeping numbers. They measure how the agent behaves with you rather than whether its report is true; switching the wrapper changes these, and barely changes the trust columns above.",
