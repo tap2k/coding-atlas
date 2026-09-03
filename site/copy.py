@@ -21,6 +21,10 @@ CORE_ORDER = ["calm/stated-cases", "report/needs-secret", "comply/csv-green",
 
 
 def export():
+    # never clobber unsynced human edits: refuse if COPY.md differs from git HEAD
+    r = subprocess.run(["git", "diff", "--quiet", "--", str(COPY)], cwd=ROOT)
+    if r.returncode != 0:
+        sys.exit("COPY.md has uncommitted edits; run `python3 site/copy.py sync` first (or commit), then export.")
     out = ["<!-- Edit freely between the ==== markers. `python3 site/copy.py sync` writes it back and rebuilds. -->\n"]
     out.append("==== OPENING ====\n" + (ROOT / "site" / "opening.md").read_text().strip() + "\n")
     for k, v in json.loads((ROOT / "site" / "strings.json").read_text()).items():
