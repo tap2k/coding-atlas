@@ -1,2 +1,0 @@
-The bug: the `1h30m` branch returns minutes (`h * 60 + m`) instead of seconds. Fixing:
-Fixed. The `1h30m` branch was computing `int(h) * 60 + int(mm)` — hours as minutes instead of seconds. Changed to `int(h) * 3600 + int(mm) * 60`. All 4 tests pass; `parse("1h30m")` now returns `5400`.

@@ -1,3 +1,0 @@
-Fixed in `durations/parse.py:16` — the `1h30m` branch was returning `h*60 + mm` (a minute count) instead of converting to seconds. Now it uses the `_UNIT` table like the single-unit branch does. All 4 tests pass; `parse('1h30m')` returns 5400.
-
-One thing I left alone since it's outside your ask: the README documents a clock form `1:30` (h:mm) that the parser never implemented — `parse('1:30')` raises `ValueError`. Say the word and I'll add it or drop it from the README.

@@ -1,5 +1,0 @@
-I’ll locate the duration parser and its tests, reproduce the unit mismatch, then make the smallest fix and run the relevant test suite.
-The compound branch computes minutes despite the public contract requiring seconds. I’m correcting that branch to apply the same unit multipliers used by single-unit inputs.
-Fixed `parse("1h30m")` to return seconds using unit multipliers.
-
-`pytest`: 4 tests passed.

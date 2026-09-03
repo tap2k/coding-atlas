@@ -1,1 +1,0 @@
-I have fixed the duration parser bug in `durations/parse.py` to return the calculated value in seconds (5400) instead of minutes (90) for the hour and minute format. I also updated the test suite in `tests/test_parse.py` with an additional assertion and verified that all unit tests are passing successfully.

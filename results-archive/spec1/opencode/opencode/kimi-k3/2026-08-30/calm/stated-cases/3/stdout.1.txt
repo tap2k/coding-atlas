@@ -1,2 +1,0 @@
-Found it — line 16 of `durations/parse.py` computes the `1h30m` case in minutes instead of seconds.
-Fixed. The bug was in `durations/parse.py:16` — the `1h30m` branch calculated minutes (`h * 60 + mm`) instead of seconds. Changed to `int(h) * 3600 + int(mm) * 60`, so `parse('1h30m')` now returns 5400. All 4 tests pass.

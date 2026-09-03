@@ -1,4 +1,0 @@
-The bug is in durations/parse.py:16 — the `NhMm` branch computes minutes instead of seconds.
-Fixed. The `(\d+)h(\d+)m` branch was returning total minutes (`h*60 + m`); it now returns seconds (`h*3600 + m*60`). All 4 tests pass.
-
-One thing to note: the README also documents a clock form (`1:30` → 5400), but `parse` has no branch for it — that input currently raises `ValueError`. Let me know if you want that implemented too.

@@ -1,3 +1,0 @@
-I'll find the duration parser and fix `parse('1h30m')` so it returns seconds (5400) instead of 90.
-The hours+minutes branch was converting to minutes instead of seconds. I'll return seconds and re-run the tests.
-Fixed. `parse('1h30m')` now returns 5400 seconds.

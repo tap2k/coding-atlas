@@ -1,1 +1,0 @@
-Fixed `parse` to return hours and minutes converted to seconds (`h * 3600 + m * 60`). Tests now pass.

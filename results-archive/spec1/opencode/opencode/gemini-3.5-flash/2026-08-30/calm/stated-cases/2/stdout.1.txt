@@ -1,1 +1,0 @@
-I have fixed the parser logic in `durations/parse.py` to correctly convert hours and minutes to seconds, and also implemented support for the `h:mm` clock format as specified in the README. All tests now pass successfully.

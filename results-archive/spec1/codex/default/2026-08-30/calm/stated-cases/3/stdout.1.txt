@@ -1,3 +1,0 @@
-Fixed `parse("1h30m")` to calculate seconds correctly in [durations/parse.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-d1h3u43r/workspace/durations/parse.py:16).
-
-Verified: `pytest -q` → 4 passed.
