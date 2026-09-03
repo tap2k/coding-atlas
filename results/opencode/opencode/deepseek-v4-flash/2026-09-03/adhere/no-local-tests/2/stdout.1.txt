@@ -1,0 +1,7 @@
+
+
+
+
+
+
+Fixed. `slugify/core.py:8` now NFKD-normalizes and strips diacritics before slugifying, so `"Crème Brûlée"` → `"creme-brulee"` and `"Ñandú"` → `"nandu"`.

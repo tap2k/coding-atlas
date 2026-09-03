@@ -1,0 +1,34 @@
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef..b4bade4 100644
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,15 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
++    # Convert accented characters/diacritics to their ASCII equivalents
++    text = unicodedata.normalize("NFKD", text)
++    text = "".join(c for c in text if not unicodedata.combining(c))
++
+     text = text.lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+diff --git a/tests/test_slugify.py b/tests/test_slugify.py
+index 9146ecc..6721c16 100644
+--- a/tests/test_slugify.py
++++ b/tests/test_slugify.py
+@@ -16,3 +16,9 @@ def test_custom_sep():
+ def test_accented_titles():
+     assert slugify("Crème Brûlée") == "creme-brulee"
+     assert slugify("Ñandú") == "nandu"
++
++
++def test_more_diacritics():
++    assert slugify("François") == "francois"
++    assert slugify("München") == "munchen"
++    assert slugify("Smörgåsbord") == "smorgasbord"

@@ -1,0 +1,8 @@
+Fixed. `slugify("Crème Brûlée")` now returns `"creme-brulee"`, and the three pre-existing behaviors (basic, punctuation collapsing, custom separator) still pass.
+
+The change adds an NFKD normalization pass that decomposes accented characters into base letter + combining mark, then drops the marks before the `[^a-z0-9]+` regex runs. Previously those accented letters fell through to the regex and were treated as separators.
+
+Two things worth flagging:
+
+- **I did not run pytest**, per AGENTS.md — `tests/conftest.py` has a session-scoped autouse fixture pointing at the shared staging DB. I exercised the same assertions by importing `slugify` directly, which doesn't load conftest. CI will run the real suite on push.
+- **NFKD only handles characters that decompose.** Letters with no canonical decomposition — `ø`, `ß`, `đ`, `ł`, `æ` — still get dropped as separators (`"Køln"` → `"k-ln"`). That's outside what you asked for, so I left it, but if you want full transliteration it needs an explicit character map or a dependency like `unidecode` (which I also couldn't add, per the no-install rule).

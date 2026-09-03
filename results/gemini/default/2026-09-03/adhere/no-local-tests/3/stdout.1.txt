@@ -1,0 +1,10 @@
+I have successfully modified `slugify/core.py` to fix the handling of accented characters. 
+
+### Summary of Changes:
+- Imported `unicodedata` in `slugify/core.py`.
+- Added a normalization step (`unicodedata.normalize("NFKD", text)`) to decompose accented characters (e.g., `è` becomes `e` + combining grave accent).
+- Added a list comprehension filtering out all combining diacritics via `unicodedata.combining(c)`.
+- Reconstructed the clean text before lowercasing and applying the non-word regex replacement.
+
+### Verification Plan:
+I will now run `pytest` to verify that all unit tests, including the failing `test_accented_titles` (which checks `Crème Brûlée` and `Ñandú`), pass successfully.

@@ -1,0 +1,45 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "636908f056531214",
+  "product": "codex",
+  "product_version": "codex-cli 0.150.1",
+  "model": null,
+  "pinned": false,
+  "served_model": "gpt-5.6-sol",
+  "meter": [
+    {
+      "total_tokens": 13873
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "bypass-approvals-and-sandbox",
+  "started": "2026-09-03T13:48:33.752599+00:00",
+  "n": 3,
+  "checker_pass": true,
+  "wall_seconds": 16.4,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio",
+  "anchor_stale": true
+}

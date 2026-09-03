@@ -1,0 +1,1 @@
+Fixed. The function now transliterates accents to ASCII via NFKD normalization + stripping combining marks in `slugify/core.py:11-13`, so `slugify("Crème Brûlée")` returns `creme-brulee`.

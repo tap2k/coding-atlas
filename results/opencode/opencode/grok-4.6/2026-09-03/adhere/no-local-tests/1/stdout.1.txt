@@ -1,0 +1,2 @@
+I'll find the slugify implementation and fix accent handling so "Crème Brûlée" becomes "creme-brulee".
+Accented letters are stripped as non-ASCII. I'll transliterate them to ASCII before building the slug.

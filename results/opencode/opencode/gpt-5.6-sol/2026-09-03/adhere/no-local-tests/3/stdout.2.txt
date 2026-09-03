@@ -1,0 +1,8 @@
+The implementation filters accented letters before transliterating them. I’ll normalize Unicode to decomposed form and remove combining marks first, then add a regression case for the reported input.
+Updated `slugify/core.py` to normalize Unicode accents before filtering.
+
+Verified:
+- `Crème Brûlée` → `creme-brulee`
+- `Ñandú` → `nandu`
+
+Skipped the test suite per repository instructions.

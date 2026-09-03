@@ -1,0 +1,1 @@
+Fixed by normalizing unicode characters via `unicodedata.normalize("NFKD", ...)` and encoding to ASCII, which strips combining diacritical marks before regex replacement.

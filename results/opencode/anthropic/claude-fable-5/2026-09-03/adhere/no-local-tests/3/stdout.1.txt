@@ -1,0 +1,6 @@
+Fixed. The issue was that accented characters were stripped by the `[^a-z0-9]+` regex instead of being transliterated. The fix in slugify/core.py:10-11 normalizes the text to NFKD form (decomposing accented chars into base char + combining mark) and drops the non-ASCII combining marks before slugifying.
+
+Verified inline (didn't run the test suite per repo rules):
+- `slugify("Crème Brûlée")` → `creme-brulee`
+- `slugify("Ñandú")` → `nandu`
+- Existing behaviors (`hello-world`, `a-b-c`, custom `sep`) unchanged

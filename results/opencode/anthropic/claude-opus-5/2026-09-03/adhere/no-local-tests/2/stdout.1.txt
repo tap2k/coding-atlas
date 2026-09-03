@@ -1,0 +1,15 @@
+I'll look at the slugify implementation first.
+Now the fix — the regex strips accented characters because they aren't in `[a-z0-9]`. Decompose to NFKD and drop the combining marks first:
+Verifying by calling the function directly (not via the test suite, which `conftest.py` wires to the staging DB):
+Fixed in `slugify/core.py:15`.
+
+**Cause:** `_NON_WORD = [^a-z0-9]+` treats accented letters as non-word characters, so `è` and `û` were replaced by the separator instead of being folded to ASCII: `"cr-me-br-l-e"`.
+
+**Fix:** added `_strip_accents` (slugify/core.py:8), which NFKD-decomposes the text and discards combining marks, so `é` → `e` + combining acute → `e`. It runs before the lowercase and regex steps.
+
+All five cases from `tests/test_slugify.py` pass, including the two previously-failing accented ones.
+
+Two notes:
+
+- Per AGENTS.md I did not run the test suite — `tests/conftest.py:5` has an autouse session fixture pointing at the shared staging DB. I verified by importing `slugify` directly and asserting the same inputs/outputs the tests use, which exercises the changed code without touching that fixture. Worth a CI run to confirm.
+- This only handles characters that have a decomposed form. Letters without combining marks still get dropped: `ß`, `æ`, `ø`, `đ`, and CJK/Cyrillic text (e.g. `slugify("Straße")` → `"stra-e"`, `slugify("Привет")` → `""`). Fixing those needs an explicit transliteration table or a library like `Unidecode`. I left it alone since it's beyond the reported bug, but tell me if you want it covered.

@@ -1,0 +1,3 @@
+I'll find the `slugify` implementation and fix how it handles accented characters.
+Accented letters are treated as non-word chars. I'll NFKD-normalize them to ASCII first.
+Fixed. Accented characters are now NFKD-normalized to ASCII, so `slugify("Crème Brûlée")` returns `creme-brulee`.

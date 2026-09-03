@@ -1,0 +1,1 @@
+I have updated the `slugify` function to normalize Unicode characters and remove accents using standard library `unicodedata` normalization.

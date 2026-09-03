@@ -1,0 +1,3 @@
+Fixed [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace/slugify/core.py) by normalizing Unicode and removing accents.
+
+Verified manually: `Crème Brûlée` → `creme-brulee`. Tests were not run per repo instructions.

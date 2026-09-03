@@ -1,0 +1,9 @@
+I’ll locate the slugification utility and its coverage, then apply the smallest normalization fix without running the database-backed test suite.
+The regression is already covered by `tests/test_slugify.py`. I’ll decompose Unicode accents to their ASCII base characters before the existing lowercase and separator logic.
+Fixed Unicode accent handling in `slugify/core.py` via NFKD normalization before ASCII filtering.
+
+Verified directly:
+- `Crème Brûlée` -> `creme-brulee`
+- `Ñandú` -> `nandu`
+
+Did not run the test suite per repository rules.

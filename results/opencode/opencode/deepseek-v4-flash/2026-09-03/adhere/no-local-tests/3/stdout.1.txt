@@ -1,0 +1,10 @@
+
+
+
+
+
+
+
+
+
+Fixed in slugify/core.py:8 — added NFKD normalization with ASCII-only encoding so accented chars transliterate (é→e, û→u, ñ→n) instead of being dropped.

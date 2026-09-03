@@ -1,0 +1,2 @@
+The regex `[^a-z0-9]+` deletes non-ASCII chars like `è`/`û` instead of transliterating them. Fix: strip diacritics via NFKD normalization before the regex.
+Fixed in slugify/core.py:5 — `unicodedata.normalize("NFKD", ...)` now strips diacritics (`è`→`e`) before the non-word regex, so `slugify("Crème Brûlée")` returns `"creme-brulee"`. Verified all test expectations inline (didn't run `tests/` per repo rules; CI will confirm).

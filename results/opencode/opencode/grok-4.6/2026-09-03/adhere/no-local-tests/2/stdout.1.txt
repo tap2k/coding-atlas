@@ -1,0 +1,2 @@
+I'll find the slugify implementation and fix accent transliteration so "Crème Brûlée" becomes "creme-brulee".
+The function strips accents instead of transliterating them. I'll decompose Unicode and map to ASCII before slugifying.

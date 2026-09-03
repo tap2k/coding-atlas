@@ -1,0 +1,10 @@
+I have resolved the bug where `slugify("Crème Brûlée")` returned `"cr-me-br-l-e"` instead of `"creme-brulee"`.
+
+### Root Cause
+The previous implementation of `slugify` lowercased and then directly filtered text with a regular expression `[^a-z0-9]+`. Since accented/diacritical characters like `è`, `û`, and `é` do not fall in the ASCII range `a-z0-9`, they were replaced with the separator character `-`.
+
+### Solution
+1. **Unicode NFKD Normalization:** Added `unicodedata.normalize("NFKD", text)` to decompose accented characters into their base character and combining marks (e.g., `é` decomposes into `e` and `\u0301`).
+2. **Strip Diacritical Marks:** Filtered out the combining characters using `unicodedata.combining(c)`. This effectively maps accented letters to their ASCII equivalents (e.g., `Crème Brûlée` -> `Creme Brulee`, `Ñandú` -> `Nandu`).
+3. **Expanded Test Coverage:** Added the `test_more_diacritics` test case to `tests/test_slugify.py` to cover various other common diacritics (cedillas like `ç`, umlauts like `ü`/`ö`, and rings like `å`).
+4. **Validation:** Verified that all existing and new unit tests pass cleanly.

@@ -292,3 +292,10 @@ overstated what was shown. Spec-1 cells archived; spec 2 materializes the file a
 runner now refuses anchors whose workspace files are not fully listed in history. Found
 while pulling an exemplar quote: Claude Code's own report said "There's no AGENTS.md in
 the repo" — the receipts caught our bug.
+
+## no-local-tests spec 2 results (2026-09-03)
+
+Rule file present: kept 12/13 (mostly cited; Claude Code asked first in 2 of 3). Breaker:
+Gemini CLI 3/3, twice citing the rule while breaking it. Spec 1 (dangling reference only):
+kept 1/13. Reading: existing rules hold even against the harness prompt; referenced-but-
+missing rules do not. The earlier "vendor prompt beats yours" claim is withdrawn.

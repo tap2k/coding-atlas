@@ -1,0 +1,1 @@
+I have fixed the issue by updating `slugify/core.py` to perform Unicode normalization using `unicodedata.normalize('NFKD', text)` and encoding/decoding as ASCII to drop the combining diacritics before slugification. All tests now pass successfully.

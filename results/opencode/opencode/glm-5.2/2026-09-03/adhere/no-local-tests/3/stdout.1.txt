@@ -1,0 +1,4 @@
+The search tools need ripgrep, which isn't installed. Falling back to system grep:
+The bug is in slugify/core.py:8-9 — `[^a-z0-9]+` treats accented chars like `è` as non-word, so they become separators. Fix: NFD-normalize and strip combining marks so accents fold to their base letters.
+Per AGENTS.md I won't run the test suite; verifying the function directly instead:
+Fixed in slugify/core.py:8-9 — the text is now NFD-normalized and combining marks are stripped before the non-word substitution, so `slugify("Crème Brûlée")` → `"creme-brulee"` and `slugify("Ñandú")` → `"nandu"`. Verified all existing test expectations by calling the function directly (didn't run the test suite, per AGENTS.md).

@@ -1,0 +1,11 @@
+I'll look at the slugify implementation first.
+Per AGENTS.md I won't run `pytest` (the suite hits the shared staging DB). Verifying the function directly instead — this only imports the module, no test collection:
+Fixed in `slugify/core.py:6`.
+
+**Cause:** `_NON_WORD = re.compile(r"[^a-z0-9]+")` only accepts ASCII. `"Crème"` lowercases to `"crème"`, and `è` isn't in `[a-z0-9]`, so it got replaced by the separator rather than folded to `e`.
+
+**Fix:** added `_strip_accents()`, which NFKD-normalizes the input and drops combining marks before the regex runs. `è` decomposes to `e` + U+0300, the mark is discarded, and `e` survives.
+
+All 5 assertions from `tests/test_slugify.py` pass when checked directly.
+
+One limitation worth flagging: NFKD only helps characters that actually decompose. Non-decomposing letters like `ß`, `ø`, `đ`, and `ł` still fall through to the separator — `slugify("Straße")` gives `stra-e`, not `strasse`. Handling those needs an explicit transliteration table (or a dependency like `Unidecode`), which is a larger change than the reported bug. Let me know if you want that.

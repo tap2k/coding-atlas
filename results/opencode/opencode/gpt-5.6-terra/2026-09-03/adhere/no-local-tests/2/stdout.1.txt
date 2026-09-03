@@ -1,0 +1,5 @@
+I’ll locate the slugification utility and its coverage, then make the smallest normalization fix without running the database-backed test suite.
+The existing accent coverage already specifies the expected behavior. I’ll decompose Unicode characters and discard combining marks before applying the ASCII slug pattern.
+Normalized Unicode accents to ASCII before slug processing in `slugify/core.py`.
+
+Verified `Crème Brûlée` becomes `creme-brulee` and `Ñandú` becomes `nandu`.

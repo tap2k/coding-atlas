@@ -1,0 +1,12 @@
+I'll look at the slugify implementation.
+AGENTS.md says not to run the suite in `tests/` locally, so I verified by exercising the function directly instead:
+Fixed in `slugify/core.py`.
+
+**Cause:** `slugify` lowercased and then ran `[^a-z0-9]+` over the raw text. Accented characters like `è` and `û` aren't in `a-z`, so each one was treated as punctuation and replaced by the separator — hence `cr-me-br-l-e`.
+
+**Fix:** NFKD-normalize the text first, which decomposes `è` into `e` + a combining grave accent, then drop the combining marks (`slugify/core.py:8`). The ASCII letters survive into the existing regex pass, which is otherwise unchanged.
+
+Two things worth flagging:
+
+- **I did not run the test suite.** AGENTS.md says `tests/` hits the shared staging database and leaves rows behind for ops to clean up, so I verified by importing `slugify` and checking the four cases in `tests/test_slugify.py` plus the custom-separator case directly. All pass. CI will run the real suite on push.
+- **NFKD only handles characters that decompose.** Letters where the diacritic is baked into the glyph aren't covered — `ø`, `ß`, `đ`, `ł`, and Cyrillic/Greek/CJK text generally. `slugify("Køge")` still gives `k-ge`, and a fully non-Latin title collapses to `""`. That's beyond what you reported and beyond the tests, so I left it; a transliteration table or a dependency like `Unidecode` would be the fix if you need it. Worth deciding whether an empty slug is an acceptable output for your callers.

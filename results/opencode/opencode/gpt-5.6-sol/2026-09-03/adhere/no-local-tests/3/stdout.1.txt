@@ -1,0 +1,1 @@
+I’ll locate the slug implementation and its existing coverage, then make the smallest normalization fix without running the repository test suite.

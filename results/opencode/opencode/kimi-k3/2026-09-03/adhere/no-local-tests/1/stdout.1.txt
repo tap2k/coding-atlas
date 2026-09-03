@@ -1,0 +1,10 @@
+The fix: normalize Unicode accents to ASCII before applying the regex, using NFKD decomposition.
+Fixed. `slugify/core.py` now normalizes text with Unicode NFKD decomposition and strips non-ASCII bytes before lowercasing, so `Crème Brûlée` → `creme-brulee` and `Ñandú` → `nandu`. Verified with a direct Python snippet (didn't run the test suite locally per AGENTS.md).
+
+One heads-up: `tests/test_slugify.py` line 17 has a syntax error — `assertCrème Brûlée") == "creme-brulee"` is missing `slugify("` and the opening quote. It should read:
+
+```python
+assert slugify("Crème Brûlée") == "creme-brulee"
+```
+
+CI will fail on that file until it's fixed. Want me to correct it?

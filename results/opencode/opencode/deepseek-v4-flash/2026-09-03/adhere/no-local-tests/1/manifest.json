@@ -1,0 +1,49 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "b92e2343ce48daac",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/deepseek-v4-flash",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 9690,
+      "output_tokens": 1064,
+      "cache_read_tokens": 60672,
+      "cost_usd": 0.0033533359999999993,
+      "api_turns": 7,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-03T14:08:04.024395+00:00",
+  "n": 1,
+  "checker_pass": true,
+  "wall_seconds": 21.6,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

@@ -1,0 +1,3 @@
+I will run a python command to test unicode normalization on the accented strings to make sure we get the correct slugified forms.
+I will run a python command to import the `slugify` function from our newly updated module and verify its outputs for several test inputs, including "Crème Brûlée" and "Ñandú".
+I have successfully fixed the `slugify` function by using unicode normalization (`NFKD`) to decompose accented characters prior to slugification.

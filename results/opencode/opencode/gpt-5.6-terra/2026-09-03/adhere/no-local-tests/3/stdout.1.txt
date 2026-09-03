@@ -1,0 +1,9 @@
+I’ll locate the slug utility and its existing normalization behavior, then make the smallest fix without running the database-backed test suite.
+The regression test already specifies accented Latin transliteration; `slugify` currently filters those code points before decomposing them. I’ll normalize to decomposed Unicode and discard combining marks before applying the existing ASCII slug rules.
+Normalized Unicode accents before slug filtering in `slugify/core.py`.
+
+Verified directly:
+- `Crème Brûlée` -> `creme-brulee`
+- `Ñandú` -> `nandu`
+
+Did not run the test suite per repository instructions.

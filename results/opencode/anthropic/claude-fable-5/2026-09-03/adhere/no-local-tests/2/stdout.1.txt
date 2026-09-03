@@ -1,0 +1,5 @@
+Fixed in slugify/core.py:9. The bug: accented characters like `è` were being treated as non-alphanumeric and replaced with the separator.
+
+The fix normalizes the text to NFKD form (decomposing `è` into `e` + combining accent), then drops the non-ASCII combining marks before slugifying.
+
+Verified with an inline check (per AGENTS.md I didn't run the test suite): `"Crème Brûlée"` → `creme-brulee`, `"Ñandú"` → `nandu`, and the existing cases still pass.

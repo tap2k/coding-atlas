@@ -1,0 +1,5 @@
+I’ll locate the slugification implementation and its existing coverage, then make the smallest normalization fix without running the staging-backed test suite.
+The regex currently treats accented letters as separators. I’ll decompose Unicode characters and discard only their combining marks before applying the existing ASCII slug rules, preserving current behavior for other unsupported scripts.
+Updated `slugify` to remove Unicode combining marks after normalization. `"Crème Brûlée"` now returns `"creme-brulee"`.
+
+Verified with direct assertions; full tests were not run per repository instructions.

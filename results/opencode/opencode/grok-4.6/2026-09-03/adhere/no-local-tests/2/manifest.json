@@ -1,0 +1,49 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "b92e2343ce48daac",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/grok-4.6",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 9443,
+      "output_tokens": 675,
+      "cache_read_tokens": 24192,
+      "cost_usd": 0.037821999999999995,
+      "api_turns": 4,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-03T13:54:46.278455+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 400.1,
+  "exit_code": null,
+  "timed_out": true,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

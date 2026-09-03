@@ -1,0 +1,3 @@
+Fixed [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-iaiy5945/workspace/slugify/core.py) by normalizing accented Unicode characters before slugging.
+
+Confirmed: `Crème Brûlée` → `creme-brulee`. Per repo instructions, I did not run the test suite.

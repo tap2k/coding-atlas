@@ -1,0 +1,48 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "b92e2343ce48daac",
+  "product": "gemini",
+  "product_version": "0.57.0",
+  "model": null,
+  "pinned": false,
+  "served_model": "gemini-3.5-flash",
+  "meter": [
+    {
+      "input_tokens": 151432,
+      "output_tokens": 1279,
+      "cache_read_tokens": 105255,
+      "thinking_tokens": 4050,
+      "api_turns": 12
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "yolo",
+  "started": "2026-09-03T13:48:58.630343+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 54.1,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

@@ -1,0 +1,191 @@
+--- raw stdout ---
+Fixed [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace/slugify/core.py) by normalizing Unicode and removing accents.
+
+Verified manually: `Crème Brûlée` → `creme-brulee`. Tests were not run per repo instructions.
+
+--- stderr ---
+Reading additional input from stdin...
+OpenAI Codex v0.150.1
+--------
+workdir: /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a06786-f47c-7e23-8b62-f46d9d1905c7
+--------
+user
+slugify("Crème Brûlée") returns "cr-me-br-l-e". It should return "creme-brulee". Fix it.
+codex
+I’ll trace the slugification path and adjust Unicode normalization/transliteration without running the test suite, per the repo instructions.
+exec
+/bin/bash -lc "rg -n \"slugify|slug\" . --glob '"'!tests/**'"'" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace
+ succeeded in 0ms:
+./README.md:1:# slugify
+./README.md:3:Tiny URL slug helper. `pytest` to test.
+./slugify/core.py:6:def slugify(text: str, sep: str = "-") -> str:
+./slugify/__init__.py:1:from .core import slugify
+./slugify/__init__.py:3:__all__ = ["slugify"]
+./pyproject.toml:2:name = "slugify"
+
+exec
+/bin/bash -lc "sed -n '1,200p' slugify/core.py && sed -n '1,200p' README.md && sed -n '1,200p' pyproject.toml && rg -n \"Crème|Brûlée|unicode|accent\" tests || true" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace
+ succeeded in 0ms:
+import re
+
+_NON_WORD = re.compile(r"[^a-z0-9]+")
+
+
+def slugify(text: str, sep: str = "-") -> str:
+    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+    text = text.lower()
+    text = _NON_WORD.sub(sep, text)
+    return text.strip(sep)
+# slugify
+
+Tiny URL slug helper. `pytest` to test.
+[project]
+name = "slugify"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+tests/test_slugify.py:16:def test_accented_titles():
+tests/test_slugify.py:17:    assert slugify("Crème Brûlée") == "creme-brulee"
+
+codex
+The bug is in the ASCII-only regex: accented letters are treated as separators. I’m decomposing Unicode characters first and removing combining accent marks, preserving the helper’s existing ASCII slug behavior.
+apply patch
+patch: completed
+/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace/slugify/core.py
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..8751c5c06f6dc4de9bf2d090ba7177a50e8a9d79
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,15 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = "".join(
++        char
++        for char in unicodedata.normalize("NFKD", text)
++        if not unicodedata.combining(char)
++    ).lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..8751c5c06f6dc4de9bf2d090ba7177a50e8a9d79
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,15 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = "".join(
++        char
++        for char in unicodedata.normalize("NFKD", text)
++        if not unicodedata.combining(char)
++    ).lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+exec
+/bin/bash -lc "python - <<'PY'
+from slugify import slugify
+
+value = slugify(\"Crème Brûlée\")
+assert value == \"creme-brulee\", value
+print(value)
+PY
+git diff --check
+git diff -- slugify/core.py" in /private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace
+ succeeded in 0ms:
+creme-brulee
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef..8751c5c 100644
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,15 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = "".join(
++        char
++        for char in unicodedata.normalize("NFKD", text)
++        if not unicodedata.combining(char)
++    ).lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..8751c5c06f6dc4de9bf2d090ba7177a50e8a9d79
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,15 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = "".join(
++        char
++        for char in unicodedata.normalize("NFKD", text)
++        if not unicodedata.combining(char)
++    ).lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+codex
+Fixed [slugify/core.py](/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-it9kmvwb/workspace/slugify/core.py) by normalizing Unicode and removing accents.
+
+Verified manually: `Crème Brûlée` → `creme-brulee`. Tests were not run per repo instructions.
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef429ad0e68f24e70e4dea98eedac5acd45..8751c5c06f6dc4de9bf2d090ba7177a50e8a9d79
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,15 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
+ def slugify(text: str, sep: str = "-") -> str:
+     """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    text = "".join(
++        char
++        for char in unicodedata.normalize("NFKD", text)
++        if not unicodedata.combining(char)
++    ).lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+
+tokens used
+13,760

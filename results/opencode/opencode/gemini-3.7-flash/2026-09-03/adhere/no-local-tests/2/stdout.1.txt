@@ -1,0 +1,1 @@
+I have updated `slugify` to normalize Unicode characters using NFKD decomposition before filtering non-alphanumeric characters. `slugify("Crème Brûlée")` now correctly returns `"creme-brulee"`.

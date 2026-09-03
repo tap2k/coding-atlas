@@ -1,0 +1,24 @@
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef..62bbe6c 100644
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -1,10 +1,17 @@
+ import re
++import unicodedata
+ 
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
++def _strip_accents(text: str) -> str:
++    """Decompose accented characters and drop the combining marks."""
++    decomposed = unicodedata.normalize("NFKD", text)
++    return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
++
++
+ def slugify(text: str, sep: str = "-") -> str:
+-    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+-    text = text.lower()
++    """Lowercase, strip accents, replace runs of non-alphanumerics with `sep`, trim."""
++    text = _strip_accents(text.lower())
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)

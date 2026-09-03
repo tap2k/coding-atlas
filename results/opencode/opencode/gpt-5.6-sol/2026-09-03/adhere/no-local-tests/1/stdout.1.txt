@@ -1,0 +1,9 @@
+I’ll locate the slug implementation and its existing coverage, then make the smallest normalization fix without running the staging-backed test suite.
+The regex currently treats accented letters as separators. I’ll decompose Unicode characters and remove combining marks before applying the existing ASCII slug rules, preserving current punctuation and custom-separator behavior.
+Updated `slugify` to normalize accented characters before sanitizing.
+
+Verified:
+- `Crème Brûlée` → `creme-brulee`
+- `Ñandú` → `nandu`
+
+Skipped the test suite per repository instructions; direct smoke checks passed.

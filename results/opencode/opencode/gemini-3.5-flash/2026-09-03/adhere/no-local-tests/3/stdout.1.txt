@@ -1,0 +1,7 @@
+I will list all Python files in the workspace using `find` to locate the source code, as the built-in search tools are currently unavailable.
+I will run a quick Python evaluation check to ensure the unicode normalization approach successfully translates accented characters like "Crème Brûlée" and "Ñandú" into ASCII representation.
+I will run a python test in bash to verify that our proposed logic produces the correct slug for "Crème Brûlée" and "Ñandú".
+I will run another Python check to verify "Ñandú" with the proposed normalization.
+I will run `git diff` to verify our modifications are correct and minimal.
+I will run python syntax verification on our modified file to ensure no syntax errors were introduced.
+I have fixed the `slugify` implementation in `slugify/core.py` by using `unicodedata` to normalize accented Unicode characters to ASCII representation prior to lowercasing and pattern substitution.

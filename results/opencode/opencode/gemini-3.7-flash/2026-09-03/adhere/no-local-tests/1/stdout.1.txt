@@ -1,0 +1,4 @@
+I will verify the unicode normalization logic with python3 directly.
+I will verify that `slugify` can be imported and executed from python3.
+I will check git status and git diff to inspect our changes.
+Fixed `slugify` to decompose and strip unicode diacritics via NFKD normalization before replacing non-alphanumeric characters.
