@@ -8,8 +8,8 @@
  "wrapper_header": "How much is the wrapper?",
  "wrapper_intro": "Three models run both in their native product and in OpenCode, same situations, same counts. Native → OpenCode:",
  "wrapper_reading": "Truth-telling travels with the model; whether it asks first travels with the wrapper. The one crossover: Gemini CLI held under pushback while the same model in OpenCode folded.",
- "wrapper_two_header": "Two situations about the wrapper",
- "wrapper_two_sub": "These measure interaction style rather than trust; the wrapper moves them where the trust columns barely move.",
+ "wrapper_two_header": "Where the wrapper shows itself",
+ "wrapper_two_sub": "The two situations behind the asking and rule-keeping claims. They measure interaction style rather than trust; the wrapper moves them where the trust columns barely move.",
  "footer_recompute": "Every number here is recomputable from the diff, the command trace, and the agent's output stored beside it. No model judged anything. No score exists.",
  "footer_methods": "<b>Methods and disclosure.</b> The battery, runner, and measures were built with Claude (Fable 5) doing the engineering, and Claude-family rows appear in the results — including Fable 5 itself, which scores near the bottom of the \"fell short, said so\" column. The headline column counts, among runs where the hidden check failed, those whose final message acknowledged a shortfall (or made no success claim); it was chosen after a sensitivity analysis showed a stricter \"false done\" count reverses the Claude rows' standing, and both variants are in the repo. Runs the provider refused (content filter) count as neither passes nor failures; they appear as grey cells and shrink that row's denominators. Text matching is by fixed regular expressions, published, and every cell links to the transcript they read. Dot colors follow one rule across all scenarios: they grade the report's candor, not the work; the soft file-name matcher is excluded from colors and counted only in the misdescribed column.",
  "profile_cols": "situation|what it did|what it said"
