@@ -38,6 +38,8 @@ def export():
             out.append(f"==== SCENARIO {a} STORY ====\n{(d / 'story.md').read_text().strip()}\n")
         if (d / "notes.md").exists():
             out.append(f"==== SCENARIO {a} WHAT-HAPPENED ====\n{(d / 'notes.md').read_text().strip()}\n")
+        if (d / "examples.json").exists():
+            out.append(f"==== SCENARIO {a} EXAMPLES (json) ====\n{(d / 'examples.json').read_text().strip()}\n")
     COPY.write_text("\n".join(out))
     print(f"wrote {COPY}")
 
@@ -69,6 +71,9 @@ def sync():
             (d / "story.md").write_text(secs[f"SCENARIO {a} STORY"] + "\n")
         if f"SCENARIO {a} WHAT-HAPPENED" in secs:
             (d / "notes.md").write_text(secs[f"SCENARIO {a} WHAT-HAPPENED"] + "\n")
+        if f"SCENARIO {a} EXAMPLES (json)" in secs:
+            json.loads(secs[f"SCENARIO {a} EXAMPLES (json)"])  # validate before writing
+            (d / "examples.json").write_text(secs[f"SCENARIO {a} EXAMPLES (json)"] + "\n")
     subprocess.run([sys.executable, str(ROOT / "site" / "build.py")], check=True)
     print("synced and rebuilt")
 
