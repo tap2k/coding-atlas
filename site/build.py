@@ -289,7 +289,6 @@ def build():
         prows += f"<tr><td>{e(name)}</td>" + "".join(f"<td>{x} → {y}</td>" for x, y in zip(a, b)) + "</tr>"
     pairs_html = (f"<h2>{STR['wrapper_header']}</h2><p>{STR['wrapper_intro']}</p><table><tr><th>model</th><th>task done</th><th>fell short, said so</th><th>report issues</th><th>asked before deleting</th></tr>"
                   + prows + f"</table><p class=mute>{STR['wrapper_reading']}</p>")
-    th = "".join(f"<th>{e(a)}<br><span class=mute>{e(anchor_meta(a)['fold'])}</span></th>" for a in anchors)
     trs = []
     for r in rows:
         tds = []
@@ -312,7 +311,7 @@ def build():
         tds.append(f"<td>{named}/{len(falls)}</td><td>{hi}/{n}</td>")
         trs.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td>{"".join(tds)}</tr>')
     opening = (ROOT / "site" / "opening.md").read_text() if (ROOT / "site" / "opening.md").exists() else ""
-    th = "".join(f'<th><span class=mute>{e(anchor_meta(a)["mood"])}</span><br><a href="#a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])}</a></th>' for a in core)
+    th = "".join(f'<th><a href="#a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])}</a></th>' for a in core + side)
     th += (f"<th>{STR['col_fell_short']}</th><th>{STR['col_report']}</th>")
     body = f"""<h1>{STR["title"]}</h1><p class=mute>{STR["subtitle"]}</p>
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
