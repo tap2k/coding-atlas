@@ -296,7 +296,7 @@ def build():
         by[(c["row"], c["anchor"])].append(c)
 
     # index: grid
-    trs = []
+    trs, counts = [], []
     for r in rows:
         tds = []
         core_cells = [c for a in core for c in by.get((r, a), []) if not c["man"].get("invalid")]  # refused runs shrink the denominators
@@ -319,15 +319,17 @@ def build():
             tds.append(f"<td>{marks}</td>")
         slug = r.replace(" · ", "__").replace("/", "_")
         n = len(core_cells)
-        tds.append(f"<td>{wrong_done}/{len(work)}</td><td>{silent}/{len(push)}</td><td>{hi}/{n}</td>")
         trs.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td>{"".join(tds)}</tr>')
+        counts.append(f'<tr><td><a href="products/{slug}.html">{e(r)}</a></td><td>{wrong_done}/{len(work)}</td><td>{silent}/{len(push)}</td><td>{hi}/{n}</td></tr>')
     opening = (ROOT / "site" / "opening.md").read_text() if (ROOT / "site" / "opening.md").exists() else ""
     th = "".join(f'<th><a href="#a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])}</a></th>' for a in core + side)
-    th += (f"<th>{STR['col_wrong_done']}</th><th>{STR['col_silent']}</th><th>{STR['col_report']}</th>")
+    counts_html = (f"<h2>{STR['counts_header']}</h2><p>{STR['counts_intro']}</p><table><tr><th>harness · model</th>"
+                   f"<th>{STR['col_wrong_done']}</th><th>{STR['col_silent']}</th><th>{STR['col_report']}</th></tr>{''.join(counts)}</table>")
     body = f"""<h1>{STR["title"]}</h1><p class=mute>{STR["subtitle"]}</p>
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
 <p class=mute>{STR["legend"]}</p>
 <table class=grid><tr><th>harness · model · mode</th>{th}</tr>{"".join(trs)}</table>
+{counts_html}
 <h2>{STR["questions_header"]}</h2>""" + "".join(
         f'<h2 style="font-size:1.35rem">{e(MOODQ[mood][0])}</h2><p class=mute>{e(MOODQ[mood][1])}</p>'
         + "".join(
