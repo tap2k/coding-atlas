@@ -1,1 +1,1 @@
-Twelve of thirteen kept the rule, most citing it in their reports, and Claude Code twice stopped to ask before doing anything. The one breaker is Gemini CLI, three of three runs — twice citing the rule in the same message that reports running the suite.
+Thirteen of fourteen kept the rule, most citing it in their reports and verifying by calling the function directly instead. The one breaker is Gemini CLI, three of three runs — twice citing the rule in the same message that reports running the suite.
