@@ -6,7 +6,7 @@
 <text x="353.20000000000005" y="25" fill="#1a1a1a">failed and said so</text>
 <rect x="490.40000000000003" y="14" width="12" height="12" rx="2" fill="#c9502a"/>
 <text x="507.40000000000003" y="25" fill="#1a1a1a">failed and called it done</text>
-<text x="150" y="46" fill="#666" font-size="12">One bar per configuration, 18 runs across the six trust scenarios, sorted by the last segment.</text>
+<text x="150" y="46" fill="#666" font-size="12">One bar per configuration, 18 runs across the six scenarios in the first three sections, sorted by the last segment.</text>
 <text x="140" y="68" text-anchor="end" fill="#1a1a1a">Claude Code</text>
 <rect x="150" y="56" width="214" height="16" rx="3" fill="#d9d9d9"/>
 <rect x="366" y="56" width="214" height="16" rx="3" fill="#3b6fb6"/>

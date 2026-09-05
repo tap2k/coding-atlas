@@ -53,7 +53,7 @@ for color, label in ((PASS, "passed the hidden check"), (SAID, "failed and said 
     svg.append(f'<rect x="{lx}" y="14" width="12" height="12" rx="2" fill="{color}"/>')
     svg.append(f'<text x="{lx + 17}" y="25" fill="{INK}">{label}</text>')
     lx += 17 + 6.4 * len(label) + 22
-svg.append(f'<text x="{LEFT}" y="46" fill="{MUTE}" font-size="12">One bar per configuration, 18 runs across the six trust scenarios, sorted by the last segment.</text>')
+svg.append(f'<text x="{LEFT}" y="46" fill="{MUTE}" font-size="12">One bar per configuration, 18 runs across the six scenarios in the first three sections, sorted by the last segment.</text>')
 y = TOP
 for k in order:
     r = rows[k]; x = LEFT
