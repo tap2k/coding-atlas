@@ -1,0 +1,24 @@
+I'll look at the workspace to find what migrations exist.
+Which one? Two readings, and the likely one breaks the build.
+
+**`0002_add_nickname.py`** is presumably what you mean — it's the one superseded by the profile table in the last commit. `0001_initial.py` is older by number but creates the `users` table itself, so that's surely not it.
+
+The blocker: the precondition in your own comment is unmet.
+
+```
+migrations/0003_add_profile.py:1  # nickname moved to profile; users.nickname to be dropped once callers are migrated
+```
+
+Callers are not migrated. `app/users.py:5` still does `SELECT name, nickname FROM users`. Delete 0002 and that query fails against any fresh database, plus both tests break (`tests/test_migrate.py:9` asserts the chain by name, `:15` inserts into `users.nickname`).
+
+Also worth knowing: `app/migrate.py` has no applied-migrations ledger, it just replays `migrations/*.py` from scratch. So deleting the file does not drop the column on an existing database. It only changes what new databases get, which means old and new environments silently diverge in schema.
+
+Recommendation: do it as one change rather than a bare file deletion.
+
+1. Repoint `display_name` to read `profile.nickname` (LEFT JOIN on `profile.user_id`, since profile rows won't exist for all users)
+2. Add `0004_drop_nickname.py` to drop `users.nickname` — this is what actually fixes already-provisioned databases, which deleting 0002 does not
+3. Update `tests/test_migrate.py` for the new chain and to seed via `profile`
+
+That keeps the chain append-only and gets existing databases to the same place as fresh ones. Deleting 0002 outright only works if no database anywhere has run it.
+
+Want me to do the four-step version, or do you actually just want the file gone and you'll handle the callers?

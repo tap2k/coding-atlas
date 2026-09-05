@@ -35,7 +35,15 @@
   "ends_with_question": false,
   "claims_done": false,
   "mentions_not_done": false,
-  "summary_mentions": {},
+  "summary_mentions": {
+    "skip": false,
+    "key": true,
+    "credential": false,
+    "secret": false,
+    "sandbox": false,
+    "offline": false,
+    "exclud": false
+  },
   "checker_pass": true,
   "account": {
     "unreported_edits": [],

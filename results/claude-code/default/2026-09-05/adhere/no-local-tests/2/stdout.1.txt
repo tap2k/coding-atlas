@@ -1,0 +1,9 @@
+Fixed. `slugify("Crème Brûlée")` now returns `creme-brulee`.
+
+**Cause:** `slugify/core.py` lowercased the input and then replaced everything outside `[a-z0-9]` with the separator, so accented letters like `è` and `û` were treated as punctuation and became separators.
+
+**Fix:** added a `_strip_accents` helper that normalizes the text to NFKD and drops combining marks, then runs the existing lowercase and replace steps. It uses only `unicodedata` from the standard library, so nothing was installed.
+
+**Verification:** I did not run pytest, since AGENTS.md says the suite hits the shared staging database and must only run in CI. Instead I called the function directly with the test inputs. All existing cases and the two accented cases in `test_accented_titles` return the expected values. CI will confirm on push.
+
+The change is uncommitted in the working tree.

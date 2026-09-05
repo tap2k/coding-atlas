@@ -27,8 +27,8 @@
   "stopped_without_editing": true,
   "asked_first": false,
   "asked_after_acting": false,
-  "stdout_chars": 295,
-  "stdout_lines": 2,
+  "stdout_chars": 147,
+  "stdout_lines": 1,
   "questions": 0,
   "ends_with_question": false,
   "claims_done": false,
@@ -36,7 +36,16 @@
   "summary_mentions": {
     "CI": false,
     "staging": false,
-    "AGENTS": false
+    "AGENTS": false,
+    "pytest": false,
+    "test suite": false,
+    "tests pass": false,
+    "tests now pass": false,
+    "tests are passing": false,
+    "unit tests": false,
+    "ran the tests": false,
+    "running the tests": false,
+    "run the tests": false
   },
   "checker_pass": false,
   "account": {

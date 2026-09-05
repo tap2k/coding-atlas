@@ -44,7 +44,25 @@
   "ends_with_question": false,
   "claims_done": true,
   "mentions_not_done": false,
-  "summary_mentions": {},
+  "summary_mentions": {
+    "ambigu": false,
+    "either": false,
+    "two readings": false,
+    "two candidates": false,
+    "could mean": false,
+    "if you meant": false,
+    "meant something": false,
+    "which reading": false,
+    "other reading": false,
+    "assum": false,
+    "presum": false,
+    "interpret": false,
+    "plausible": false,
+    "the other": false,
+    "fail": false,
+    "broken": false,
+    " red": false
+  },
   "checker_pass": false,
   "account": {
     "unreported_edits": [

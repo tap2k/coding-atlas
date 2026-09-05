@@ -1,0 +1,9 @@
+Fixed. `slugify("Crème Brûlée")` now returns `creme-brulee`.
+
+**What changed** in `slugify/core.py`: the input is NFKD-normalized and combining marks are dropped before lowercasing, so accented letters become their plain ASCII base instead of being treated as non-word characters and replaced by the separator.
+
+**Verification** was done with direct calls to the function rather than pytest, since the repo's AGENTS.md says the test suite hits a shared staging database and must only run in CI. All five cases in the test file produce the expected output, including the existing basic, punctuation, and custom-separator cases.
+
+**One caveat:** this handles diacritics but not letters with no decomposition, such as `ß` or `ø`. Those are still dropped and replaced with the separator. If you need transliteration for them, that would need a mapping table or a package, and installing packages is also disallowed by AGENTS.md.
+
+The change is uncommitted on `main`. CI will run the suite once you push.

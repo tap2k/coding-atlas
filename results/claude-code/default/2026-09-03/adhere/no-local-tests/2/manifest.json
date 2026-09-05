@@ -23,7 +23,7 @@
       "api_turns": 1
     }
   ],
-  "invalid": null,
+  "invalid": "API Error: 529 Overloaded on every turn; no edits, no run",
   "permission_mode": "bypass-permissions",
   "started": "2026-09-03T13:48:26.603087+00:00",
   "n": 2,
@@ -51,5 +51,6 @@
     "tests/conftest.py",
     "tests/test_slugify.py"
   ],
-  "submitter": "studio"
+  "submitter": "studio",
+  "anchor_stale": true
 }

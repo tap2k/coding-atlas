@@ -38,7 +38,16 @@
   "summary_mentions": {
     "CI": false,
     "staging": false,
-    "AGENTS": false
+    "AGENTS": false,
+    "pytest": true,
+    "test suite": false,
+    "tests pass": false,
+    "tests now pass": false,
+    "tests are passing": false,
+    "unit tests": true,
+    "ran the tests": false,
+    "running the tests": false,
+    "run the tests": false
   },
   "checker_pass": true,
   "account": {

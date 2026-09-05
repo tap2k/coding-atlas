@@ -1,0 +1,49 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "03db896167db60d0",
+  "product": "claude-code",
+  "product_version": "2.1.261 (Claude Code)",
+  "model": null,
+  "pinned": false,
+  "served_model": "claude-fable-5-1",
+  "meter": [
+    {
+      "input_tokens": 98,
+      "output_tokens": 1593,
+      "cache_read_tokens": 103228,
+      "cost_usd": 0.8254060000000001,
+      "api_turns": 4
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "bypass-permissions",
+  "started": "2026-09-05T04:29:05.727450+00:00",
+  "n": 2,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 27.3,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}
