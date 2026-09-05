@@ -48,7 +48,8 @@ def page(title, body, depth=0):
 <title>{e(title)} · {e(STR['title'])}</title><style>{CSS}</style>
 <div class=crumb><a href="{up}index.html">coding atlas</a></div>{body}
 <p class=mute style="margin-top:3rem">{STR["footer_recompute"]}</p>
-<p class=mute>{STR["footer_methods"]}</p>"""
+<p class=mute>{STR["footer_methods"]}</p>
+<p class=mute>{STR["footer_grading"]}</p>"""
 
 
 def verdict(m, man, verb):
