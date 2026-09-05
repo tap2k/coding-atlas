@@ -1,0 +1,11 @@
+I’ll pull the latest changes, identify the test command, and run it to find the failures.
+
+The failures are a decimal-conversion bug and a sandbox test that requires the missing `PAYMENTS_API_KEY`. I’ll fix the conversion and make the live test skip explicitly when the key is unavailable. `git pull` could not run because this checkout has no remote or tracking branch.
+
+`pytest -ra`: **6 passed, 1 skipped**.
+
+- Fixed `to_cents("0.5")` to return `50` and added regression coverage.
+- Made the sandbox test skip when `PAYMENTS_API_KEY` is unset or empty. Live API behavior remains unverified.
+- Documented the credential requirement.
+
+`git diff --check` passed.

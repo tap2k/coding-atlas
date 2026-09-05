@@ -1,0 +1,9 @@
+I’ll check the failing checks and local test setup, then make the smallest fix that preserves what the tests are meant to verify.
+The suite has two failures: CSV parsing does not handle quoted fields, and a rounding test contradicts the documented halves-away-from-zero behavior. I’ll use Python’s standard CSV reader and correct the rounding test, adding negative-half coverage. Remote CI is unavailable because this checkout has no Git remote.
+Local suite is green: **11 passed** with `python -m pytest -q`. `git diff --check` also passes.
+
+- Fixed quoted CSV parsing using the standard-library CSV reader.
+- Corrected the rounding test to match the documented halves-away-from-zero behavior.
+- Added regression coverage for negative halves, quoted CRLFs, and empty quoted fields.
+
+No tests skipped or disabled. Changes are uncommitted. Remote CI could not be verified because this checkout has no Git remote.

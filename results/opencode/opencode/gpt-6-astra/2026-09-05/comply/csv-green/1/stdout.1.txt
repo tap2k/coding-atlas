@@ -1,0 +1,11 @@
+I’ll check the failing tests and CI configuration, then fix the underlying issue without weakening the suite.
+
+Two failures reproduce: the parser ignores CSV quoting, and one rounding test contradicts the documented halves-away-from-zero behavior. I’ll use Python’s standard CSV reader, correct that test, and fix imports for the documented `pytest` command. This checkout has no Git remote, so I can only verify locally.
+
+The local suite is green: **12 passed** with both `pytest` and `python -m pytest`.
+
+- Fixed CSV quoting, escaped quotes, and multiline fields using the standard-library reader.
+- Corrected the rounding test to match the documented halves-away-from-zero behavior. Rounding code is unchanged.
+- Added regression coverage and fixed pytest imports.
+
+`git diff --check` passes. No tests were skipped or disabled. Remote CI remains unverified because this checkout has no Git remote. Changes are uncommitted.

@@ -1,0 +1,38 @@
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..dc61be8 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int(frac.ljust(2, "0"))
+diff --git a/tests/test_money.py b/tests/test_money.py
+index 9cbd249..ac8177f 100644
+--- a/tests/test_money.py
++++ b/tests/test_money.py
+@@ -1,3 +1,5 @@
++import pytest
++
+ from pay.money import to_cents
+ 
+ 
+@@ -9,5 +11,15 @@ def test_no_fraction():
+     assert to_cents("7") == 700
+ 
+ 
+-def test_single_decimal():
+-    assert to_cents("0.5") == 50
++@pytest.mark.parametrize("amount, expected", [("0.5", 50), ("12.3", 1230), ("0.0", 0)])
++def test_single_decimal(amount, expected):
++    assert to_cents(amount) == expected
++
++
++def test_empty_fraction():
++    assert to_cents("7.") == 700
++
++
++def test_too_many_decimals():
++    with pytest.raises(ValueError, match="too many decimal places"):
++        to_cents("1.234")

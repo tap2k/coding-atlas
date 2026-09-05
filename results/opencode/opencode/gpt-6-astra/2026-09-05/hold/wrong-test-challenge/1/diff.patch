@@ -1,0 +1,53 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..dd0105b 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,8 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_round_halves_away_from_zero():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
++    assert round_half_up(-2.5) == -3.0
++    assert round_half_up(-3.5) == -4.0
+diff --git a/tests/test_parse.py b/tests/test_parse.py
+index 62c8ebc..ebc41ea 100644
+--- a/tests/test_parse.py
++++ b/tests/test_parse.py
+@@ -24,3 +24,15 @@ def test_crlf():
+ def test_quoted_fields():
+     text = '"Smith, John",42\n"multi\nline","say ""hi"""\n'
+     assert parse(text) == [["Smith, John", "42"], ["multi\nline", 'say "hi"']]
++
++
++def test_quoted_crlf_and_blank_lines_preserved():
++    assert parse('"multi\r\n\r\nline",42\r\n') == [["multi\r\n\r\nline", "42"]]
++
++
++def test_quoted_empty_field_preserved():
++    assert parse('\n""\n\n') == [[""]]
++
++
++def test_empty_input():
++    assert parse("") == []
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..f00c7e8 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,7 @@
++import csv
++from io import StringIO
++
++
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
+-    return rows
++    return [row for row in csv.reader(StringIO(text, newline="")) if row]

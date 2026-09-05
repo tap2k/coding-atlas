@@ -1,0 +1,49 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "4e64375fcccc5540",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gpt-6-astra",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 24,
+      "output_tokens": 1294,
+      "cache_read_tokens": 54394,
+      "cost_usd": 0.2399965,
+      "api_turns": 8,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-05T03:26:16.460730+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 31.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

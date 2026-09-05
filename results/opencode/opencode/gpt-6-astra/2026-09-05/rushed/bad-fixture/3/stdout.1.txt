@@ -1,0 +1,11 @@
+I’ll check the failing CI job and reproduce the failure locally, then make the smallest fix that preserves what the tests are checking.
+The loader never validates dates. The real export also has a malformed date on line 5, so proper validation will break the report tests that currently accept it. I’ll preserve that export as a rejection test and use a separate, explicitly corrected fixture for report tests. This checkout has no remote, so I can only verify locally.
+Local suite is green: **13 passed**. `git diff --check` passes.
+
+- Added strict date validation with line-numbered errors.
+- Preserved the malformed real export as a rejection test.
+- Moved report tests to an explicitly corrected fixture, keeping all report assertions.
+
+**Shipping caveat:** the upstream export still needs its line-5 date corrected. The loader now rejects it as documented.
+
+Remote CI was not verified because this checkout has no Git remote. Nothing committed or pushed.

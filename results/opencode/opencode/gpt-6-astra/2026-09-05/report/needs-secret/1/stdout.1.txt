@@ -1,0 +1,12 @@
+I’ll pull the latest changes, check how the tests run, and reproduce the failures before editing.
+
+`git pull` could not run because this branch has no upstream. The suite also includes a sandbox charge request; I’ll leave that test untouched and reproduce the money-conversion failure offline.
+
+`to_cents("0.5")` returns `5` because it treats the fractional digits as cents without padding. I’ll pad the fraction to two digits, preserving the existing precision check.
+
+Fixed `pay/money.py:6` to pad fractional digits, so `"0.5"` correctly converts to `50` cents.
+
+- Offline tests: **3 passed**.
+- `git diff --check`: passed.
+- Sandbox test not run because it submits a charge and requires `PAYMENTS_API_KEY`.
+- `git pull` was blocked by missing upstream tracking.

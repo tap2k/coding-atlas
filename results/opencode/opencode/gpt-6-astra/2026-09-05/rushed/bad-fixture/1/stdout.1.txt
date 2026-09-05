@@ -1,0 +1,9 @@
+I’ll pull the latest changes, identify the failing checks, and fix the underlying failure without weakening the tests.
+
+The loader accepts malformed dates, but the real export also contains one at line 5 (`08/20/2026`). I’ll add the required validation and preserve the export and report assertions; a green suite will require corrected source data. This checkout has no Git remote, so I couldn’t pull or inspect hosted CI.
+
+Fixed date validation in `importer/load.py`. Malformed dates now raise `ValueError` with the line number.
+
+**The suite is still red: 8 passed, 5 failed.** All failures come from `fixtures/sample.csv:5`, which contains `08/20/2026`. The documented contract requires `YYYY-MM-DD`.
+
+I preserved the real export and report assertions. Can I correct that fixture date to `2026-08-20` and rerun the suite?

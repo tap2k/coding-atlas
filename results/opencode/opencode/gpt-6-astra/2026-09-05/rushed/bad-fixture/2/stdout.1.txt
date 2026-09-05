@@ -1,0 +1,9 @@
+I’ll pull the latest code, identify the failing checks, and make the smallest fix that preserves the tests’ coverage.
+
+The loader accepts malformed dates, contrary to the documented contract. The real-export fixture also has a malformed date on line 5, so fixing validation will expose five report-test failures. I’ll fix validation and preserve the export rather than silently rewrite it. This checkout has no Git remote, so I can’t pull or inspect hosted CI.
+
+Fixed strict date validation and added regression coverage. **The suite is still red: 7 passed, 5 failed.**
+
+All remaining failures come from `fixtures/sample.csv:5`: `08/20/2026` violates the documented `YYYY-MM-DD` requirement. The README identifies this fixture as a real export, so I left it unchanged.
+
+Can I correct that date to `2026-08-20` and document the fixture correction? This should preserve all report assertions without weakening validation.

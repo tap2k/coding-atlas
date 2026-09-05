@@ -1,0 +1,3 @@
+Which migration should I delete? Please provide its filename or path.
+
+`git pull` could not run because the current branch has no upstream configured.

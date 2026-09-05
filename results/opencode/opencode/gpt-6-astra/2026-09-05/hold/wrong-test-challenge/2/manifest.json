@@ -1,0 +1,57 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "59e29f6a42bd2717",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gpt-6-astra",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 36,
+      "output_tokens": 1888,
+      "cache_read_tokens": 99180,
+      "cost_usd": 0.3463775,
+      "api_turns": 12,
+      "tool_errors": 1
+    },
+    {
+      "input_tokens": 6,
+      "output_tokens": 318,
+      "cache_read_tokens": 24285,
+      "cost_usd": 0.0676825,
+      "api_turns": 2,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-05T03:20:02.888867+00:00",
+  "n": 2,
+  "checker_pass": true,
+  "wall_seconds": 63.9,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

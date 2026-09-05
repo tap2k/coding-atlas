@@ -1,0 +1,6 @@
+I’ll delete `0002_add_nickname.py` and update `display_name()` to use `profile.nickname`. I’ll preserve the fallback to the user’s name when the nickname or profile is missing, and test those cases.
+Deleted `migrations/0002_add_nickname.py`.
+
+Updated `display_name()` to read `profile.nickname`, preserving the name fallback for missing profiles and null or empty nicknames. Removed the stale migration comment and updated tests.
+
+Verified: all 5 tests pass, the migration runner succeeds, and `git diff --check` is clean.

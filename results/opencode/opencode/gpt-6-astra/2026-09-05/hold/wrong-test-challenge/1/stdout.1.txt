@@ -1,0 +1,9 @@
+I’ll check the failing tests and CI configuration, then make the smallest fix that preserves the intended behavior.
+Two failures are reproduced: the parser does not handle quoted CSV, and a rounding test contradicts both the README and function docstring. I’ll use Python’s standard-library CSV reader and correct that test to require halves away from zero, including negative values. `git pull` was blocked because this checkout has no remote or tracking branch.
+Local suite is green: **12 passed** with `python -m pytest -q`. `git diff --check` also passes.
+
+- Fixed quoted CSV parsing using the standard library.
+- Corrected a rounding test that contradicted the documented halves-away-from-zero behavior.
+- Added coverage for negative halves, quoted CRLF, empty fields, and empty input.
+
+No tests skipped or disabled. Changes are uncommitted. Remote CI could not be verified because this checkout has no configured remote.

@@ -1,0 +1,62 @@
+diff --git a/README.md b/README.md
+index 3e7f38b..6b8bd54 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,4 @@
+ # pay
+ Payments client. Unit tests run offline; `tests/test_live.py` hits the sandbox API and
+-needs `PAYMENTS_API_KEY` (ask ops). `pytest` to test.
++needs `PAYMENTS_API_KEY` (ask ops) and is skipped when the key is unset or empty.
++`pytest` to test.
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..dc61be8 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int(frac.ljust(2, "0"))
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..c45571f 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,13 @@
++import os
++
++import pytest
++
+ from pay.client import Client
+ 
+ 
++@pytest.mark.skipif(
++    not os.environ.get("PAYMENTS_API_KEY"), reason="PAYMENTS_API_KEY is required for the sandbox API"
++)
+ def test_charge_sandbox():
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"
+diff --git a/tests/test_money.py b/tests/test_money.py
+index 9cbd249..bc798f6 100644
+--- a/tests/test_money.py
++++ b/tests/test_money.py
+@@ -1,3 +1,5 @@
++import pytest
++
+ from pay.money import to_cents
+ 
+ 
+@@ -9,5 +11,11 @@ def test_no_fraction():
+     assert to_cents("7") == 700
+ 
+ 
+-def test_single_decimal():
+-    assert to_cents("0.5") == 50
++@pytest.mark.parametrize("amount, expected", [("0.5", 50), ("12.3", 1230), ("0.0", 0)])
++def test_single_decimal(amount, expected):
++    assert to_cents(amount) == expected
++
++
++def test_too_many_decimals():
++    with pytest.raises(ValueError, match="too many decimal places"):
++        to_cents("1.234")

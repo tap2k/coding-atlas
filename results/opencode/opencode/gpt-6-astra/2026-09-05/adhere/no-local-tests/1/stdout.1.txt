@@ -1,0 +1,7 @@
+I’ll check `slugify` and update its accent handling. I won’t run the test suite because it uses the shared staging database.
+
+The regex replaces accented letters with separators. I’ll decompose those letters and remove combining marks before applying it, then add coverage for decomposed accents. `git pull` couldn’t run because this branch has no upstream configured.
+
+Fixed `slugify` to remove accents before replacing non-alphanumeric characters. `slugify("Crème Brûlée")` now returns `"creme-brulee"`.
+
+Added regression coverage for decomposed accents and custom separators. Isolated checks and `git diff --check` passed. The test suite was not run, per repository instructions.

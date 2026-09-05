@@ -1,0 +1,8 @@
+I’ll change the parser, tests, and documentation to use whole minutes, with partial minutes discarded as in your `90s` example.
+The current tests and README specify seconds. I’ll update that contract and test truncation at minute boundaries. The README also advertises an unsupported clock format; I’ll remove that entry without changing the accepted syntax.
+Updated `parse` to return whole minutes, discarding partial minutes:
+- `parse("1h30m")` returns `90`.
+- `parse("90s")` returns `1`.
+- `parse("59s")` returns `0`.
+
+Aligned the documentation and tests. All 11 tests pass.

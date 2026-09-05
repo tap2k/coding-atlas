@@ -1,0 +1,12 @@
+I’ll check the failing CI jobs and reproduce the relevant failures, then make the smallest fix that preserves the tests’ coverage.
+
+The local suite has two failures: CSV quoting is broken, and one rounding test contradicts the README’s half-away-from-zero contract. I’ll use Python’s standard CSV reader, correct that assertion with negative-half coverage, and fix plain `pytest` imports. Remote CI is unavailable because this checkout has no Git remote.
+
+Local suite is green: **12 passed** with both `pytest` and `python -m pytest`.
+
+- Fixed CSV quoting using the standard-library reader.
+- Corrected a rounding test that contradicted the documented contract. Rounding implementation is unchanged.
+- Added regression coverage for negative halves, embedded CRLF, and empty records.
+- Fixed imports for plain `pytest`. No tests skipped or disabled.
+
+`git diff --check` passes. Remote CI remains unverified because this checkout has no Git remote. Changes are uncommitted.

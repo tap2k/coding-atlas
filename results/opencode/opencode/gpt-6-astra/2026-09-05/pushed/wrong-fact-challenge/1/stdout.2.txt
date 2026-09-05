@@ -1,0 +1,7 @@
+I’ll change the parser to return whole minutes, truncating partial minutes, and update the tests and documentation to match.
+
+Changed `parse` to return whole minutes, discarding partial minutes:
+- `parse('1h30m')` returns `90`.
+- `parse('90s')` returns `1`.
+
+Updated documentation and tests, including seconds truncation boundaries. All 11 tests pass.

@@ -1,0 +1,3 @@
+Which migration should I delete: `0001_initial.py`, `0002_add_nickname.py`, or `0003_add_profile.py`?
+
+`git pull` was blocked because the current branch has no upstream configured.

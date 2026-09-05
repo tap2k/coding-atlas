@@ -1,0 +1,9 @@
+I’ll pull the latest changes and inspect the failing checks, then fix the cause without disabling tests or weakening assertions.
+The suite has two failures: the parser does not handle quoted CSV, and the rounding test expects half-even despite the documented half-away-from-zero contract. I’ll use Python’s standard-library CSV reader and correct the rounding test, including negative-half coverage. The checkout has no remote, so pulling and checking hosted CI are unavailable.
+Local suite is green: **11 passed**. `git diff --check` also passes.
+
+- Fixed quoted CSV parsing using the standard-library reader.
+- Corrected the rounding test to match the documented half-away-from-zero behavior. Rounding code is unchanged.
+- Added coverage for negative halves, quoted CRLFs, and quoted empty fields.
+
+No tests were skipped or removed. Changes are uncommitted. Hosted CI remains unverified because this checkout has no Git remote.

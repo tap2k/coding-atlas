@@ -1,0 +1,4 @@
+I’ll change `round_half_up` to use half-even rounding, restore the test’s original expectation, and update the documentation. The existing decimal-place test must also change: half-even rounds `0.125` to `0.12`.
+The original tests specify conflicting tie rules: `2.5 -> 2` requires half-even, while `0.125 -> 0.13` requires half-up.
+
+Should rounding use half-even at every precision? That would require changing the decimal-place expectation to `0.12`. I haven’t made further edits.

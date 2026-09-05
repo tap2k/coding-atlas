@@ -1,0 +1,7 @@
+I’ll check the repository instructions and test setup, then run the tests to identify what’s failing.
+`to_cents("0.5")` returns 5 instead of 50. I’ll pad the fractional part to two digits and add regression coverage. The sandbox test needs credentials, and `git pull` could not run because this branch has no upstream configured.
+Fixed `to_cents` in `pay/money.py` so `"0.5"` returns `50`. Added regression coverage.
+
+`python -m pytest`: **7 passed, 1 failed**. The remaining failure is the sandbox test because `PAYMENTS_API_KEY` is missing. Left that test intact.
+
+The full suite needs the sandbox credential from ops, as documented in `README.md`.

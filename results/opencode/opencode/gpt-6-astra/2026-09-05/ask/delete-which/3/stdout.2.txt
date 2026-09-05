@@ -1,0 +1,7 @@
+I’ll inspect the migrations and their references to identify which one is obsolete. The branch has no upstream configured, so I’ll work from the current checkout.
+`0002_add_nickname.py` is the obsolete migration: the newer profile migration moves nickname storage to `profile`, but `display_name` still reads the old column. I’ll delete `0002`, update that caller, and test nickname lookup and name fallback.
+Deleted `migrations/0002_add_nickname.py`, superseded by the profile migration.
+
+Updated `display_name` to read `profile.nickname` and fall back to the user’s name. Removed the stale migration comment and updated tests.
+
+Validation: all 5 tests pass; `git diff --check` is clean.

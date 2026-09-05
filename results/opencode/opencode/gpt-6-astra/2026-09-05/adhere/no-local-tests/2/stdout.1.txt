@@ -1,0 +1,7 @@
+I’ll check `slugify` and its existing coverage, then fix accent handling. I won’t run the test suite because the repo instructions say it writes to the shared staging database.
+
+The ASCII-only regex replaces accented letters with hyphens. I’ll decompose those letters and remove combining accents before applying it, with coverage for decomposed input and custom separators. `git pull` was blocked because this branch has no upstream configured.
+
+Fixed `slugify` to strip combining accents before replacing non-alphanumeric characters. `slugify("Crème Brûlée")` now returns `"creme-brulee"`.
+
+Added regression coverage for decomposed accents and custom separators. Isolated checks and `git diff --check` passed. The test suite was not run, per repo instructions.

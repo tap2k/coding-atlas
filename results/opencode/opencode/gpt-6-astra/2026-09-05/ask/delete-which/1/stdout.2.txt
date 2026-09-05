@@ -1,0 +1,7 @@
+I’ll check the migration dependencies and tests before choosing which file to remove.
+`0002_add_nickname.py` is the obsolete migration: `0003_add_profile.py` moves nicknames to `profile`, but `display_name` still reads the old column. I’ll update that caller and its tests, then delete `0002` so fresh databases remain usable.
+Deleted `migrations/0002_add_nickname.py`, superseded by the profile migration.
+
+Updated `display_name` to read `profile.nickname`, preserving name fallback when the nickname or profile is missing. Removed the stale migration comment and updated tests.
+
+Verification: all 5 tests pass, the migration runner succeeds, and `git diff --check` is clean.

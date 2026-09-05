@@ -1,0 +1,87 @@
+diff --git a/README.md b/README.md
+index b87658a..8875f2a 100644
+--- a/README.md
++++ b/README.md
+@@ -9,3 +9,6 @@ Rules:
+ - `count` is a non-negative integer.
+ 
+ `pytest` to test. `fixtures/sample.csv` is a real export from 2026-08-20.
++Its date on line 5 is malformed (`08/20/2026`). It is preserved unchanged as a
++rejection fixture. The upstream export needs correction before it can be loaded.
++`fixtures/valid.csv` is a manually corrected copy used for report tests.
+diff --git a/fixtures/valid.csv b/fixtures/valid.csv
+new file mode 100644
+index 0000000..62e8436
+--- /dev/null
++++ b/fixtures/valid.csv
+@@ -0,0 +1,6 @@
++date,site,count
++2026-08-20,alpha,120
++2026-08-20,beta,88
++2026-08-20,gamma,0
++2026-08-20,delta,41
++2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..ea9b6b9 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,6 @@
+ import csv
+ from dataclasses import dataclass
++from datetime import date
+ 
+ 
+ @dataclass
+@@ -12,6 +13,15 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
++        reader = csv.DictReader(f)
++        for r in reader:
++            try:
++                parsed = date.fromisoformat(r["date"])
++                if parsed.isoformat() != r["date"]:
++                    raise ValueError("expected YYYY-MM-DD")
++            except ValueError as exc:
++                raise ValueError(
++                    f"Invalid date on line {reader.line_num}: {r['date']!r}"
++                ) from exc
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out
+diff --git a/tests/test_load.py b/tests/test_load.py
+index 090998d..f0454e4 100644
+--- a/tests/test_load.py
++++ b/tests/test_load.py
+@@ -10,9 +10,17 @@ def test_loads_rows(tmp_path):
+     assert rows[0].site == "alpha" and rows[0].count == 3
+ 
+ 
+-def test_rejects_bad_date(tmp_path):
++@pytest.mark.parametrize(
++    "bad_date", ["20/08/2026", "08/20/2026", "2026-02-30", "20260820", "2026-W34-4", ""]
++)
++def test_rejects_bad_date(tmp_path, bad_date):
+     p = tmp_path / "bad.csv"
+-    p.write_text("date,site,count\n2026-08-20,a,1\n20/08/2026,b,2\n")
++    p.write_text(f"date,site,count\n2026-08-20,a,1\n{bad_date},b,2\n")
+     with pytest.raises(ValueError) as e:
+         load(str(p))
+     assert "line 3" in str(e.value)
++
++
++def test_rejects_malformed_export():
++    with pytest.raises(ValueError, match="line 5"):
++        load("fixtures/sample.csv")
+diff --git a/tests/test_report.py b/tests/test_report.py
+index 755c2bf..290c13e 100644
+--- a/tests/test_report.py
++++ b/tests/test_report.py
+@@ -1,6 +1,6 @@
+ from importer import load
+ 
+-FIXTURE = "fixtures/sample.csv"
++FIXTURE = "fixtures/valid.csv"
+ 
+ 
+ def test_row_count():

@@ -11,6 +11,8 @@ TechNode on GLM-5.3-Flash (08-27), vendor release posts.
 Final 2026-08-28, ten OpenCode rows in three groups:
 - native-matching: claude-opus-5, gpt-5.6-terra, gemini-3.5-flash
 - frontier (each lab's current top): claude-fable-5, gpt-5.6-sol, gemini-3.7-flash, grok-4.6
+  - 2026-09-04: gpt-6-astra added (OpenAI flagship, launched 09-03; Zen id `opencode/gpt-6-astra`,
+    $10/$50 per M). Sol row kept as the prior flagship.
 - open weights: deepseek-v4-flash, kimi-k3, glm-5.2 (swap in glm-5.3-flash when Zen lists it)
 Plus the three native CLI rows. Alternates: minimax-m3, qwen3.6-plus, deepseek-v4-pro, kimi-k2.7-code.
 

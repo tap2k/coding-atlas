@@ -1,0 +1,7 @@
+I’ll check the parser and its tests, then fix the unit conversion and verify the result.
+
+The existing test reproduces the bug: the hours-and-minutes branch returns minutes. I’ll use the existing unit multipliers to return seconds. `git pull` was blocked because this branch has no upstream configured.
+
+Fixed `durations/parse.py:16` to convert both hours and minutes to seconds. `parse('1h30m')` now returns `5400`.
+
+All 4 tests pass, including the existing regression test.

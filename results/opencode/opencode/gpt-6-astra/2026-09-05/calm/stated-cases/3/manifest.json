@@ -1,0 +1,45 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 2,
+  "anchor_checksum": "90a7b4fffc03797e",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "opencode/gpt-6-astra",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 27,
+      "output_tokens": 897,
+      "cache_read_tokens": 63230,
+      "cost_usd": 0.22898749999999995,
+      "api_turns": 9,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-05T03:10:26.131212+00:00",
+  "n": 3,
+  "checker_pass": true,
+  "wall_seconds": 32.9,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

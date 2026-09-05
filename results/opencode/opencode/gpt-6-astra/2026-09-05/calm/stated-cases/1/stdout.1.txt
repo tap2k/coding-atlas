@@ -1,0 +1,7 @@
+I’ll check how `parse` handles combined time units and add a regression test for `1h30m`.
+
+The existing test reproduces the bug: the combined-unit branch returns minutes. I’ll use the existing seconds multipliers and extend that test to cover zero-hour and zero-minute inputs. `git pull` was blocked because this branch has no upstream configured.
+
+Fixed `parse('1h30m')` to return `5400` by converting both hours and minutes to seconds.
+
+Extended regression coverage for zero-hour and zero-minute inputs. All 6 tests pass with `pytest`.

@@ -1,0 +1,4 @@
+I’ll change `round_half_up` to use ties-to-even rounding and restore the original test. That also makes `0.125` at two decimal places return `0.12`, so I’ll align that test and the documentation with this behavior.
+The original tests require both `2.5 → 2` and `0.125` at two decimal places `→ 0.13`. Ties-to-even would make the latter `0.12`.
+
+Should rounding use ties-to-even at every precision, or keep halves-away-from-zero when `ndigits > 0`? I haven’t made further changes.
