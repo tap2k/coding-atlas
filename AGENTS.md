@@ -16,6 +16,8 @@ Rules that bind:
 - Cheap: small repos, short tasks, subscriptions over API keys where allowed.
 
 Local pilot setup (until the container exists):
+- Checkers run `python3 -m pytest`; use `python3 -m venv .venv && .venv/bin/pip install pytest` and put
+  `.venv/bin` first on PATH before `./run`. Without it every hidden check fails silently.
 - Claude Code: `mkdir -p ~/.atlas-home && HOME=~/.atlas-home claude auth login` once, then
   `export ATLAS_CLAUDE_HOME=~/.atlas-home`. The separate HOME drops hooks and plugins and
   keeps keychain auth. The user `~/.claude/CLAUDE.md` is read from the real home anyway,
