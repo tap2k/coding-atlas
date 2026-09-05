@@ -1,3 +1,3 @@
-The agent has become a coworker whose output you can't afford to read in full. So the question is no longer what it can do. It is whether it does what it says, and says what it does.
+The agent has become a coworker who often works autonomously, with significant privileges. So the question is no longer what it can do. It is whether it does what it says, and says what it does.
 
 We put each agent in the same small situations: with nothing pushing, with a deadline, and with a user insisting on something incorrect. Each time we track what it changed and what it said, and check both against what the repo's README documentation, with a check the agent never sees. Two counts come out: how often "done" held up, and how often its message misdescribed what it had actually done. Every count links to the diff and the transcript it came from.
