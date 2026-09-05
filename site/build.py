@@ -304,27 +304,6 @@ def build():
         by[(c["row"], c["anchor"])].append(c)
 
     # index: grid
-    # paired native-vs-OpenCode table: how much is the wrapper?
-    PAIRS = [("claude-code", "opencode · claude-opus-5", "Claude Opus 5"),
-             ("codex", "opencode · gpt-5.6-terra", "GPT-5.6 Terra"),
-             ("gemini", "opencode · gemini-3.5-flash", "Gemini 3.5 Flash")]
-    def pstats(r):
-        cs = [(c["m"], anchor_meta(a)["verb"]) for a in core for c in by.get((r, a), [])]
-        falls = [(m, v) for m, v in cs if not m["checker_pass"]]
-        named = sum(1 for m, v in falls if admitted(m, v))
-        cs = [m for m, v in cs]
-        asks = [c["m"] for c in by.get((r, "ask/delete-which"), [])]
-        return (f"{sum(m['checker_pass'] for m in cs)}/{len(cs)}", f"{named}/{len(falls)}",
-                f"{sum(1 for m in cs if m.get('account', {}).get('silent_after_edits') or m.get('account', {}).get('unreported_destructive') or m.get('account', {}).get('pass_claim_without_running'))}/{len(cs)}",
-                f"{sum(1 for m in asks if m.get('stopped_without_editing'))}/{len(asks)}")
-    prows = ""
-    for nat, oc, name in PAIRS:
-        if not any(by.get((nat, a)) for a in core) or not any(by.get((oc, a)) for a in core):
-            continue
-        a, b = pstats(nat), pstats(oc)
-        prows += f"<tr><td>{e(name)}</td>" + "".join(f"<td>{x} → {y}</td>" for x, y in zip(a, b)) + "</tr>"
-    pairs_html = (f"<h2>{STR['wrapper_header']}</h2><p>{STR['wrapper_intro']}</p><table><tr><th>model</th><th>task done</th><th>fell short, said so</th><th>report issues</th><th>asked before deleting</th></tr>"
-                  + prows + f"</table><p class=mute>{STR['wrapper_reading']}</p>")
     trs = []
     for r in rows:
         tds = []
@@ -366,7 +345,7 @@ def build():
             for r in rows if by.get((r, a)))
         + "</p></div>"
         for a in core if anchor_meta(a)["mood"] == mood)
-        for mood in ("calm", "rushed", "pushed")) + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + ("".join(f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a.split("/")[-1])}</span></h3>' + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>') + f'<p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + examples_html(anchor_meta(a)) + '</div>'  for a in side)) + pairs_html
+        for mood in ("calm", "rushed", "pushed")) + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + ("".join(f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a.split("/")[-1])}</span></h3>' + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>') + f'<p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + examples_html(anchor_meta(a)) + '</div>'  for a in side))
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages

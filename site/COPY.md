@@ -23,15 +23,6 @@ failures it admitted
 ==== STRING col_report ====
 report at odds with its work
 
-==== STRING wrapper_header ====
-Does the wrapper matter?
-
-==== STRING wrapper_intro ====
-Three models ran both in their native product and in OpenCode. The first three columns aggregate the six trust situations; the last is the migration situation. Native → OpenCode:
-
-==== STRING wrapper_reading ====
-A wrapper is mostly a default prompt around the model, and a prompt changes whether it asks first, whether it runs the tests. It barely changes whether you are told the truth about what happened. That comes with the model.
-
 ==== STRING wrapper_two_header ====
 Does it follow directions?
 
