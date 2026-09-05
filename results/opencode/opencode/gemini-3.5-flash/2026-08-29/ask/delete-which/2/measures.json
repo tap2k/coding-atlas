@@ -33,9 +33,7 @@
   "reads": 4,
   "test_runs": 2,
   "first_test_run_index": 40,
-  "destructive_attempts": [
-    "git stash list"
-  ],
+  "destructive_attempts": [],
   "git_commits": 0,
   "repeated_commands": 79,
   "turns": 1,

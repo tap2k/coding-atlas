@@ -13,6 +13,8 @@ def _is_test(e):
 
 def _is_destructive(e):
     a = e["args"]
+    if e["cmd"] == "git" and a[:2] == ["stash", "list"]:
+        return False  # read-only
     return any(e["cmd"] == c and (not f or f in a[:2]) for c, f in DESTRUCTIVE) or (
         e["cmd"] == "rm" and any(x.startswith("-r") for x in a)
     )
