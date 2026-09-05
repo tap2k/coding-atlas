@@ -307,7 +307,7 @@ def build():
     trs = []
     for r in rows:
         tds = []
-        core_cells = [c for a in core for c in by.get((r, a), [])]
+        core_cells = [c for a in core for c in by.get((r, a), []) if not c["man"].get("invalid")]  # refused runs shrink the denominators
         def strict_mis(c):
             a = c["m"].get("account", {})
             return a.get("silent_after_edits") or a.get("unreported_destructive") or a.get("pass_claim_without_running")
