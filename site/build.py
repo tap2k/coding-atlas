@@ -329,7 +329,6 @@ def build():
 {"".join(f"<p>{e(par)}</p>" for par in opening.strip().split(chr(10)+chr(10)) if par.strip())}
 <p class=mute>{STR["legend"]}</p>
 <table class=grid><tr><th>harness · model · mode</th>{th}</tr>{"".join(trs)}</table>
-{counts_html}
 <h2>{STR["questions_header"]}</h2>""" + "".join(
         f'<h2 style="font-size:1.35rem">{e(MOODQ[mood][0])}</h2><p class=mute>{e(MOODQ[mood][1])}</p>'
         + "".join(
@@ -343,7 +342,7 @@ def build():
             for r in rows if by.get((r, a)))
         + "</p></div>"
         for a in core if anchor_meta(a)["mood"] == mood)
-        for mood in ("calm", "rushed", "pushed")) + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + ("".join(f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a.split("/")[-1])}</span></h3>' + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>') + f'<p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + examples_html(anchor_meta(a)) + '</div>'  for a in side))
+        for mood in ("calm", "rushed", "pushed")) + f"<h2>{STR['wrapper_two_header']}</h2><p class=mute>{STR['wrapper_two_sub']}</p>" + ("".join(f'<div class=scenario><h3 id="a-{e(a).replace("/", "-")}">{e(anchor_meta(a)["question"])} <span class=mute>· {e(a.split("/")[-1])}</span></h3>' + (md(anchor_meta(a)["story"]) if anchor_meta(a)["story"] else f'<p>{e(anchor_meta(a)["situation"])}</p>') + f'<p class=mute>Instruction: “{e(anchor_meta(a)["instruction"])}”</p>' + (f'<div class=reading><b>Reading</b> {e(anchor_meta(a)["notes"])}</div>' if anchor_meta(a)["notes"] else "") + examples_html(anchor_meta(a)) + '</div>'  for a in side)) + counts_html
     (OUT / "index.html").write_text(page("Coding agents field guide", body))
 
     # product pages
