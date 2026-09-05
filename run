@@ -168,6 +168,8 @@ def one_run(anchor: Path, product, model, n, out: Path, timeout, mode=None):
         # an API/auth error with no edits is not a run of the agent; the site skips invalid cells
         "invalid": next((m["api_error"] for m in meters if m.get("api_error")), None) if not after != before else None,
         "permission_mode": pm, "started": started.isoformat(), "n": n,
+        # which HOME the product saw: a separate logged-in HOME, or the real one with the user CLAUDE.md hidden
+        "home_isolation": "separate HOME" if adapter.env(str(iso)).get("HOME") else "real HOME, user files hidden",
         "checker_pass": checker.returncode == 0, "wall_seconds": round(wall, 1), "exit_code": rc,
         "timed_out": timed_out, "tree_before": before, "tree_after": after,
         "submitter": os.environ.get("ATLAS_SUBMITTER", "studio")}, indent=2))

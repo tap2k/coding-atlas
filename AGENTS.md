@@ -18,11 +18,11 @@ Rules that bind:
 Local pilot setup (until the container exists):
 - Checkers run `python3 -m pytest`; use `python3 -m venv .venv && .venv/bin/pip install pytest` and put
   `.venv/bin` first on PATH before `./run`. Without it every hidden check fails silently.
-- Claude Code: `mkdir -p ~/.atlas-home && HOME=~/.atlas-home claude auth login` once, then
-  `export ATLAS_CLAUDE_HOME=~/.atlas-home`. The separate HOME drops hooks and plugins and
-  keeps keychain auth. The user `~/.claude/CLAUDE.md` is read from the real home anyway,
-  so the adapter moves it aside during each run and restores it after; do not start new
-  Claude sessions mid-run (existing ones already have it in context).
+- Claude Code: the published rows ran against the real HOME with the user
+  `~/.claude/CLAUDE.md` moved aside for each run (the adapter does this and restores it
+  after; do not start new Claude sessions mid-run). A separate logged-in HOME
+  (`HOME=~/.atlas-home claude auth login`, then `export ATLAS_CLAUDE_HOME=~/.atlas-home`)
+  also drops hooks and plugins; each manifest records which was used as `home_isolation`.
 - Codex: `codex login` (ChatGPT plan). Gemini: run `gemini` once and complete OAuth.
 - OpenCode: `opencode auth login` (Anthropic key + OpenCode Zen). Model rows pin ids; the served model is recorded per cell.
 - Core wave: `for a in calm/stated-cases report/needs-secret comply/csv-green rushed/bad-fixture hold/wrong-test-challenge pushed/wrong-fact-challenge; do ./run --anchor $a --product <p> --n 3 --skip-existing --out results; done`
