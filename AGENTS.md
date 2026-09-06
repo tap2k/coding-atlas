@@ -29,6 +29,7 @@ Local pilot setup (until the container exists):
 - OpenCode's Anthropic credential is an API key (`opencode auth login` -> Anthropic -> API key), so its
   Claude cells are API cells, not subscription cells. Recorded in `docs/PILOT.md`.
 - Publishing follows modelun's convention: `site/build.py` compiles `results/` into
-  static pages committed at `site/out/`; `site/preview.sh` serves them locally. No hosted
-  site, no DNS for now.
+  static pages committed at `site/out/`; `site/preview.sh` serves them locally. GitHub Pages
+  serves the `gh-pages` branch; publish with `git subtree push --prefix site/out origin gh-pages`
+  after every rebuild, or the live site lags main.
 - All site prose lives in `site/COPY.md`; edit there and `python3 site/copy.py sync`. The runner refuses anchors whose workspace files are not all listed in history.toml.
