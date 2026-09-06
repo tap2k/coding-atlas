@@ -41,15 +41,15 @@ for p in OUT.glob("products/*.html"):
             elif admitted: r["said"] += 1
             else: r["done"] += 1
 
-order = sorted(rows, key=lambda k: (rows[k]["done"] + rows[k]["psilent"], -rows[k]["stop"] - rows[k]["held"], NAMES[k]))
-LEFT, BARH, GAP, TOP, UNIT, PANELGAP = 150, 16, 8, 92, 22, 40
-LW, RW = 12 * UNIT, 6 * UNIT
-W = LEFT + LW + PANELGAP + 300
-H = TOP + len(order) * (BARH + GAP) + 16
+order = sorted(rows, key=lambda k: (rows[k]["psilent"], -rows[k]["held"], NAMES[k]))
+LEFT, BARH, GAP, TOP, UNIT = 150, 18, 9, 52, 44
+W = LEFT + 440
+H = TOP + len(order) * (BARH + GAP) + 10
+BG = "#fff"
 
 def bar(x, y, n, fill, outline=False):
     if not n: return x, []
-    w = n * UNIT - 2
+    w = n * UNIT - 3
     if outline:
         el = [f'<rect x="{x + 0.75}" y="{y + 0.75}" width="{w - 1.5}" height="{BARH - 1.5}" rx="3" fill="{BG}" stroke="{fill}" stroke-width="1.5"/>']
     else:
@@ -58,40 +58,25 @@ def bar(x, y, n, fill, outline=False):
 
 svg = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" font-family="system-ui, sans-serif" font-size="13">',
        f'<rect width="{W}" height="{H}" fill="{BG}"/>']
-def legend(x, y, items):
-    for fill, outline, label in items:
-        if outline:
-            svg.append(f'<rect x="{x + 0.75}" y="{y + 0.75}" width="10.5" height="10.5" rx="2" fill="{BG}" stroke="{fill}" stroke-width="1.5"/>')
-        else:
-            svg.append(f'<rect x="{x}" y="{y}" width="12" height="12" rx="2" fill="{fill}"/>')
-        svg.append(f'<text x="{x + 17}" y="{y + 11}" fill="{INK}" font-size="12">{label}</text>')
-        x += 17 + 6.1 * len(label) + 16
-svg.append(f'<text x="{LEFT}" y="16" fill="{INK}" font-weight="600">Four work scenarios, 12 runs</text>')
-legend(LEFT, 26, [(PASS, False, "passed the hidden check"), (BLUE, True, "stopped and asked")])
-legend(LEFT, 44, [(BLUE, False, "wrong, said so"), (ORANGE, False, "wrong, called it done")])
-RX = LEFT + LW + PANELGAP
-svg.append(f'<text x="{LEFT}" y="16" fill="{INK}" font-weight="600">Four work scenarios, 12 runs each</text>')
-svg.append(f'<text x="{RX}" y="16" fill="{INK}" font-weight="600">Two pushback scenarios, 6 replies</text>')
-legend(RX, 26, [(BLUE, True, "held"), (BLUE, False, "obeyed, said so"), (ORANGE, False, "obeyed silently")])
-svg.append(f'<text x="{LEFT}" y="{TOP - 14}" fill="{MUTE}" font-size="12">One row per configuration, sorted by orange.</text>')
+svg.append(f'<text x="{LEFT}" y="18" fill="{INK}" font-weight="600">When you insisted on something the repo contradicts: six replies each</text>')
+x = LEFT
+for fill, outline, label in ((BLUE, True, "held"), (BLUE, False, "obeyed, said so"), (ORANGE, False, "obeyed silently")):
+    if outline:
+        svg.append(f'<rect x="{x + 0.75}" y="{29.75}" width="10.5" height="10.5" rx="2" fill="{BG}" stroke="{fill}" stroke-width="1.5"/>')
+    else:
+        svg.append(f'<rect x="{x}" y="29" width="12" height="12" rx="2" fill="{fill}"/>')
+    svg.append(f'<text x="{x + 17}" y="40" fill="{INK}" font-size="12">{label}</text>')
+    x += 17 + 6.1 * len(label) + 18
 y = TOP
 for k in order:
     r = rows[k]
-    svg.append(f'<text x="{LEFT - 10}" y="{y + BARH - 4}" text-anchor="end" fill="{INK}">{html.escape(NAMES[k])}</text>')
+    svg.append(f'<text x="{LEFT - 10}" y="{y + BARH - 5}" text-anchor="end" fill="{INK}">{html.escape(NAMES[k])}</text>')
     x = LEFT
-    for seg, fill, outline in (("pass", PASS, False), ("stop", BLUE, True), ("said", BLUE, False), ("done", ORANGE, False)):
-        x0 = x; x, el = bar(x, y, r[seg], fill, outline); svg += el
-        if seg == "done" and r[seg]:
-            svg.append(f'<text x="{(x0 + x - 2) / 2}" y="{y + BARH - 4}" text-anchor="middle" fill="#fff" font-weight="600">{r[seg]}</text>')
-    if r["refused"]:
-        x0 = x; x, el = bar(x, y, r["refused"], REFUSED); svg += el
-        svg.append(f'<text x="{(x0 + x - 2) / 2}" y="{y + BARH - 4}" text-anchor="middle" fill="{MUTE}" font-size="11">refused</text>')
-    x = RX
     for seg, fill, outline in (("held", BLUE, True), ("psaid", BLUE, False), ("psilent", ORANGE, False)):
         x0 = x; x, el = bar(x, y, r[seg], fill, outline); svg += el
         if seg == "psilent" and r[seg]:
-            svg.append(f'<text x="{(x0 + x - 2) / 2}" y="{y + BARH - 4}" text-anchor="middle" fill="#fff" font-weight="600">{r[seg]}</text>')
+            svg.append(f'<text x="{(x0 + x - 3) / 2}" y="{y + BARH - 5}" text-anchor="middle" fill="#fff" font-weight="600">{r[seg]}</text>')
     y += BARH + GAP
 svg.append("</svg>")
 (OUT / "failures.svg").write_text("\n".join(svg))
-for k in order: print(f"{NAMES[k]:18s}", rows[k])
+for k in order: print(f"{NAMES[k]:18s}", {c: rows[k][c] for c in ("held", "psaid", "psilent")})
