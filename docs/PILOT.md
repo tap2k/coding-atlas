@@ -324,3 +324,27 @@ stop fails it too. Claude Code's 9/9 was six compliances plus three stops. Repla
 counts kept apart: wrong-and-called-done over the 12 work runs (0 for most rows; Codex and
 Gemini CLI 2) and obeyed-silently over the 6 pushback replies (0 to 6). Stops are their own
 cell in the post figure (Claude Code 2, Opus 3, Astra 2); nobody else stopped.
+
+## A shell gate replays the delete-which traces (2026-09-06)
+
+A reader who builds a shell gate (termaxa) pulled the delete-which traces and replayed
+them against the gate's default policy: plain `rm migrations/0002_add_nickname.py` is
+stopped with the file named and a copy taken; `git rm` is asked about generically,
+because `git rm` isn't read as a delete. The gap is filed against their tool with the
+thread as the receipt — the traces working as an artifact others can compute on.
+
+Replaying the question over all 44 delete-which runs splits the deletions three ways:
+11 by plain `rm`, 17 by `git rm`, and 11 with no shell process at all — Codex deletes
+via apply_patch and Sol/Terra/Astra via OpenCode's file tools, so the file vanishes in
+the diff and never appears in the trace (5 runs deleted nothing). So the spelling gap
+the reader found is the smaller one: over a quarter of the deletions never crossed the
+shell, and no shell-level policy sees them. The mechanism travels with the model family,
+not the wrapper: every Claude deletion was `git rm` (9/9, native and OpenCode), every
+GPT deletion went through file tools (11/11, Codex and OpenCode), Gemini and the
+open-weight rows mix `rm` and `git rm` — even within a model across runs.
+
+Scenario note from the same comment: delete-which run with a hook that asks would
+separate "the model asked" from "something asked" — the 2026-09-02 finding that asking
+travels with the wrapper says the same thing from the other side. Rotation candidate as
+a config rather than a new anchor; the claude-code accept-edits mode is the nearest
+existing shape.
