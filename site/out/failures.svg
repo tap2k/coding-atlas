@@ -1,60 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="598" height="440" viewBox="0 0 598 440" font-family="system-ui, sans-serif" font-size="13">
-<rect width="598" height="440" fill="#fff"/>
-<text x="12" y="18" fill="#1a1a1a" font-weight="600">When you insisted on something the repo contradicts: six replies each</text>
-<rect x="12.75" y="29.75" width="10.5" height="10.5" rx="2" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<text x="29" y="40" fill="#1a1a1a" font-size="12">held</text>
-<rect x="71.4" y="29" width="12" height="12" rx="2" fill="#3b6fb6"/>
-<text x="88.4" y="40" fill="#1a1a1a" font-size="12">obeyed, said so</text>
-<rect x="197.9" y="29" width="12" height="12" rx="2" fill="#c9502a"/>
-<text x="214.9" y="40" fill="#1a1a1a" font-size="12">obeyed silently</text>
-<text x="140" y="65" text-anchor="end" fill="#1a1a1a">Fable 5</text>
-<rect x="150.75" y="52.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="366" y="52" width="213" height="18" rx="3" fill="#3b6fb6"/>
-<text x="140" y="92" text-anchor="end" fill="#1a1a1a">Opus 5</text>
-<rect x="150.75" y="79.75" width="67.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="222" y="79" width="357" height="18" rx="3" fill="#3b6fb6"/>
-<text x="140" y="119" text-anchor="end" fill="#1a1a1a">Claude Code</text>
-<rect x="150" y="106" width="429" height="18" rx="3" fill="#3b6fb6"/>
-<text x="140" y="146" text-anchor="end" fill="#1a1a1a">Kimi K3</text>
-<rect x="150" y="133" width="429" height="18" rx="3" fill="#3b6fb6"/>
-<text x="140" y="173" text-anchor="end" fill="#1a1a1a">GLM 5.2</text>
-<rect x="150.75" y="160.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="366" y="160" width="69" height="18" rx="3" fill="#3b6fb6"/>
-<rect x="438" y="160" width="141" height="18" rx="3" fill="#c9502a"/>
-<text x="508.5" y="173" text-anchor="middle" fill="#fff" font-weight="600">2</text>
-<text x="140" y="200" text-anchor="end" fill="#1a1a1a">GPT-6 Astra</text>
-<rect x="150.75" y="187.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="366" y="187" width="69" height="18" rx="3" fill="#3b6fb6"/>
-<rect x="438" y="187" width="141" height="18" rx="3" fill="#c9502a"/>
-<text x="508.5" y="200" text-anchor="middle" fill="#fff" font-weight="600">2</text>
-<text x="140" y="227" text-anchor="end" fill="#1a1a1a">Gemini 3.7 Flash</text>
-<rect x="150.75" y="214.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="366" y="214" width="213" height="18" rx="3" fill="#c9502a"/>
-<text x="472.5" y="227" text-anchor="middle" fill="#fff" font-weight="600">3</text>
-<text x="140" y="254" text-anchor="end" fill="#1a1a1a">Gemini CLI</text>
-<rect x="150.75" y="241.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="366" y="241" width="213" height="18" rx="3" fill="#c9502a"/>
-<text x="472.5" y="254" text-anchor="middle" fill="#fff" font-weight="600">3</text>
-<text x="140" y="281" text-anchor="end" fill="#1a1a1a">DeepSeek V4 Flash</text>
-<rect x="150" y="268" width="213" height="18" rx="3" fill="#3b6fb6"/>
-<rect x="366" y="268" width="213" height="18" rx="3" fill="#c9502a"/>
-<text x="472.5" y="281" text-anchor="middle" fill="#fff" font-weight="600">3</text>
-<text x="140" y="308" text-anchor="end" fill="#1a1a1a">GPT-5.6 Sol</text>
-<rect x="150" y="295" width="213" height="18" rx="3" fill="#3b6fb6"/>
-<rect x="366" y="295" width="213" height="18" rx="3" fill="#c9502a"/>
-<text x="472.5" y="308" text-anchor="middle" fill="#fff" font-weight="600">3</text>
-<text x="140" y="335" text-anchor="end" fill="#1a1a1a">GPT-5.6 Terra</text>
-<rect x="150" y="322" width="141" height="18" rx="3" fill="#3b6fb6"/>
-<rect x="294" y="322" width="285" height="18" rx="3" fill="#c9502a"/>
-<text x="436.5" y="335" text-anchor="middle" fill="#fff" font-weight="600">4</text>
-<text x="140" y="362" text-anchor="end" fill="#1a1a1a">Grok 4.6</text>
-<rect x="150.75" y="349.75" width="67.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
-<rect x="222" y="349" width="357" height="18" rx="3" fill="#c9502a"/>
-<text x="400.5" y="362" text-anchor="middle" fill="#fff" font-weight="600">5</text>
-<text x="140" y="389" text-anchor="end" fill="#1a1a1a">Codex CLI</text>
-<rect x="150" y="376" width="429" height="18" rx="3" fill="#c9502a"/>
-<text x="364.5" y="389" text-anchor="middle" fill="#fff" font-weight="600">6</text>
-<text x="140" y="416" text-anchor="end" fill="#1a1a1a">Gemini 3.5 Flash</text>
-<rect x="150" y="403" width="429" height="18" rx="3" fill="#c9502a"/>
-<text x="364.5" y="416" text-anchor="middle" fill="#fff" font-weight="600">6</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="598" height="448" viewBox="0 0 598 448" font-family="system-ui, sans-serif" font-size="13">
+<rect width="598" height="448" fill="#fff"/>
+<text x="12" y="22" fill="#1a1a1a" font-weight="600" font-size="16">When you insisted on something the repo contradicts: six replies each</text>
+<rect x="282.15" y="35.75" width="10.5" height="10.5" rx="2" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<text x="298.4" y="46" fill="#1a1a1a" font-size="12">held</text>
+<rect x="342.0" y="35" width="12" height="12" rx="2" fill="#3b6fb6"/>
+<text x="359.0" y="46" fill="#1a1a1a" font-size="12">obeyed, said so</text>
+<rect x="473.0" y="35" width="12" height="12" rx="2" fill="#c9502a"/>
+<text x="490.0" y="46" fill="#1a1a1a" font-size="12">obeyed silently</text>
+<text x="140" y="73" text-anchor="end" fill="#1a1a1a">Fable 5</text>
+<rect x="150.75" y="60.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="366" y="60" width="213" height="18" rx="3" fill="#3b6fb6"/>
+<text x="140" y="100" text-anchor="end" fill="#1a1a1a">Opus 5</text>
+<rect x="150.75" y="87.75" width="67.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="222" y="87" width="357" height="18" rx="3" fill="#3b6fb6"/>
+<text x="140" y="127" text-anchor="end" fill="#1a1a1a">Claude Code</text>
+<rect x="150" y="114" width="429" height="18" rx="3" fill="#3b6fb6"/>
+<text x="140" y="154" text-anchor="end" fill="#1a1a1a">Kimi K3</text>
+<rect x="150" y="141" width="429" height="18" rx="3" fill="#3b6fb6"/>
+<text x="140" y="181" text-anchor="end" fill="#1a1a1a">GLM 5.2</text>
+<rect x="150.75" y="168.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="366" y="168" width="69" height="18" rx="3" fill="#3b6fb6"/>
+<rect x="438" y="168" width="141" height="18" rx="3" fill="#c9502a"/>
+<text x="508.5" y="181" text-anchor="middle" fill="#fff" font-weight="600">2</text>
+<text x="140" y="208" text-anchor="end" fill="#1a1a1a">GPT-6 Astra</text>
+<rect x="150.75" y="195.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="366" y="195" width="69" height="18" rx="3" fill="#3b6fb6"/>
+<rect x="438" y="195" width="141" height="18" rx="3" fill="#c9502a"/>
+<text x="508.5" y="208" text-anchor="middle" fill="#fff" font-weight="600">2</text>
+<text x="140" y="235" text-anchor="end" fill="#1a1a1a">Gemini 3.7 Flash</text>
+<rect x="150.75" y="222.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="366" y="222" width="213" height="18" rx="3" fill="#c9502a"/>
+<text x="472.5" y="235" text-anchor="middle" fill="#fff" font-weight="600">3</text>
+<text x="140" y="262" text-anchor="end" fill="#1a1a1a">Gemini CLI</text>
+<rect x="150.75" y="249.75" width="211.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="366" y="249" width="213" height="18" rx="3" fill="#c9502a"/>
+<text x="472.5" y="262" text-anchor="middle" fill="#fff" font-weight="600">3</text>
+<text x="140" y="289" text-anchor="end" fill="#1a1a1a">DeepSeek V4 Flash</text>
+<rect x="150" y="276" width="213" height="18" rx="3" fill="#3b6fb6"/>
+<rect x="366" y="276" width="213" height="18" rx="3" fill="#c9502a"/>
+<text x="472.5" y="289" text-anchor="middle" fill="#fff" font-weight="600">3</text>
+<text x="140" y="316" text-anchor="end" fill="#1a1a1a">GPT-5.6 Sol</text>
+<rect x="150" y="303" width="213" height="18" rx="3" fill="#3b6fb6"/>
+<rect x="366" y="303" width="213" height="18" rx="3" fill="#c9502a"/>
+<text x="472.5" y="316" text-anchor="middle" fill="#fff" font-weight="600">3</text>
+<text x="140" y="343" text-anchor="end" fill="#1a1a1a">GPT-5.6 Terra</text>
+<rect x="150" y="330" width="141" height="18" rx="3" fill="#3b6fb6"/>
+<rect x="294" y="330" width="285" height="18" rx="3" fill="#c9502a"/>
+<text x="436.5" y="343" text-anchor="middle" fill="#fff" font-weight="600">4</text>
+<text x="140" y="370" text-anchor="end" fill="#1a1a1a">Grok 4.6</text>
+<rect x="150.75" y="357.75" width="67.5" height="16.5" rx="3" fill="#fff" stroke="#3b6fb6" stroke-width="1.5"/>
+<rect x="222" y="357" width="357" height="18" rx="3" fill="#c9502a"/>
+<text x="400.5" y="370" text-anchor="middle" fill="#fff" font-weight="600">5</text>
+<text x="140" y="397" text-anchor="end" fill="#1a1a1a">Codex CLI</text>
+<rect x="150" y="384" width="429" height="18" rx="3" fill="#c9502a"/>
+<text x="364.5" y="397" text-anchor="middle" fill="#fff" font-weight="600">6</text>
+<text x="140" y="424" text-anchor="end" fill="#1a1a1a">Gemini 3.5 Flash</text>
+<rect x="150" y="411" width="429" height="18" rx="3" fill="#c9502a"/>
+<text x="364.5" y="424" text-anchor="middle" fill="#fff" font-weight="600">6</text>
 </svg>

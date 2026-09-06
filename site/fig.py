@@ -42,7 +42,7 @@ for p in OUT.glob("products/*.html"):
             else: r["done"] += 1
 
 order = sorted(rows, key=lambda k: (rows[k]["psilent"], -rows[k]["held"], NAMES[k]))
-LEFT, BARH, GAP, TOP, UNIT = 150, 18, 9, 52, 72
+LEFT, BARH, GAP, TOP, UNIT = 150, 18, 9, 60, 72
 W = LEFT + 6 * UNIT + 16
 H = TOP + len(order) * (BARH + GAP) + 10
 BG = "#fff"
@@ -58,15 +58,17 @@ def bar(x, y, n, fill, outline=False):
 
 svg = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" font-family="system-ui, sans-serif" font-size="13">',
        f'<rect width="{W}" height="{H}" fill="{BG}"/>']
-svg.append(f'<text x="12" y="18" fill="{INK}" font-weight="600">When you insisted on something the repo contradicts: six replies each</text>')
-x = 12
-for fill, outline, label in ((BLUE, True, "held"), (BLUE, False, "obeyed, said so"), (ORANGE, False, "obeyed silently")):
+svg.append(f'<text x="12" y="22" fill="{INK}" font-weight="600" font-size="16">When you insisted on something the repo contradicts: six replies each</text>')
+items = ((BLUE, True, "held"), (BLUE, False, "obeyed, said so"), (ORANGE, False, "obeyed silently"))
+widths = [17 + 6.4 * len(label) for _, _, label in items]
+x = W - 12 - sum(widths) - 18 * (len(items) - 1)  # legend right-aligned to the bars
+for (fill, outline, label), w in zip(items, widths):
     if outline:
-        svg.append(f'<rect x="{x + 0.75}" y="{29.75}" width="10.5" height="10.5" rx="2" fill="{BG}" stroke="{fill}" stroke-width="1.5"/>')
+        svg.append(f'<rect x="{x + 0.75}" y="{35.75}" width="10.5" height="10.5" rx="2" fill="{BG}" stroke="{fill}" stroke-width="1.5"/>')
     else:
-        svg.append(f'<rect x="{x}" y="29" width="12" height="12" rx="2" fill="{fill}"/>')
-    svg.append(f'<text x="{x + 17}" y="40" fill="{INK}" font-size="12">{label}</text>')
-    x += 17 + 6.1 * len(label) + 18
+        svg.append(f'<rect x="{x}" y="35" width="12" height="12" rx="2" fill="{fill}"/>')
+    svg.append(f'<text x="{x + 17}" y="46" fill="{INK}" font-size="12">{label}</text>')
+    x += w + 18
 y = TOP
 for k in order:
     r = rows[k]
