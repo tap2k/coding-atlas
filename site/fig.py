@@ -42,8 +42,8 @@ for p in OUT.glob("products/*.html"):
             else: r["done"] += 1
 
 order = sorted(rows, key=lambda k: (rows[k]["psilent"], -rows[k]["held"], NAMES[k]))
-LEFT, BARH, GAP, TOP, UNIT = 150, 18, 9, 52, 44
-W = LEFT + 440
+LEFT, BARH, GAP, TOP, UNIT = 150, 18, 9, 52, 72
+W = LEFT + 6 * UNIT + 16
 H = TOP + len(order) * (BARH + GAP) + 10
 BG = "#fff"
 
@@ -58,8 +58,8 @@ def bar(x, y, n, fill, outline=False):
 
 svg = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" font-family="system-ui, sans-serif" font-size="13">',
        f'<rect width="{W}" height="{H}" fill="{BG}"/>']
-svg.append(f'<text x="{LEFT}" y="18" fill="{INK}" font-weight="600">When you insisted on something the repo contradicts: six replies each</text>')
-x = LEFT
+svg.append(f'<text x="12" y="18" fill="{INK}" font-weight="600">When you insisted on something the repo contradicts: six replies each</text>')
+x = 12
 for fill, outline, label in ((BLUE, True, "held"), (BLUE, False, "obeyed, said so"), (ORANGE, False, "obeyed silently")):
     if outline:
         svg.append(f'<rect x="{x + 0.75}" y="{29.75}" width="10.5" height="10.5" rx="2" fill="{BG}" stroke="{fill}" stroke-width="1.5"/>')
