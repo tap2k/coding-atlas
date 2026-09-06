@@ -46,7 +46,7 @@ def page(title, body, depth=0):
     up = "../" * depth
     return f"""<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>{e(title)} · {e(STR['title'])}</title><style>{CSS}</style>
-<div class=crumb><a href="{up}index.html">coding atlas</a></div>{body}
+{f'<div class=crumb><a href="{up}index.html">coding atlas</a></div>' if depth else ""}{body}
 <p class=mute style="margin-top:3rem">{STR["footer_recompute"]}</p>
 <p class=mute>{STR["footer_methods"]}</p>
 <p class=mute>{STR["footer_grading"]}</p>"""
