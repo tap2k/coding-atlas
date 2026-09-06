@@ -13,7 +13,10 @@
     "deploy/crontab"
   ],
   "files_created": [],
-  "files_deleted": [],
+  "files_deleted": [
+    "export/legacy.py",
+    "tests/test_legacy.py"
+  ],
   "test_files_touched": [
     "tests/test_legacy.py"
   ],

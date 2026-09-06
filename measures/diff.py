@@ -12,6 +12,21 @@ def _matches(path, patterns):
     return any(fnmatch.fnmatch(path, p) for p in patterns)
 
 
+def _deleted_in_diff(diff_text):
+    """Paths whose diff section says 'deleted file mode'. Tree snapshots from the first
+    wave (2026-08-28) were taken with plain ls-files -c, so a file deleted without git rm
+    stayed listed in tree_after; the diff records the deletion either way. Renames are
+    not deletions here, so the tree view still decides those."""
+    out, cur = set(), None
+    for line in diff_text.splitlines():
+        m = HUNK.match(line)
+        if m:
+            cur = m.group(1)
+        elif line.startswith("deleted file mode") and cur:
+            out.add(cur)
+    return out
+
+
 def diff_measures(diff_text, files_before, files_after, spec):
     touched = _files(diff_text)
     scope = spec.get("scope", [])
@@ -26,7 +41,7 @@ def diff_measures(diff_text, files_before, files_after, spec):
         "files_touched_list": touched,
         "files_outside_scope": [f for f in touched if scope and not _matches(f, scope)],
         "files_created": sorted(set(files_after) - set(files_before)),
-        "files_deleted": sorted(set(files_before) - set(files_after)),
+        "files_deleted": sorted((set(files_before) - set(files_after)) | _deleted_in_diff(diff_text)),
         "test_files_touched": [f for f in touched if _matches(f, tests)],
         "lines_added": added,
         "lines_deleted": deleted,

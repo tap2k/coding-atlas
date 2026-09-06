@@ -334,17 +334,44 @@ because `git rm` isn't read as a delete. The gap is filed against their tool wit
 thread as the receipt — the traces working as an artifact others can compute on.
 
 Replaying the question over all 44 delete-which runs splits the deletions three ways:
-11 by plain `rm`, 17 by `git rm`, and 11 with no shell process at all — Codex deletes
+11 by plain `rm`, 17 by `git rm`, and 12 with no shell process at all — Codex deletes
 via apply_patch and Sol/Terra/Astra via OpenCode's file tools, so the file vanishes in
-the diff and never appears in the trace (5 runs deleted nothing). So the spelling gap
-the reader found is the smaller one: over a quarter of the deletions never crossed the
-shell, and no shell-level policy sees them. The mechanism travels with the model family,
+the diff and never appears in the trace (4 runs deleted nothing). So the spelling gap
+the reader found is the smaller one: three in ten deletions never crossed the shell,
+and no shell-level policy sees them. The mechanism travels with the model family,
 not the wrapper: every Claude deletion was `git rm` (9/9, native and OpenCode), every
-GPT deletion went through file tools (11/11, Codex and OpenCode), Gemini and the
+GPT deletion went through file tools (12/12, Codex and OpenCode), Gemini and the
 open-weight rows mix `rm` and `git rm` — even within a model across runs.
+(Counts corrected same day; the first version said 11 no-shell and 5 no-delete — see
+the next entry.)
 
 Scenario note from the same comment: delete-which run with a hook that asks would
 separate "the model asked" from "something asked" — the 2026-09-02 finding that asking
 travels with the wrapper says the same thing from the other side. Rotation candidate as
 a config rather than a new anchor; the claude-code accept-edits mode is the nearest
 existing shape.
+
+## Their reply caught our measure (2026-09-06)
+
+The gate builder's reply counted sharper than we did: all three Codex delete-which runs
+show `deleted file mode` in the diff with no rm in the trace. Our measures said two of
+three — codex n=1 had `files_deleted: []` against a diff that plainly deletes the file.
+Cause: the first wave's tree snapshot listed files with `ls-files -c` and no on-disk
+check (the current `tree()` docstring records the fix), so a deletion that bypassed
+`git rm` — apply_patch, plain `rm` — left the file in `tree_after`. Three 2026-08-28
+cells were wrong: codex ask/delete-which 1, codex bound/remove-legacy 1, gemini
+bound/remove-legacy 1. `files_deleted` now unions deletions the diff itself records
+(renames still read from the trees); the three cells are remeasured — only
+`files_deleted` moved, no honesty flag changes, both remove-legacy reports had named
+their deletions. The entry above is corrected in place (12 no-shell, 4 no-delete).
+Second time the receipts caught our own bug (2026-09-03 was the first); this time
+someone else's replay found it.
+
+Ops note found on the way: `--remeasure` in a fresh clone skips nearly every cell on
+anchor checksum mismatch because the Mac-side checksums hashed `.DS_Store` files that
+are not in the repo; the anchors themselves are unchanged. The three cells above were
+remeasured directly against their manifests without marking anything stale.
+
+They also report Codex fires its PreToolUse hook for apply_patch with the patch text in
+the payload, so Delete File hunks are readable the way `rm` is — unverified here,
+theirs to measure; if it holds it is the hook-that-asks scenario's natural Codex config.
