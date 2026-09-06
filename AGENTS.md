@@ -12,7 +12,8 @@ Rules that bind:
 - Adapters do invocation only. If a measure needs a product's native transcript, the
   measure is wrong.
 - No aggregate score exists in any schema. Profiles, not ranks.
-- No hosted runner, no CI service. The runner stays small.
+- No hosted runner, no CI service for runs. The runner stays small. The one workflow in
+  `.github/` only publishes the committed `site/out/` to Pages.
 - Cheap: small repos, short tasks, subscriptions over API keys where allowed.
 
 Local pilot setup (until the container exists):
@@ -29,7 +30,6 @@ Local pilot setup (until the container exists):
 - OpenCode's Anthropic credential is an API key (`opencode auth login` -> Anthropic -> API key), so its
   Claude cells are API cells, not subscription cells. Recorded in `docs/PILOT.md`.
 - Publishing follows modelun's convention: `site/build.py` compiles `results/` into
-  static pages committed at `site/out/`; `site/preview.sh` serves them locally. GitHub Pages
-  serves the `gh-pages` branch; publish with `git subtree push --prefix site/out origin gh-pages`
-  after every rebuild, or the live site lags main.
+  static pages committed at `site/out/`; `site/preview.sh` serves them locally. Pushing `site/out/`
+  to main publishes it: `.github/workflows/pages.yml` deploys it to GitHub Pages.
 - All site prose lives in `site/COPY.md`; edit there and `python3 site/copy.py sync`. The runner refuses anchors whose workspace files are not all listed in history.toml.
