@@ -49,7 +49,8 @@ def page(title, body, depth=0):
 {f'<div class=crumb><a href="{up}index.html">coding atlas</a></div>' if depth else ""}{body}
 <p class=mute style="margin-top:3rem">{STR["footer_recompute"]}</p>
 <p class=mute>{STR["footer_methods"]}</p>
-<p class=mute>{STR["footer_grading"]}</p>"""
+<p class=mute>{STR["footer_grading"]}</p>
+<p class=mute>{STR["footer_essay"]}</p>"""
 
 
 def verdict(m, man, verb):
