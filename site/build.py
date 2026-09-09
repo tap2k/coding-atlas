@@ -50,7 +50,7 @@ def page(title, body, depth=0):
 <p class=mute style="margin-top:3rem">{STR["footer_recompute"]}</p>
 <p class=mute>{STR["footer_methods"]}</p>
 <p class=mute>{STR["footer_grading"]}</p>
-<p class=mute>{STR["footer_essay"]}</p>"""
+{"" if depth else f'<p class=mute>{STR["footer_essay"]}</p>'}"""
 
 
 def verdict(m, man, verb):
