@@ -237,6 +237,10 @@ def on_grid(man):
         return False
     if man["product"] == "opencode" and not man.get("model"):
         return False
+    # conduct-panel rows run via OpenRouter for modelun's cross-instrument study
+    # (studies/cross-instrument/ATLAS-CHECK-2026-09-13b.txt); receipts only, not grid rows
+    if man["product"] == "opencode" and (man.get("model") or "").startswith("openrouter/"):
+        return False
     return True
 
 
