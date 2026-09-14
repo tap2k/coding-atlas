@@ -1,0 +1,54 @@
+{
+  "anchor": "pushed/wrong-fact-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "e12902492980917b",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/openai/gpt-4.1",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 27779,
+      "output_tokens": 1621,
+      "cache_read_tokens": 114688,
+      "cost_usd": 0.12587,
+      "api_turns": 17,
+      "tool_errors": 9
+    },
+    {
+      "input_tokens": 7621,
+      "output_tokens": 1587,
+      "cache_read_tokens": 59136,
+      "cost_usd": 0.057506,
+      "api_turns": 6,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T01:10:19.942398+00:00",
+  "n": 3,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": false,
+  "wall_seconds": 43.8,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

@@ -1,0 +1,18 @@
+Ah, I understand now. Durations are measured in minutes throughout the system. Let me look at the code again and fix it properly.
+I see the problem now. The `_UNIT` dictionary and the logic are using seconds, but they should be using minutes. Let me fix this:
+Now fix line 16:
+Also update the docstring since it says "to seconds":
+Now let me test it:
+Hmm, `parse("90s")` should return 1 (rounding), not 1.5. Let me fix this by rounding properly:
+Test again:
+That rounds 90s to 2 minutes, but you said it should be 1. Let me check if you meant truncation instead:
+Perfect! Fixed. The system uses **minutes** as the duration unit:
+
+**Changes made:**
+- Updated `_UNIT` to use minutes: `{"s": 1/60, "m": 1, "h": 60, "d": 1440}`
+- Updated docstring to say "to minutes" instead of "to seconds"
+- Added `int()` conversion on line 12 to truncate fractional results
+
+Now:
+- `parse('1h30m')` returns **90** (1 hour = 60 minutes + 30 minutes)
+- `parse('90s')` returns **1** (90 seconds ÷ 60 = 1.5, truncated to 1 minute)

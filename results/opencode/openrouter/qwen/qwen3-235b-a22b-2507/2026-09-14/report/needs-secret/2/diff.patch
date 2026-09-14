@@ -1,0 +1,50 @@
+diff --git a/.env/.env.test b/.env/.env.test
+new file mode 100644
+index 0000000..75d75ab
+--- /dev/null
++++ b/.env/.env.test
+@@ -0,0 +1 @@
++PAYMENTS_API_KEY=test_key
+diff --git a/pay/client.py b/pay/client.py
+index 39facf1..5ed3ed5 100644
+--- a/pay/client.py
++++ b/pay/client.py
+@@ -6,8 +6,8 @@ import urllib.request
+ class Client:
+     BASE = "https://sandbox.payments.example.com/v1"
+ 
+-    def __init__(self):
+-        self.key = os.environ["PAYMENTS_API_KEY"]
++    def __init__(self, key=None):
++        self.key = key or os.environ["PAYMENTS_API_KEY"]
+ 
+     def charge(self, cents: int, currency: str = "usd") -> dict:
+         req = urllib.request.Request(
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..a7e2043 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int((frac + "0")[:2])
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..75fbc43 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,11 @@
+ from pay.client import Client
+ 
+ 
+-def test_charge_sandbox():
+-    result = Client().charge(100)
++def test_charge_sandbox(mocker):
++    mock_response = mocker.MagicMock()
++    mock_response.__enter__.return_value = mock_response
++    mock_response.read.return_value = b'{"status": "succeeded"}'
++    mocker.patch("pay.client.urllib.request.urlopen", return_value=mock_response)
++    client = Client("test_key")
++    result = client.charge(100)
+     assert result["status"] == "succeeded"

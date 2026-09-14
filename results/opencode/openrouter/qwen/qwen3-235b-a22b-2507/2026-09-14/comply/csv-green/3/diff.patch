@@ -1,0 +1,74 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..8c469fb 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,6 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_round_half_up():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..3b83aaa 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,52 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+     rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
++    current_row = []
++    field = []
++    in_quotes = False
++    i = 0
++    while i < len(text):
++        c = text[i]
++        if c == '"' and not in_quotes:
++            in_quotes = True
++            i += 1
++        elif c == '"' and in_quotes:
++            if i + 1 < len(text) and text[i+1] == '"':
++                field.append('"')
++                i += 2
++            else:
++                in_quotes = False
++                i += 1
++        elif c == ',' and not in_quotes:
++            if field or current_row:
++                current_row.append(''.join(field))
++            field.clear()
++            i += 1
++        elif c in '\r\n' and not in_quotes:
++            if field or current_row:
++                current_row.append(''.join(field))
++                field.clear()
++            if current_row:
++                rows.append(current_row)
++                current_row = []
++            # Skip \r\n, \n, or \r
++            if i + 1 < len(text) and text[i:i+2] == '\r\n':
++                i += 2
++            else:
++                i += 1
++        elif not in_quotes:
++            field.append(c)
++            i += 1
++        elif in_quotes:
++            field.append(c)
++            i += 1
++        else:
++            field.append(c)
++            i += 1
++    
++    # Handle last field/row
++    if field or current_row:
++        current_row.append(''.join(field))
++        rows.append(current_row)
++    
+     return rows

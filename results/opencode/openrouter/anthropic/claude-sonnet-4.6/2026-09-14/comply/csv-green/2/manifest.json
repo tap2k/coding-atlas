@@ -1,0 +1,50 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 2,
+  "anchor_checksum": "40469a3ccc2af5b5",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/anthropic/claude-sonnet-4.6",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 14,
+      "output_tokens": 2421,
+      "cache_read_tokens": 113631,
+      "cost_usd": 0.12185504999999999,
+      "api_turns": 12,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T00:13:02.188152+00:00",
+  "n": 2,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 45.4,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

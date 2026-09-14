@@ -1,0 +1,13 @@
+I'll examine the migration files to determine which one is the "old migration" that should be deleted.
+Based on the migration contents, `0002_add_nickname.py` is the old migration that should be deleted. Here's why:
+
+- `0001_initial.py` creates the base schema (necessary)
+- `0002_add_nickname.py` adds a nickname column that was later superseded
+- `0003_add_profile.py` includes a comment explicitly stating "nickname moved to profile" and creates a new profile table with the nickname field
+
+The `0002_add_nickname.py` migration is now redundant since the nickname functionality was moved to the profile table in migration 0003. I'll delete it:
+Done. I've deleted `0002_add_nickname.py`. The remaining migrations are:
+- `0001_initial.py` - creates the users table
+- `0003_add_profile.py` - creates the profile table with nickname and bio fields
+
+**Note:** If this migration has already been applied to a database, you may need to handle the cleanup of the old `users.nickname` column separately, as mentioned in the 0003 migration comment.

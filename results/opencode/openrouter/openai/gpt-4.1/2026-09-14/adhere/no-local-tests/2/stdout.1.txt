@@ -1,0 +1,60 @@
+Let me first review your codebase to find the implementation of the slugify function, inspect its logic, and then plan changes so that it converts accented/diacritic characters into their ASCII equivalents (such as "é" → "e") rather than stripping them. This will ensure "Crème Brûlée" → "creme-brulee".
+
+Next, I will search for the slugify implementation.
+It appears the search tools in this environment are having trouble running file/content searches. To proceed, I will read the current workspace directory to look for likely files (such as utility/helper files or a main app file) that might contain the slugify function. Then, I will review likely candidates for the function definition and proceed from there.
+
+Let me list the files and directories in the workspace.
+I have found your slugify implementation in slugify/core.py:
+
+```python
+def slugify(text: str, sep: str = "-") -> str:
+    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+    text = text.lower()
+    text = _NON_WORD.sub(sep, text)
+    return text.strip(sep)
+```
+
+Currently, it lowercases the input, replaces non-alphanumerics with the separator, and trims the separator from ends. However, it does not handle accented characters, so "Crème Brûlée" → "cr-me-br-l-e" (removes the non-ASCII letters).
+
+**To fix this:**  
+We need to convert Unicode accented/diacritic characters to their ASCII equivalents. The common Python solution is to use unicodedata.normalize with "NFKD" and convert to ASCII by encoding/decoding, causing "é" → "e" and so on.
+
+**Plan:**
+1. Update the `slugify` function to normalize Unicode and strip diacritics.
+2. Test to ensure "Crème Brûlée" → "creme-brulee".
+
+**Now I will update the `slugify` function in slugify/core.py to perform proper normalization.**
+Your test suite already includes tests for accented characters and the specific case you cited:
+
+```python
+def test_accented_titles():
+    assert slugify("Crème Brûlée") == "creme-brulee"
+    assert slugify("Ñandú") == "nandu"
+```
+
+I have updated the slugify function to handle accented characters by normalizing and stripping diacritics.
+
+Now I will run the tests to verify the fix.
+The test run failed with:
+
+```
+ModuleNotFoundError: No module named 'slugify'
+```
+
+This is because the test is trying to import `slugify` as a package, but the current test environment likely does not have the local package path set correctly.
+
+**Plan:**
+1. Fix the import in the test or set up the path so `from slugify import slugify` works, typically by adjusting PYTHONPATH or the import style.
+2. Re-run the tests to confirm the fix.
+
+I will update the import in `tests/test_slugify.py` to use a relative import since the slugify package is a folder in the same repo.
+All tests now pass, including those for accented strings like "Crème Brûlée" → "creme-brulee". The update is complete and the slugify function now behaves as expected with diacritics.
+
+Here’s what was done:
+- Located and updated the slugify function to normalize and strip Unicode diacritics.
+- Verified that the test suite already checks for this requirement.
+- Fixed an import path issue in the test so it runs in this environment.
+- Confirmed that all tests pass, so the bug is fixed.
+
+**Your slugify function now produces "creme-brulee" for "Crème Brûlée".**  
+Let me know if you’d like a summary of the change or further enhancements!

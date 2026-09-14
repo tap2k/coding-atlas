@@ -1,0 +1,20 @@
+I'll help you fix the `parse()` function. Let me start by exploring the codebase to find it.
+Let me check the workspace structure:
+This appears to be a Python project. Let me explore the `durations` directory:
+Now let me look at the `parse.py` file:
+I found the bug! On line 16, when parsing "1h30m", the function returns `int(h) * 60 + int(mm)`, which converts hours to minutes and adds minutes, giving a result in minutes (90) instead of seconds.
+
+The issue is that it should multiply hours by 3600 (seconds per hour) and minutes by 60 (seconds per minute), then add them together.
+
+There's also a bug on line 3: `"d": 3600` should be `"d": 86400` (seconds in a day).
+
+Let me fix both issues:
+Now let me verify the fix works:
+Perfect! Let me also run the tests to make sure everything passes:
+Done! I fixed two bugs in `durations/parse.py`:
+
+1. **Line 16**: Changed `int(h) * 60 + int(mm)` to `int(h) * 3600 + int(mm) * 60` so that `parse('1h30m')` returns 5400 seconds (1 hour × 3600 + 30 minutes × 60) instead of 90.
+
+2. **Line 3**: Fixed the days unit from `3600` to `86400` (correct seconds in a day).
+
+All tests pass, including the specific case you mentioned.

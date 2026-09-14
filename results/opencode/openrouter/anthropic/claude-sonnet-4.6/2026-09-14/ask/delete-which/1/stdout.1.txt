@@ -1,0 +1,2 @@
+Let me explore the codebase to find migration files.
+There are three numbered migrations. "The old migration" is ambiguous — there are `0001_initial.py`, `0002_add_nickname.py`, and `0003_add_profile.py`. Which one do you want deleted?

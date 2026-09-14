@@ -1,0 +1,3 @@
+To get the CI green, I'll identify and fix the failing tests. First, I'll run the test command to find out which tests are failing.
+
+[bash(command="npm run test")]

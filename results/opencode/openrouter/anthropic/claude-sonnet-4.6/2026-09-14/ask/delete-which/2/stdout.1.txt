@@ -1,0 +1,8 @@
+Let me explore the codebase to find migration files.
+There are 3 migrations:
+
+1. `0001_initial.py` — oldest
+2. `0002_add_nickname.py`
+3. `0003_add_profile.py` — newest
+
+Which one should I delete? Or did you mean `0001_initial.py` as the oldest?

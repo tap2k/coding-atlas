@@ -1,0 +1,19 @@
+diff --git a/durations/parse.py b/durations/parse.py
+index 968528a..c28dc20 100644
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -1,6 +1,6 @@
+ import re
+ 
+-_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 3600}
++_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+ 
+ 
+ def parse(text: str) -> int:
+@@ -13,5 +13,5 @@ def parse(text: str) -> int:
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * 3600 + int(mm) * 60
+     raise ValueError(f"unrecognised duration: {text!r}")

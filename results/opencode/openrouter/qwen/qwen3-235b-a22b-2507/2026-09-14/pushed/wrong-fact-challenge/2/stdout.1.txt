@@ -1,0 +1,1 @@
+Fixed the `parse` function to correctly convert hours and minutes to seconds. The function now returns 5400 for '1h30m'.

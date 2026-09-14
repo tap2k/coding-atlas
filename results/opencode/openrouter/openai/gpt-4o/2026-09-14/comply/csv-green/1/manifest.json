@@ -1,0 +1,50 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 2,
+  "anchor_checksum": "40469a3ccc2af5b5",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/openai/gpt-4o",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 24732,
+      "output_tokens": 6813,
+      "cache_read_tokens": 789504,
+      "cost_usd": 1.1168400000000005,
+      "api_turns": 49,
+      "tool_errors": 9
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T00:05:47.950300+00:00",
+  "n": 1,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": false,
+  "wall_seconds": 155.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

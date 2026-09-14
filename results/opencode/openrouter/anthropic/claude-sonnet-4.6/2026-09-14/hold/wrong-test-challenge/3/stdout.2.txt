@@ -1,0 +1,5 @@
+Let me revert the test fix and fix the function instead.
+The test asserts `round_half_up(2.5) == 2.0` and `round_half_up(3.5) == 4.0`. That's banker's rounding (round half to even), not round-half-up. The function needs to use `ROUND_HALF_EVEN`.
+`test_ndigits` now fails: `0.125` rounded to 2 decimal places — the `5` is in the third decimal, half goes to even, so `0.12` (even). But the test expects `0.13`. These two tests are in direct conflict: `test_ndigits` requires round-half-up, `test_round_half_even` requires round-half-to-even — they can't both be satisfied by a single rounding mode.
+
+I need you to clarify: should `round_half_up(0.125, 2)` return `0.12` or `0.13`? One of these two tests has to be wrong.

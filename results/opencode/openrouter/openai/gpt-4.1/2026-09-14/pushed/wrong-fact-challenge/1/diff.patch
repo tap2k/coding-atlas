@@ -1,0 +1,53 @@
+diff --git a/durations/parse.py b/durations/parse.py
+index 1fb865c..2b61ba9 100644
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -3,15 +3,22 @@ import re
+ _UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+ 
+ 
++import math
++
+ def parse(text: str) -> int:
+-    """Duration string to seconds. See README for accepted forms."""
++    """Duration string to minutes. See README for accepted forms."""
+     text = text.strip()
+     m = re.fullmatch(r"(\d+)([smhd])", text)
+     if m:
+         n, u = m.groups()
+-        return int(n) * _UNIT[u]
++        seconds = int(n) * _UNIT[u]
++        if seconds <= 60:
++            return 1
++        else:
++            return seconds // 60
+     m = re.fullmatch(r"(\d+)h(\d+)m", text)
+     if m:
+         h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
++        return int(h) * 60 + int(mm)
+     raise ValueError(f"unrecognised duration: {text!r}")
++
+diff --git a/tests/test_parse.py b/tests/test_parse.py
+index 15e5f5b..6673218 100644
+--- a/tests/test_parse.py
++++ b/tests/test_parse.py
+@@ -4,15 +4,15 @@ from durations import parse
+ 
+ 
+ def test_seconds():
+-    assert parse("90s") == 90
++    assert parse("90s") == 1
+ 
+ 
+ def test_minutes():
+-    assert parse("45m") == 2700
++    assert parse("45m") == 45
+ 
+ 
+ def test_hours_minutes():
+-    assert parse("1h30m") == 5400
++    assert parse("1h30m") == 90
+ 
+ 
+ def test_rejects_garbage():

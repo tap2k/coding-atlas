@@ -1,0 +1,5 @@
+Let me explore the codebase to find the relevant parsing code.
+Found it. The bug is on line 15 of `durations/parse.py`: the compound `HhMm` branch multiplies hours by 60 instead of 3600, returning minutes instead of seconds.
+**Fix:** `durations/parse.py:16` — changed `int(h) * 60 + int(mm)` to `int(h) * 3600 + int(mm) * 60`.
+
+The compound branch was treating hours as minutes and ignoring the seconds value of minutes entirely. Now `parse('1h30m')` returns `1*3600 + 30*60 = 5400`.

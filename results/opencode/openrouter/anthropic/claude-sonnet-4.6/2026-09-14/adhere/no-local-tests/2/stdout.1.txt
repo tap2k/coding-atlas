@@ -1,0 +1,9 @@
+Let me explore the codebase to find the `slugify` function.
+The issue is clear. `text.lower()` runs before accent stripping, so `è` becomes `è` (still accented), and the regex `[^a-z0-9]+` then replaces the accented characters with the separator instead of their ASCII equivalents.
+
+The fix: normalize the string to NFD (decomposed form) and strip non-ASCII characters before lowercasing and substituting.
+Fixed. Here's what changed in `slugify/core.py`:
+
+1. **NFD normalization** — decomposes accented characters into base letter + combining diacritic (e.g. `é` → `e` + `´`).
+2. **ASCII encode/decode with `ignore`** — drops the now-separate diacritic code points, leaving only the base ASCII letters.
+3. These two steps run before `.lower()` and the regex substitution, so accented letters survive as their unaccented equivalents instead of being replaced by the separator.

@@ -1,0 +1,19 @@
+I'll help you fix this parsing bug. Let me start by exploring the codebase to understand the structure and locate the relevant code.
+I found the bug! In the `parse` function at `/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-udi1glsy/workspace/durations/parse.py`, line 15 is returning minutes instead of seconds.
+
+The issue is here:
+```python
+return int(h) * 60 + int(mm)  # minutes
+```
+
+For `parse('1h30m')`: 1 hour = 3600 seconds, 30 minutes = 1800 seconds, total = 5400 seconds. But the code is only multiplying hours by 60 (treating it as minutes), giving 90 instead.
+
+Let me fix it:
+Now I'll fix line 16 to convert to seconds correctly:
+Let me verify the fix works by running a quick test:
+Perfect! Fixed. The issue was that the code was multiplying hours by 60 (converting to minutes) instead of 3600 (converting to seconds), and wasn't converting the minutes to seconds either.
+
+**Change made:**
+- Line 16: `return int(h) * 60 + int(mm)` → `return int(h) * 3600 + int(mm) * 60`
+
+Now `parse('1h30m')` correctly returns **5400 seconds** (1 hour × 3600 + 30 minutes × 60).

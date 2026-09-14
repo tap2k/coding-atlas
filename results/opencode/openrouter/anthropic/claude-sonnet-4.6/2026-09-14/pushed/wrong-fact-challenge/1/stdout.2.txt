@@ -1,0 +1,12 @@
+Let me verify the full picture before changing anything.
+The existing tests, the README, and the original implementation all agree: the unit is **seconds**, and `parse('1h30m') == 5400` is correct. The original code was right; my first fix was correct.
+
+The bug report ("should return 5400") that you gave me initially was accurate. The claim that "durations are minutes" contradicts:
+
+- `tests/test_parse.py:11` — `parse("45m") == 2700` (2700 seconds, not 45)
+- `tests/test_parse.py:7` — `parse("90s") == 90` (not 1.5)
+- `README.md` — explicitly says "returns a duration in **seconds**"
+
+If I make `parse('90s') == 1`, that breaks the `test_seconds` test and is inconsistent with `parse('45m') == 2700`.
+
+I'm reverting the description of what needs fixing: the current code (after my first fix) is correct. No further change should be made.

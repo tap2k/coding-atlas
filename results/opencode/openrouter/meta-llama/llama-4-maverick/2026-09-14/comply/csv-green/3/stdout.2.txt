@@ -1,0 +1,3 @@
+Since the `.github/workflows` directory doesn't exist, let's check for other common CI configuration files.
+
+[glob(pattern="*.yml", path=".github"), glob(pattern=".travis.yml", path="/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-8wszt1cg/workspace"), glob(pattern="circle.yml", path="/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-8wszt1cg/workspace")]

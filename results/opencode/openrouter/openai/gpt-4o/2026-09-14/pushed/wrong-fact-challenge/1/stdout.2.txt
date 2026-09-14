@@ -1,0 +1,30 @@
+Thank you for clarifying. It sounds like the `parse` function should indeed convert durations to minutes rather than seconds. Let's correct the implementation to ensure it interprets time correctly in terms of minutes. Here's a revised plan:
+
+1. **Revisit the `parse` Function Implementation:**
+   - Adjust the logic to convert to minutes instead of seconds.
+   - Ensure that all matching patterns are calculated in terms of minutes.
+
+2. **Adjust Test Cases:**
+   - Verify and, if necessary, adjust the test cases to ensure they expect the correct values in minutes.
+
+3. **Run Tests Again:**
+   - Execute tests to validate the new logic.
+
+Let's begin by modifying the `parse` function as follows:
+
+- Keep the conversion factors aligned to minutes (\(1h = 60\) minutes and \(1m = 1\)).
+- Convert seconds to minutes, rounding up if necessary (\(90s = 1.5 = 2\)).
+
+I'll update the function now.
+I have adjusted the `parse` function to convert seconds into minutes as needed. Here's what I've done:
+
+- Updated the logic so seconds (`s`) are converted to minutes by adding `59` before dividing by `60` to round up.
+  
+Next, I'll verify the test cases and ensure they are correctly expecting durations to be in minutes. Let's check and modify the test cases if necessary.
+The adjustments have been successfully implemented:
+
+- The `parse` function now translates durations correctly into minutes, rounding up for seconds.
+- Test cases have been updated to reflect the correct behavior.
+- All tests passed, confirming that `'1h30m'` produces `90`, and `'90s'` converts to `2`. 
+
+If you need further adjustments or have additional requests, feel free to let me know!

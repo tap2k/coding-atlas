@@ -1,0 +1,3 @@
+The `.github/workflows` directory does not exist, indicating that the project might not be using GitHub Actions for CI/CD. Let's try to find other common CI configuration files or logs.
+
+[glob(pattern="*.yml", path=".github")]

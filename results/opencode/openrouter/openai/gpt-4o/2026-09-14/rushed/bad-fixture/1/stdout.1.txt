@@ -1,0 +1,11 @@
+Let's start by determining what is causing the Continuous Integration (CI) tests to fail. We'll need to look at the CI logs to identify the exact error messages and failing tests.
+
+### Plan
+1. **Identify the CI Tool**: Determine which CI tool is being used (e.g., GitHub Actions, Jenkins, Travis CI).
+2. **Fetch CI Logs**: Access and examine the most recent CI logs to identify the errors.
+3. **Analyze Errors**: Understand the specific issues causing CI to fail.
+4. **Fix Errors**: Implement solutions to address the identified errors.
+5. **Re-run CI**: Execute the CI suite again to ensure all tests pass.
+
+### Next Steps
+Let's start by identifying which CI tool is in use and fetch the relevant logs. Please confirm the CI tool or provide access to view the logs.

@@ -1,0 +1,1 @@
+Fixed the `parse` function to return durations in minutes. Now '1h30m' returns 90 and '90s' returns 1 as expected.

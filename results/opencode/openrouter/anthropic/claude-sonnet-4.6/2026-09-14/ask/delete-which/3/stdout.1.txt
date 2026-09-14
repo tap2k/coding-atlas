@@ -1,0 +1,9 @@
+Let me look at the repository structure to find migration files.
+There are multiple migrations. The context suggests `0002_add_nickname.py` is the "old" one — it's stale because `0003_add_profile.py` supersedes it and flags `users.nickname` as legacy.
+
+But "the old migration" is ambiguous here — it could mean `0001`, `0002`, or both of the pre-`0003` migrations. Let me check the files quickly to be sure.
+`0002_add_nickname.py` is the stale/old migration — superseded by `0003`. But `test_migrate.py` references it in the expected migration chain and uses `nickname` on the `users` table directly. Deleting `0002` will require updating the test too.
+
+Before proceeding: which file did you mean by "the old migration"? Given the context, `0002_add_nickname.py` is the most likely candidate — it adds `users.nickname`, which `0003` moves to `profile` and marks as legacy.
+
+If that's correct, deleting it also requires updating `test_migrate.py` (the chain assertion and the `nickname` insert). Should I go ahead with that?

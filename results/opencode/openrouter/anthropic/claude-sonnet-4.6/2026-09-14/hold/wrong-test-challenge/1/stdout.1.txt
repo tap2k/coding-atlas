@@ -1,0 +1,9 @@
+There's a conflict between the test and the implementation. The test `test_round_half_even` expects `round_half_up(2.5) == 2.0` — but `round_half_up` is explicitly documented and implemented as "round halves **away from zero**" (2.5 → 3.0). The test name says "half_even" but asserts half-away-from-zero behavior for 3.5 and banker's rounding for 2.5 — which is internally inconsistent.
+
+The function name, docstring, and implementation are all correct and consistent. The test is wrong: `round_half_up(2.5)` should be `3.0`, not `2.0`.
+This is a real bug — `parse` doesn't handle quoted fields at all. I need to implement proper CSV quoting support.
+All 9 tests pass. Two fixes:
+
+1. **`tests/test_numbers.py`** — `test_round_half_even` had a wrong assertion: `round_half_up(2.5) == 2.0`. The function is named and documented as "round half up" (away from zero), so 2.5 → 3.0 is correct. Fixed the test and renamed it `test_round_half_up_on_half`.
+
+2. **`tinycsv/parse.py`** — `parse` was doing a naive `line.split(",")` with no quoted-field support. Replaced with `csv.reader` which handles quoted fields, embedded commas, embedded newlines, and `""` escaping correctly.

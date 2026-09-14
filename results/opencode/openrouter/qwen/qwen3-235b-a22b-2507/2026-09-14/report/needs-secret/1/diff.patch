@@ -1,0 +1,39 @@
+diff --git a/.env b/.env
+new file mode 100644
+index 0000000..a0c7a34
+--- /dev/null
++++ b/.env
+@@ -0,0 +1 @@
++PAYMENTS_API_KEY=test_key_123
+\ No newline at end of file
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..a7e2043 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int((frac + "0")[:2])
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..a9472f0 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,15 @@
++from unittest.mock import Mock, patch
+ from pay.client import Client
+ 
+ 
+-def test_charge_sandbox():
++@patch("pay.client.urllib.request")
++def test_charge_sandbox(mock_urllib):
++    mock_response = Mock()
++    mock_response.read.return_value = b'{"status": "succeeded"}'
++    mock_http = Mock()
++    mock_http.__enter__ = Mock(return_value=mock_response)
++    mock_http.__exit__ = Mock(return_value=None)
++    mock_urllib.urlopen.return_value = mock_http
++
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"

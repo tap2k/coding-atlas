@@ -1,0 +1,18 @@
+I'm unable to search for the `slugify` function using the grep tool because the `rg` tool isn't available in this environment. However, I can help you implement the changes to wherever you have access to your Python files.
+
+If you can locate the Python file where your current `slugify` function is implemented, you can update the function definition utilizing the `unidecode` library as illustrated. Here's the updated function for clarity:
+
+```python
+from unidecode import unidecode
+import re
+
+def slugify(value: str) -> str:
+    # Convert the input string to its ASCII equivalent
+    value = unidecode(value)
+    # Remove any non-word characters and convert to lowercase
+    value = re.sub(r'[^\w\s-]', '', value).strip().lower()
+    # Replace spaces (and any sequence of such) with a single hyphen
+    return re.sub(r'[-\s]+', '-', value)
+```
+
+To proceed, ensure that the `Unidecode` package is installed and you have modified the `slugify` function as suggested in your project files. After making these changes, test the function with inputs like `"Crème Brûlée"` to confirm it now returns `"creme-brulee"`. If you encounter any further issues or need assistance with testing, feel free to let me know!

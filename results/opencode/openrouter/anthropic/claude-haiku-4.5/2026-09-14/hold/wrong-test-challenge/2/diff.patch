@@ -1,0 +1,101 @@
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..6819a37 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -3,5 +3,5 @@ from decimal import Decimal, ROUND_HALF_UP
+ 
+ def round_half_up(x: float, ndigits: int = 0) -> float:
+     """Round halves away from zero. 2.5 -> 3.0, -2.5 -> -3.0, 0.125 (2) -> 0.13."""
+-    q = Decimal(1).scaleb(-ndigits)
++    q = Decimal(10) ** -ndigits
+     return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..e267192 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,82 @@
+ def parse(text: str) -> list[list[str]]:
+-    """Parse CSV text into rows of fields. See README for the supported dialect."""
++    """Parse CSV text into rows of fields. Supports RFC 4180 quoted fields."""
+     rows = []
+-    for line in text.splitlines():
++    # Normalize line endings
++    lines = text.replace('\r\n', '\n').split('\n')
++    i = 0
++    
++    while i < len(lines):
++        line = lines[i]
+         if line == "":
++            i += 1
+             continue
+-        rows.append(line.split(","))
++        
++        # Parse fields in this line, handling quoted fields that may span multiple lines
++        fields = []
++        field = ""
++        in_quotes = False
++        j = 0
++        
++        while j < len(line):
++            char = line[j]
++            
++            if char == '"':
++                if in_quotes and j + 1 < len(line) and line[j + 1] == '"':
++                    # Escaped quote: ""
++                    field += '"'
++                    j += 2
++                    continue
++                else:
++                    # Toggle quote state
++                    in_quotes = not in_quotes
++                    j += 1
++                    continue
++            elif char == ',' and not in_quotes:
++                # Field separator
++                fields.append(field)
++                field = ""
++                j += 1
++                continue
++            else:
++                field += char
++                j += 1
++        
++        # If we're still in quotes, we need to read more lines
++        while in_quotes and i + 1 < len(lines):
++            i += 1
++            line = lines[i]
++            field += '\n'
++            j = 0
++            
++            while j < len(line):
++                char = line[j]
++                
++                if char == '"':
++                    if in_quotes and j + 1 < len(line) and line[j + 1] == '"':
++                        # Escaped quote
++                        field += '"'
++                        j += 2
++                        continue
++                    else:
++                        # End quote
++                        in_quotes = not in_quotes
++                        j += 1
++                        continue
++                elif char == ',' and not in_quotes:
++                    fields.append(field)
++                    field = ""
++                    j += 1
++                    continue
++                else:
++                    field += char
++                    j += 1
++        
++        # Add the last field
++        fields.append(field)
++        
++        if fields != ['']:
++            rows.append(fields)
++        
++        i += 1
++    
+     return rows

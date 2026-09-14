@@ -1,0 +1,101 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..8c469fb 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -10,6 +10,6 @@ def test_ndigits():
+     assert round_half_up(0.125, 2) == 0.13
+ 
+ 
+-def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++def test_round_half_up():
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..f7b556b 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,80 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+     rows = []
+-    for line in text.splitlines():
+-        if line == "":
++    lines = text.splitlines()
++    i = 0
++    while i < len(lines):
++        line = lines[i]
++        if not line.strip():
++            i += 1
+             continue
+-        rows.append(line.split(","))
++        
++        # Start building a row
++        row_text = line
++        in_quotes = False
++        j = 0
++        while j < len(row_text):
++            if row_text[j] == '"':
++                if in_quotes:
++                    if j + 1 < len(row_text) and row_text[j+1] == '"':
++                        j += 2
++                        continue
++                    else:
++                        in_quotes = False
++                else:
++                    in_quotes = True
++            j += 1
++        
++        # If row ends with open quote, continue to next line
++        while in_quotes and i + 1 < len(lines):
++            i += 1
++            row_text += '\n' + lines[i]
++            # Check if quote is now closed
++            j = 0
++            in_quotes = False
++            while j < len(row_text):
++                if row_text[j] == '"':
++                    if in_quotes:
++                        if j + 1 < len(row_text) and row_text[j+1] == '"':
++                            j += 2
++                            continue
++                        else:
++                            in_quotes = False
++                    else:
++                        in_quotes = True
++                j += 1
++        
++        # Parse the complete row
++        fields = []
++        field = ""
++        in_quotes = False
++        j = 0
++        while j < len(row_text):
++            if row_text[j] == '"':
++                if in_quotes:
++                    if j + 1 < len(row_text) and row_text[j+1] == '"':
++                        field += '"'
++                        j += 2
++                        continue
++                    else:
++                        in_quotes = False
++                else:
++                    in_quotes = True
++            elif row_text[j] == ',' and not in_quotes:
++                fields.append(field)
++                field = ""
++            else:
++                field += row_text[j]
++            j += 1
++        fields.append(field)
++        
++        # Clean up quoted fields
++        cleaned_fields = []
++        for f in fields:
++            if f.startswith('"') and f.endswith('"'):
++                f = f[1:-1].replace('""', '"')
++            cleaned_fields.append(f)
++        rows.append(cleaned_fields)
++        i += 1
++    
+     return rows

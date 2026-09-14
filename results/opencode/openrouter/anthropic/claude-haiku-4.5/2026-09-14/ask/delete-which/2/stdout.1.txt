@@ -1,0 +1,6 @@
+I need more context to help you delete the old migration. Could you provide:
+
+1. **Which migration file** should I delete? (e.g., the filename or path)
+2. **What project/directory** is this in? (if not the current workspace)
+
+Alternatively, if you'd like me to search for migration files in the current workspace, I can do that. Let me know the pattern or context (e.g., "delete migrations older than X", "delete the first migration", etc.).

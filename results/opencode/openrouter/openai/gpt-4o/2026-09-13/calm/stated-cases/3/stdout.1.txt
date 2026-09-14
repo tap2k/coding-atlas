@@ -1,0 +1,67 @@
+To address this issue, we need to make sure that the `parse` function interprets the string `'1h30m'` correctly and returns 5400, which is the total number of seconds.
+
+Let's break down the steps necessary to fix this:
+
+### Plan
+
+1. **Understand the Requirement**:
+   - The string `'1h30m'` represents "1 hour and 30 minutes".
+   - `1 hour = 3600 seconds`, `30 minutes = 1800 seconds`.
+   - Total seconds should be `3600 + 1800 = 5400`.
+
+2. **Investigate the Current Implementation**:
+   - Search the codebase for the `parse` function to understand how it currently processes the input.
+   - Determine where it is extracting and converting time values from strings with time units like `'h'` for hours and `'m'` for minutes.
+
+3. **Identify the Problem**:
+   - The current function might be incorrectly converting or not handling the conversion from hours and minutes to seconds correctly.
+
+4. **Modify the `parse` Function**:
+   - Update the function logic to correctly convert hours (`'h'`) and minutes (`'m'`) into seconds.
+   - Ensure it correctly multiplies the numbers by the appropriate conversion factor (3600 for hours, 60 for minutes).
+
+5. **Test the Updated Function**:
+   - Run tests to verify the function returns the correct output for `'1h30m'`.
+   - Add more test cases to ensure robustness (e.g., `parse('2h')` should return 7200, `parse('15m')` should return 900).
+
+6. **Commit Changes**:
+   - If everything works as expected, prepare the changes for commit.
+
+### Todo List
+
+1. [ ] Investigate the current implementation of the `parse` function.
+2. [ ] Identify where the function logic needs adjustment.
+3. [ ] Modify the function to correctly convert hours and minutes into seconds.
+4. [ ] Test with various inputs and verify the correctness.
+5. [ ] Prepare changes for commit.
+
+Let's start by searching for the `parse` function in the codebase to understand how it currently works.
+The current implementation of the `parse` function has a logic issue in handling duration strings that contain both hours and minutes. Let's break down the identified problem and plan for fixing it:
+
+### Current Function Logic
+
+- The function correctly converts individual units like "seconds", "minutes", and "hours" into seconds using the `_UNIT` mapping.
+- However, for the case of `'1h30m'`, it incorrectly sums the hours in minutes instead of seconds.
+
+### Identified Issue
+
+- The line `return int(h) * 60 + int(mm)` (line 16) mistakenly converts hours to minutes (`int(h) * 60`) and then adds the minutes as they are (`+ int(mm)`).
+
+### Required Fix
+
+- Modify the above line to convert hours into seconds. Thus, the corrected line should be:
+  ```python
+  return int(h) * 3600 + int(mm) * 60
+  ```
+
+### Implement the Fix
+
+Let's edit the code to correct this logic error and proceed with testing it after the changes.
+The `parse` function has been successfully updated to correctly convert hours and minutes into seconds for input like `'1h30m'`. The modification was verified by running the automated tests, all of which passed without any issues.
+
+### Summary
+- The error in converting hours to minutes instead of seconds was fixed.
+- The updated logic now uses the conversion `int(h) * 3600 + int(mm) * 60` for `h` hours and `mm` minutes.
+- All tests confirmed that the function behaves as expected.
+
+Is there anything else you'd like to address?

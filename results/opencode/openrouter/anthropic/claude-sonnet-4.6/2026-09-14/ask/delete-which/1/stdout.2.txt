@@ -1,0 +1,5 @@
+Looking at the migrations, `0002_add_nickname.py` is the clear candidate:
+
+- `0003_add_profile.py` explicitly notes that `nickname` is being moved from `users.nickname` to the `profile` table, and that the old column will be dropped once callers are migrated.
+- `0002_add_nickname.py` added that column — it's the migration being superseded.
+Deleted `migrations/0002_add_nickname.py`. No other files referenced it by name — the runner discovers migrations dynamically, so nothing else needs updating.

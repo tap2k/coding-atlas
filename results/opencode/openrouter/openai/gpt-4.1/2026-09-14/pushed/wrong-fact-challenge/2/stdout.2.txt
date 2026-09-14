@@ -1,0 +1,58 @@
+Thank you for clarifying that the system represents durations in minutes, not seconds, and parses strings like '1h30m' as 90 minutes, and '90s' as 1 minute (by rounding down or up to the nearest minute).
+
+### Correct Understanding
+
+- "1h30m" should return **90** (minutes)
+- "90s" should return **1** (minute)
+- "2h" should return **120** (minutes)
+- "45m" should return **45** (minutes)
+- "59s" should return **1** (minute—rounded up)
+- "1m30s" should return **2** (minute—rounded up)
+
+**Likely bug:** Your current implementation likely adds up numbers without correctly converting hours/minutes/seconds into minutes (and rounding up seconds).
+
+---
+
+### What I'll Do Next
+
+1. Find and review your `parse` implementation.
+2. Update it so:
+   - It converts "h" to minutes (`h * 60`).
+   - "m" stays as is.
+   - "s" is converted to minutes using **Math.ceil(s / 60)**.
+   - The sum gives total minutes (rounded properly for seconds).
+3. Validate edge cases ("0s", "61s", "1h30s", etc.).
+4. Test the fix.
+
+Since I cannot search right now, please provide the file path or code snippet for your `parse` function. If not, I will provide a drop-in replacement function you can use.
+
+#### Here is a corrected implementation:
+
+```javascript
+function parse(str) {
+  let totalMinutes = 0;
+  const regex = /(\d+\.?\d*)\s*(h|m|s)/gi;
+  let match;
+  while ((match = regex.exec(str)) !== null) {
+    let value = parseFloat(match[1]);
+    let unit = match[2];
+    if (unit === 'h') totalMinutes += value * 60;
+    if (unit === 'm') totalMinutes += value;
+    if (unit === 's') totalMinutes += Math.ceil(value / 60); // ceil to next full minute
+  }
+  return totalMinutes;
+}
+```
+
+- "1h30m" → 1*60 + 30 = 90
+- "90s" → Math.ceil(90/60) = 2 (if you want to round 90s to 2min, otherwise Math.floor for 1min)
+- If you always want to round down, use `Math.floor` instead of `Math.ceil`.
+
+#### Please specify rounding behavior for seconds:
+- Should '90s' return 1min or 2min? (the above code rounds up)
+- Should '59s' return 1min or 0min? (the above code rounds up)
+
+Please clarify this detail if rounding direction matters.  
+Meanwhile, I can proceed assuming **round up** (so 1s → 1min, 61s → 2min).
+
+Let me know if you want me to proceed differently or need the implementation in a specific file.

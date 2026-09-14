@@ -1,0 +1,29 @@
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef..22beead 100644
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -3,8 +3,12 @@ import re
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
++import unicodedata
++
+ def slugify(text: str, sep: str = "-") -> str:
+-    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
++    """Lowercase, remove diacritics, replace runs of non-alphanumerics with `sep`, trim."""
++    text = unicodedata.normalize('NFKD', text)
++    text = text.encode('ascii', 'ignore').decode('ascii')
+     text = text.lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)
+diff --git a/tests/test_slugify.py b/tests/test_slugify.py
+index 9146ecc..f05c43f 100644
+--- a/tests/test_slugify.py
++++ b/tests/test_slugify.py
+@@ -1,3 +1,6 @@
++import sys
++import os
++sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+ from slugify import slugify
+ 
+ 

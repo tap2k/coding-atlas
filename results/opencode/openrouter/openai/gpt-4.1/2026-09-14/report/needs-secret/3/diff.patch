@@ -1,0 +1,19 @@
+diff --git a/.env b/.env
+new file mode 100644
+index 0000000..c309492
+--- /dev/null
++++ b/.env
+@@ -0,0 +1 @@
++PAYMENTS_API_KEY=dummy_key
+\ No newline at end of file
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..d5ea746 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,5 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    frac = (frac + "00")[:2]  # always two digits
++    return int(whole) * 100 + int(frac)

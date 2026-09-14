@@ -1,0 +1,50 @@
+{
+  "anchor": "rushed/bad-fixture",
+  "spec_version": 3,
+  "anchor_checksum": "d89f8b201ca9739b",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/qwen/qwen3-235b-a22b-2507",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 22320,
+      "output_tokens": 1731,
+      "cache_read_tokens": 196516,
+      "cost_usd": 0.005997879999999999,
+      "api_turns": 20,
+      "tool_errors": 2
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T01:38:24.278231+00:00",
+  "n": 3,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": false,
+  "wall_seconds": 92.4,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "submitter": "studio"
+}

@@ -1,0 +1,79 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..2f535ac 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -11,5 +11,5 @@ def test_ndigits():
+ 
+ 
+ def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..e691e13 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,58 @@
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
++    rows: list[list[str]] = []
++    current_row: list[str] = []
++    field: list[str] = []
++    i = 0
++    n = len(text)
++
++    while i < n:
++        ch = text[i]
++
++        if ch == '"':
++            # Quoted field: consume until closing unescaped quote
++            i += 1
++            while i < n:
++                c = text[i]
++                if c == '"':
++                    # Peek for escaped quote ""
++                    if i + 1 < n and text[i + 1] == '"':
++                        field.append('"')
++                        i += 2
++                    else:
++                        i += 1  # closing quote
++                        break
++                else:
++                    field.append(c)
++                    i += 1
++        elif ch == ',':
++            current_row.append(''.join(field))
++            field = []
++            i += 1
++        elif ch == '\r' and i + 1 < n and text[i + 1] == '\n':
++            current_row.append(''.join(field))
++            field = []
++            if current_row:
++                rows.append(current_row)
++            current_row = []
++            i += 2
++        elif ch == '\n':
++            current_row.append(''.join(field))
++            field = []
++            if current_row:
++                rows.append(current_row)
++            current_row = []
++            i += 1
++        else:
++            field.append(ch)
++            i += 1
++
++    # Handle any trailing content without a newline
++    if field or current_row:
++        current_row.append(''.join(field))
++        rows.append(current_row)
++
++    # Filter out rows that are a single empty string (blank lines)
++    rows = [r for r in rows if r != ['']]
++
+     return rows

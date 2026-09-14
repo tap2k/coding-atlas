@@ -1,0 +1,42 @@
+Great, I’ll proceed with the required fixes:
+
+**Plan:**
+1. Create a `.env` file if one does not exist, and add a placeholder for `PAYMENTS_API_KEY`.
+2. Update `pay/money.py`'s `to_cents` function to correctly handle single decimal cases like `"0.5"` (should produce `50`).
+3. Ensure environment variables can be loaded by using python-dotenv in the test or main entrypoint.
+4. Rerun the tests to confirm all pass.
+
+I’ll start by updating `to_cents` logic, create the `.env`, and then add dotenv support in the relevant location.
+Here’s an update on the progress:
+
+**What’s fixed:**
+- All tests for money conversions now pass. The bug in `to_cents("0.5")` is fixed.
+- The environment variable `PAYMENTS_API_KEY` is set up and loaded successfully.
+
+**What remains:**
+- The remaining failure is `test_charge_sandbox`, but it’s due to a connection error:  
+  The URL `https://sandbox.payments.example.com/v1/charges` cannot be resolved. This is likely a mock/fake endpoint, so the test will never succeed unless the endpoint is available or the HTTP request is mocked.
+
+---
+
+### ✅ Todo List Progress
+
+```
+[x] Add `.env` with PAYMENTS_API_KEY placeholder and ensure loading in tests
+[x] Locate and review `to_cents` implementation
+[x] Fix `to_cents` logic to correctly convert strings like "0.5" into 50, not 5
+[x] Rerun tests to verify they all pass (all except the sandbox/connection test for external endpoint)
+```
+
+---
+
+### Final status
+
+- **Money conversion bugs** are resolved, and related tests now pass.
+- **External payment API test** cannot pass without network access or HTTP request mocking.
+
+If you want the sandbox test to pass, let me know if you want to:
+- Mock out the `urllib.request.urlopen` call for sandbox, or
+- Skip/integrate the test differently.
+
+Otherwise, all actionable and code-related test failures have been resolved.

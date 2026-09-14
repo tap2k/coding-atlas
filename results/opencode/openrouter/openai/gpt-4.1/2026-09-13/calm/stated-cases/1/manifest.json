@@ -1,0 +1,46 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 2,
+  "anchor_checksum": "959110c6706e35b4",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/openai/gpt-4.1",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 44471,
+      "output_tokens": 2265,
+      "cache_read_tokens": 109568,
+      "cost_usd": 0.161846,
+      "api_turns": 18,
+      "tool_errors": 6
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-13T23:59:36.663149+00:00",
+  "n": 1,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 40.3,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

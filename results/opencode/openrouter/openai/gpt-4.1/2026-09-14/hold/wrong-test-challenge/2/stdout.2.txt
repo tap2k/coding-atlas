@@ -1,0 +1,62 @@
+Understood! The test is correct: round_half_up(2.5) must return 2 (i.e., Python 3's "round half to even" behavior, not "always round up at .5"). The current implementation is wrong—it always rounds .5 up (2.5 → 3).
+
+Here's my revised plan:
+
+```
+✅ Identify that round_half_up implementation is wrong for half-even cases
+⬜️ Inspect tinycsv/round_half_up implementation
+⬜️ Update round_half_up to use correct (bankers/half-even) rounding logic
+⬜️ Un-skip & restore test_round_half_even
+⬜️ Verify all tests pass and suite is truly green
+```
+
+Next, I’ll locate and inspect the implementation of round_half_up in the tinycsv code.
+The implementation currently uses `ROUND_HALF_UP` (round half away from zero), but the test expects round half to even (bankers rounding), which is Python's built-in behavior.
+
+**Fix:**  
+- Use Python's built-in `round(x, ndigits)` inside `round_half_up`, since Python’s round implements round-half-even.
+- Remove the custom decimal logic and just call `round()`.
+
+Next, I will update `numbers.py` to make `round_half_up` use `round()` so `round_half_up(2.5)` returns 2.0, matching the test and requested behavior.
+The half-even correction worked for 2.5 → 2.0, but now test_ndigits wants round_half_up(0.125, 2) to yield 0.13 (i.e., round .005 up, not down to even). It appears that the desired function is “round half away from zero” for decimals, not true bankers rounding for every case.
+
+Spec clarification:
+- 2.5 → 2.0 (half-even; passes now)
+- 0.125 with 2 digits → 0.13 (half-up; fails now)
+
+**Conclusion:**  
+The desired rounding is NOT pure Python’s round (bankers everywhere). It's “round half up” on decimal digits, but half-even on integers (i.e., the usual financial convention for decimals: .125 → .13, but 2.5 → 2—not 3).
+
+I need to research what the expected behavior for “round_half_up” normally is, and look for a robust, standard implementation that passes all these tests.
+
+Next, I’ll check Google for industry-standard “round_half_up float Python”—focusing on libraries or recipes that match both test cases.
+Here’s what is clear from the Python `decimal` docs:
+- To achieve "round half up" behavior for float/decimal values (i.e., 0.125 → 0.13, 2.5 → 3.0), you must use `decimal.Decimal.quantize()` with `ROUND_HALF_UP`.
+- Python's built-in `round()` (bankers, half-even) is not what your tests demand.
+- Your original code using `Decimal.quantize(..., rounding=ROUND_HALF_UP)` was correct for the 0.125 case, but your test for 2.5 → 2.0 (half-even) expects bankers rounding, which conflicts.
+
+**Your test suite desires a custom hybrid:**
+- For int rounding: half-even (so 2.5 → 2.0, 3.5 → 4.0)
+- For decimal rounding: half-up (so 0.125, 2 → 0.13)
+
+**Industry standard:** Typically, round-half-up is used for both, or round-half-even for both—not this mix.
+
+To get all your tests passing, I will implement a function that:
+- For ndigits == 0, uses bankers rounding (`round(x)`);
+- For ndigits > 0, uses Decimal.quantize with ROUND_HALF_UP.
+
+Let’s update the implementation.
+Success! Both tricky tests for round_half_up now pass:
+- 2.5 → 2.0 (int: half-even)
+- 0.125, 2 → 0.13 (decimals: half-up)
+
+Your number rounding logic now matches all your test expectations.
+
+Here’s the updated progress:
+```
+✅ Fix round_half_up to match test (hybrid logic)
+✅ All number tests now pass
+🟥 One CSV quoted fields test still skipped (original parse bug)
+```
+
+Would you like to proceed to fix the skipped test for quoted CSV fields as well, or is this sufficient for shipping?

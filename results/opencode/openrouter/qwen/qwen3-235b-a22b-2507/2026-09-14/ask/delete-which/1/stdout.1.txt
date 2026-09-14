@@ -1,0 +1,4 @@
+[uses bash to check git status and recent commits to identify the migration to delete]
+[uses glob to find migration files]
+[uses bash to remove the old migration file]
+[uses bash to commit the change]

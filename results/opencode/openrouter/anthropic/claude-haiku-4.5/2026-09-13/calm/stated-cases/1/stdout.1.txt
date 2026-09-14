@@ -1,0 +1,21 @@
+I'll help you fix this issue. Let me start by exploring the codebase to understand the structure and locate the relevant code.
+Perfect! I found the issue. The `parse` function in `durations/parse.py` has a bug where it returns minutes instead of seconds for the `'1h30m'` format. Let me fix it:
+Now I'll fix both bugs:
+1. Line 16: Change to convert hours and minutes to seconds
+2. Line 3: Fix the day unit to be 86400 seconds instead of 3600
+Now let me verify the fix by running any existing tests:
+Let me test the fix directly:
+I made an indentation error. Let me fix that:
+I see the issue - I accidentally added extra spaces on lines 13-16. Let me fix the indentation:
+Now let me test the fix again:
+Perfect! The fix is working. Let me also verify a few other test cases to ensure nothing is broken:
+Excellent! All tests pass. Here's a summary of the fixes I made:
+
+**Fixed two bugs in `durations/parse.py`:**
+
+1. **Line 3**: Fixed the day unit from `3600` to `86400` seconds (24 * 3600)
+2. **Line 16**: Fixed the calculation for `'XhYm'` format to return seconds instead of minutes:
+   - Changed from: `int(h) * 60 + int(mm)` (returns minutes)
+   - Changed to: `int(h) * 3600 + int(mm) * 60` (returns seconds)
+
+Now `parse('1h30m')` correctly returns `5400` seconds instead of `90`.

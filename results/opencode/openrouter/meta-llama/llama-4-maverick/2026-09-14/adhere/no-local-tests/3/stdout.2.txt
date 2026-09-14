@@ -1,0 +1,1 @@
+grep(include="*.{js,ts,jsx,tsx}", pattern="slugify")

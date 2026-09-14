@@ -1,0 +1,20 @@
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..dac6715 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,11 @@
++import csv
++import io
++
++
+ def parse(text: str) -> list[list[str]]:
+     """Parse CSV text into rows of fields. See README for the supported dialect."""
+     rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
++    for row in csv.reader(io.StringIO(text)):
++        if row:
++            rows.append(row)
+     return rows

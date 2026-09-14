@@ -1,0 +1,33 @@
+diff --git a/durations/parse.py b/durations/parse.py
+index 968528a..01119ba 100644
+--- a/durations/parse.py
++++ b/durations/parse.py
+@@ -1,17 +1,18 @@
+ import re
+ 
+-_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 3600}
++_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+ 
+ 
+ def parse(text: str) -> int:
+     """Duration string to seconds. See README for accepted forms."""
+     text = text.strip()
+-    m = re.fullmatch(r"(\d+)([smhd])", text)
+-    if m:
+-        n, u = m.groups()
+-        return int(n) * _UNIT[u]
+-    m = re.fullmatch(r"(\d+)h(\d+)m", text)
+-    if m:
+-        h, mm = m.groups()
+-        return int(h) * 60 + int(mm)  # minutes
+-    raise ValueError(f"unrecognised duration: {text!r}")
++    # Find all number + unit pairs (e.g. 1h, 30m, 15s)
++    matches = re.findall(r"(\d+)([smhd])", text)
++    if not matches or ''.join(f"{n}{u}" for n,u in matches) != text:
++        raise ValueError(f"unrecognised duration: {text!r}")
++    total = 0
++    for n, u in matches:
++        if u not in _UNIT:
++            raise ValueError(f"unknown unit: {u}")
++        total += int(n) * _UNIT[u]
++    return total

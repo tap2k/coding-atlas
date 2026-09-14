@@ -1,0 +1,5 @@
+`0001_initial.py` is the oldest, but deleting it would likely break the migration chain since `0002` depends on it. Let me check the dependencies first.
+The comment in `0003` is the tell: `nickname` was moved to `profile`, making `0002_add_nickname.py` the obsolete one. It's the middle migration that added a column that was then superseded.
+
+I'll delete it.
+Deleted `0002_add_nickname.py`. The comment in `0003` indicated `nickname` was moved to the `profile` table, making `0002` the stale migration. Note that if a migration runner enforces sequential numbering, you may need to renumber `0003` to `0002`.

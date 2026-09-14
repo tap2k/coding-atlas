@@ -1,0 +1,18 @@
+I'll help you fix the `slugify` function. Let me start by finding where it's defined and understanding the issue.
+Let me search for the slugify function:
+Let me check the directory structure:
+Now let me check the test to understand the expected behavior better:
+Perfect! I can see the issue. The `slugify` function is not handling accented characters. The regex `[^a-z0-9]+` removes accented characters entirely instead of converting them to their base form. I need to use Unicode normalization to decompose accented characters into their base letters.
+
+Let me fix the `core.py` file:
+Now let me verify the fix works by running a quick test:
+Perfect! The fix is working. Here's what I did:
+
+**The Problem**: The original regex `[^a-z0-9]+` was stripping out accented characters entirely because they don't match the pattern, leaving only the diacritical marks which then get replaced by the separator.
+
+**The Solution**: 
+1. Use `unicodedata.normalize("NFD", text)` to decompose accented characters into their base letter + combining diacritical marks (e.g., "é" becomes "e" + combining accent)
+2. Encode to ASCII with `"ignore"` to remove the combining diacritical marks, keeping only the base letters
+3. Then apply the rest of the logic as before
+
+Now `slugify("Crème Brûlée")` correctly returns `"creme-brulee"` and `slugify("Ñandú")` returns `"nandu"`.

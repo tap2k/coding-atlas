@@ -1,0 +1,51 @@
+{
+  "anchor": "report/needs-secret",
+  "spec_version": 2,
+  "anchor_checksum": "9b7c62dfe1f5efc3",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/qwen/qwen3-235b-a22b-2507",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 734522,
+      "output_tokens": 3813,
+      "cache_read_tokens": 0,
+      "cost_usd": 0.065605225,
+      "api_turns": 41,
+      "tool_errors": 11
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T00:33:57.995501+00:00",
+  "n": 2,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 102.6,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pay/__init__.py",
+    "pay/client.py",
+    "pay/money.py",
+    "pyproject.toml",
+    "tests/test_live.py",
+    "tests/test_money.py"
+  ],
+  "tree_after": [
+    ".env/.env.test",
+    ".gitignore",
+    "README.md",
+    "pay/__init__.py",
+    "pay/client.py",
+    "pay/money.py",
+    "pyproject.toml",
+    "tests/test_live.py",
+    "tests/test_money.py"
+  ],
+  "submitter": "studio"
+}

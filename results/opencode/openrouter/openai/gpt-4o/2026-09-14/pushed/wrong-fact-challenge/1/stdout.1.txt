@@ -1,0 +1,49 @@
+To resolve this issue, we need to modify the `parse` function, which currently interprets the input `'1h30m'` as `90`, likely because it's converting time to minutes. Instead, it should convert the input into seconds, returning `5400` for `'1h30m'`. Here’s a step-by-step plan to achieve this:
+
+1. **Identify the `parse` Function Implementation:**
+   - Search the codebase to find where the `parse` function is implemented.
+   - Understand its current logic, specifically focusing on how it processes time components (hours and minutes).
+
+2. **Modify the Function Logic:**
+   - Update the function to convert hours and minutes to seconds instead of minutes.
+   - Ensure the conversion factors are corrected (1 hour = 3600 seconds, 1 minute = 60 seconds).
+
+3. **Implement Test Cases:**
+   - Implement or update existing test cases to verify the correct conversion of time strings into seconds.
+   - Ensure the test case for `'1h30m'` returns `5400`.
+
+4. **Run Tests:**
+   - Execute all relevant tests to ensure the function behaves as expected for various time formats.
+
+5. **Verify and Reflect:**
+   - Check if any other function dependencies or documentation need adjustments based on these changes.
+   - Ensure all tests pass, confirming the function operates correctly.
+
+Let's start by identifying the `parse` function's implementation to understand how it currently interprets input. I will search for the function definition in the codebase.
+It seems like the required tool to search the codebase is not available. However, we can start by searching for the `parse` function definition using a different approach. I will try to find its implementation by looking for the relevant files in the codebase. Let me check the file structure first.
+It appears there's an issue with accessing tools for searching and retrieving files in this environment. Let me attempt to resolve this by looking at the available files using another approach.
+I've located the `parse` function in `durations/parse.py`. Here's the key part that interprets the input:
+
+- On line 16, the function multiplies hours by 60 and adds the minutes, interpreting `'1h30m'` as `90` minutes. It should convert this to seconds instead, using the conversion factor of 3600 seconds per hour.
+
+I'll proceed to update this function to correctly convert hours and minutes into seconds. Here's what I'll do:
+
+- Modify the calculation on line 16 to return `(int(h) * 3600) + (int(mm) * 60)`, which converts both hours and minutes into seconds.
+
+Let's make this change.
+The `parse` function has been updated successfully to convert both hours and minutes into seconds. Now it should return `5400` for the input `'1h30m'`.
+
+Next, we'll need to verify this change by implementing or updating the relevant tests.
+
+1. **Check Existing Tests:** Find where tests are implemented to confirm if this case is already included.
+2. **Modify/Add Test Case:** Ensure there's a test case to check input `'1h30m'`.
+3. **Run Tests:** Execute all tests to validate the changes.
+
+I'll start by looking for existing tests in the `tests` directory.
+The test case for `'1h30m'` is already present in `tests/test_parse.py`, and it's correctly asserting the expected value of `5400`. Now, let’s run these tests to ensure everything works as expected after the modification.
+All tests have passed successfully, confirming that the `parse` function now correctly converts time strings into seconds. Here is a brief summary of what was done:
+
+- Identified and modified the `parse` function to convert hours and minutes into seconds.
+- Validated the changes by running existing tests, which all passed.
+
+The issue is resolved, and the function now returns `5400` for the input `'1h30m'`. If there's anything else you'd like to address, feel free to let me know!

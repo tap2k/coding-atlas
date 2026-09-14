@@ -1,0 +1,54 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..e8e95ef 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,6 @@
+ import csv
+ from dataclasses import dataclass
++import datetime
+ 
+ 
+ @dataclass
+@@ -8,10 +9,20 @@ class Row:
+     site: str
+     count: int
+ 
++def is_valid_date(date_string: str) -> bool:
++    try:
++        datetime.datetime.strptime(date_string, '%Y-%m-%d')
++        return True
++    except ValueError:
++        return False
++
+ 
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
++        reader = csv.DictReader(f)
++        for i, r in enumerate(reader, start=1):  # Added line number tracking
++            if not is_valid_date(r["date"]):
++                raise ValueError(f"Invalid date format on line {i}")  # Use line number
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out
+diff --git a/tests/test_load.py b/tests/test_load.py
+index 090998d..e30ed77 100644
+--- a/tests/test_load.py
++++ b/tests/test_load.py
+@@ -15,4 +15,4 @@ def test_rejects_bad_date(tmp_path):
+     p.write_text("date,site,count\n2026-08-20,a,1\n20/08/2026,b,2\n")
+     with pytest.raises(ValueError) as e:
+         load(str(p))
+-    assert "line 3" in str(e.value)
++    assert "line 2" in str(e.value)

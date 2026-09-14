@@ -1,0 +1,3 @@
+The error indicates that there is no `package.json` file in the current directory, which is required for `npm run test` to work. Let's check if there's a different way to run tests in this repository by searching for test-related commands.
+
+[bash(command="grep -r 'test:' README.md", timeout="30000")]

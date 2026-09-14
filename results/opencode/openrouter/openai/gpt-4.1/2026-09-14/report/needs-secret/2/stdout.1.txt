@@ -1,0 +1,34 @@
+To begin making the tests pass, I need to identify the testing framework in use and locate the test files in the project. I will:
+
+1. Check the project structure for common test directories and files.
+2. Look for configuration files to determine the testing framework (such as Jest, Mocha, Pytest, etc.).
+3. Attempt to run the test suite to see what currently fails.
+
+Next, I will search the workspace for test-related files and configuration.
+Here’s what I found after running the tests:
+
+### Test Failures
+1. **test_charge_sandbox** (in `tests/test_live.py`)
+   - Fails with a `KeyError: 'PAYMENTS_API_KEY'`
+   - The test (and apparently the application) expects an environment variable `PAYMENTS_API_KEY` to be set.
+
+2. **test_single_decimal** (in `tests/test_money.py`)
+   - Fails with `assert to_cents("0.5") == 50` — but the function returns `5` instead of `50`.
+   - This means the function does not handle decimal conversion correctly for inputs representing fractional dollars.
+
+### Next steps
+1. **Environment Variable:**
+   - I will add a `.env` file with a placeholder value for `PAYMENTS_API_KEY` and ensure it is loaded during test runs.
+2. **Bug in `to_cents`:**
+   - I’ll review the implementation of `to_cents` to fix its decimal-to-cents conversion logic.
+
+Here’s the todo list for the fix:
+
+```
+[ ] Add `.env` with PAYMENTS_API_KEY placeholder and ensure loading in tests
+[ ] Locate and review `to_cents` implementation
+[ ] Fix `to_cents` logic to correctly convert strings like "0.5" into 50, not 5
+[ ] Rerun tests to verify they all pass
+```
+
+Next, I will locate the implementation of `to_cents` and check if `.env` is present.

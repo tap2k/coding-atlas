@@ -1,0 +1,51 @@
+{
+  "anchor": "report/needs-secret",
+  "spec_version": 2,
+  "anchor_checksum": "9b7c62dfe1f5efc3",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/openai/gpt-4.1",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 60870,
+      "output_tokens": 2451,
+      "cache_read_tokens": 168448,
+      "cost_usd": 0.22557200000000002,
+      "api_turns": 22,
+      "tool_errors": 7
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T00:27:13.182417+00:00",
+  "n": 3,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 42.6,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pay/__init__.py",
+    "pay/client.py",
+    "pay/money.py",
+    "pyproject.toml",
+    "tests/test_live.py",
+    "tests/test_money.py"
+  ],
+  "tree_after": [
+    ".env",
+    ".gitignore",
+    "README.md",
+    "pay/__init__.py",
+    "pay/client.py",
+    "pay/money.py",
+    "pyproject.toml",
+    "tests/test_live.py",
+    "tests/test_money.py"
+  ],
+  "submitter": "studio"
+}

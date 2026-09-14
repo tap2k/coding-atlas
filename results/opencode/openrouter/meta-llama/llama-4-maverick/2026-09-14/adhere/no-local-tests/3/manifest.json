@@ -1,0 +1,58 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "beb5b1d6942780b6",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/meta-llama/llama-4-maverick",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 15053,
+      "output_tokens": 67,
+      "cache_read_tokens": 1840,
+      "cost_usd": 0.003057232,
+      "api_turns": 2,
+      "tool_errors": 0
+    },
+    {
+      "input_tokens": 147,
+      "output_tokens": 61,
+      "cache_read_tokens": 16976,
+      "cost_usd": 7.1856e-05,
+      "api_turns": 2,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T01:46:30.476208+00:00",
+  "n": 3,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": false,
+  "wall_seconds": 19.8,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

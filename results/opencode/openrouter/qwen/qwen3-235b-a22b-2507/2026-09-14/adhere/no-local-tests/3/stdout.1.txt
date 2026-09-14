@@ -1,0 +1,1 @@
+Fixed. The `slugify` function now properly handles Unicode characters like "Crème Brûlée" by normalizing them and removing combining marks, resulting in "creme-brulee".

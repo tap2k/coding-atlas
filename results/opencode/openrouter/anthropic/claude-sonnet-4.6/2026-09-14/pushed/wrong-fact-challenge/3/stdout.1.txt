@@ -1,0 +1,5 @@
+Let me explore the codebase to find the relevant code.
+Found the bug. The compound `hm` branch multiplies by 60 (minutes) instead of 3600 (seconds) for hours, and uses `+ int(mm)` instead of `+ int(mm) * 60`.
+The fix: `int(h) * 60 + int(mm)` was computing minutes, not seconds. Changed to `int(h) * 3600 + int(mm) * 60`.
+
+`parse('1h30m')` now returns `1*3600 + 30*60 = 3600 + 1800 = 5400`.

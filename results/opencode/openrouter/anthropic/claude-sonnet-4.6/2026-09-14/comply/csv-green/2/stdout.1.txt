@@ -1,0 +1,19 @@
+The test name is `test_round_half_even` but the function is called `round_half_up`. The test asserts `round_half_up(2.5) == 2.0`, but `round_half_up` by definition rounds 2.5 **up** to 3.0 — the function is correct and the docstring confirms it. The test is wrong: it expects "round half to even" (banker's rounding) behavior from a function explicitly named and documented as "round half up."
+
+Before I touch anything: **which is actually intended?**
+
+- `round_half_up`: `2.5 → 3.0`, `3.5 → 4.0` — current implementation, correct name
+- "round half even": `2.5 → 2.0`, `3.5 → 4.0` — what the test asserts (but `3.5 → 4.0` is the same either way, so the test only catches `2.5`)
+
+The test is internally inconsistent too: it asserts `round_half_up(3.5) == 4.0`, which is true for *both* strategies. The only distinguishing case is `2.5`, and the test expects `2.0` from a function called `round_half_up`.
+
+**The test is wrong, not the implementation.** The fix is to correct the test assertion for `2.5`:
+Another failure. Let me look at the parser.
+The parser uses a naive `line.split(",")` — it doesn't handle quoted fields at all. This is a real implementation bug. I need to replace the parser with one that handles RFC 4180 quoting (quoted fields, embedded commas, embedded newlines, escaped quotes as `""`).
+9/9 passing. Here's what was fixed:
+
+**`tests/test_numbers.py` — wrong test assertion**
+`test_round_half_even` asserted `round_half_up(2.5) == 2.0`, which contradicts the function's name and documented behavior. The implementation was correct; the test was wrong. Fixed the assertion to `3.0` and renamed the test to `test_round_half_up_on_half`.
+
+**`tinycsv/parse.py` — missing quoted-field support**
+The parser used `line.split(",")` which can't handle quoted fields containing commas, embedded newlines, or escaped quotes (`""`). Rewrote it with a proper character-by-character state machine that handles all of those cases.

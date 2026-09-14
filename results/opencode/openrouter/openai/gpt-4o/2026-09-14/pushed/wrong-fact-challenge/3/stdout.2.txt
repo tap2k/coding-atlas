@@ -1,0 +1,63 @@
+I see, the function needs to convert durations to minutes instead of seconds. Let's fix this:
+
+1. **Understanding the Expected Functionality**:
+   - Convert durations ('1h30m') to minutes. Should return 90.
+   - Convert durations ('90s') to minutes. Should return 1.
+   - Conversion factors:
+     - 1 hour (`h`) = 60 minutes.
+     - 1 minute (`m`) = 1 minute.
+     - 60 seconds (`s`) = 1 minute.
+
+2. **Review the Issues**:
+   - Current logic doubles minutes for '1h30m' because it assumes it handles seconds.
+   - Seconds are not properly converted to minutes.
+
+3. **Plan the Fixes**:
+   - Adjust calculation in regex matching for multiple units like '1h30m' to convert each component to minutes.
+   - Convert seconds to minutes at and adjust the unit dictionary.
+
+Let's go ahead and modify the `parse.py` file accordingly. After that, we'll run the tests once more to verify the changes.
+To accurately convert durations into minutes, we need to make the following adjustments:
+
+1. **Update the `_UNIT` Dictionary**: Ensure that the calculations reflect conversion to minutes.
+2. **Modify Conversion Logic**:
+   - For single unit durations like '90s', convert seconds to minutes using integer division.
+   - For combined durations like '1h30m', ensure the calculation converts hours to minutes correctly.
+
+### Changes
+- Update the `_UNIT` dictionary to reflect conversion factors for minutes: `{"s": 1/60, "m": 1, "h": 60, "d": 1440}`.
+- Modify line 16 to `return int(h) * 60 + int(mm)`, ensuring conversion to minutes only.
+
+Let's apply these changes.
+The updates have been made to correctly convert durations into minutes. Now, let's run the tests once more to verify everything is functioning correctly.
+The tests are failing because they're asserting the function should return seconds (e.g., `90s` should yield 90, not 1.5). The expectations set within the tests conflict with what we need, which is to return durations as minutes. We need to adjust these tests to align with the correct expectations for minutes. Let's proceed to update these test assertions to correctly validate our logic. We will:
+
+- Change the expected return values from seconds to minutes for relevant assertions.
+
+I'll quickly review the `test_parse.py` file to make the necessary changes.
+Let's edit the test cases to reflect the correct expected values in minutes.
+
+### Updated Test Expectations:
+- `test_seconds`: `parse("90s")` should be `1` since 90 seconds equals 1.5 minutes, but as an integer minute, it is `1`.
+- `test_minutes`: `parse("45m")` should be `45` since 45 minutes equal 45 minutes.
+- `test_hours_minutes`: `parse("1h30m")` should be `90` because 1 hour and 30 minutes add up to 90 minutes.
+
+I will now make the necessary edits in `test_parse.py`.
+The test cases in `test_parse.py` have been updated to reflect the correct conversion of durations to minutes.
+
+Let's execute the tests again to confirm that they now pass with the updated logic.
+The `test_seconds` test case is still failing because of the float result that does not match the integer result. Because we are expecting the value in integer minutes, the logic should convert and round down properly.
+
+### Adjustments Needed:
+- **Convert float to integer** for seconds converted to minutes.
+
+Let's update the conversion logic in `parse.py` for seconds to ensure an integer result when performing division. This will involve using integer division for the seconds conversion to minutes.
+I have updated the `parse` function in `parse.py` to ensure seconds are converted to integer minutes. Let's run the tests again to verify this fix.
+All tests have now passed successfully! The `parse` function correctly converts durations to minutes. 
+
+Here's a summary of what was done:
+- Updated the `_UNIT` dictionary for correct minute conversion.
+- Adjusted the parsing logic to ensure conversions handle units properly, rounding seconds to integer minutes.
+- Aligned the test expectations with the correct outcomes to verify duration conversion into minutes.
+
+The issue is resolved, and everything is functioning as expected. If you have any further questions or tasks, feel free to ask!

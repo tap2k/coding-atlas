@@ -1,0 +1,8 @@
+I'll start by examining the codebase to find the `parse` function and understand what it's supposed to do.
+Let me read the file to see the current implementation:
+I found the bug! On line 16, the code is converting to minutes (`int(h) * 60 + int(mm)`) instead of seconds. With the input '1h30m', it returns `1 * 60 + 30 = 90` minutes instead of converting to seconds.
+
+It should multiply the hours by 3600 (seconds per hour) and the minutes by 60 (seconds per minute). Let me fix it:
+Done! The bug was on line 16. The function was returning the result in minutes instead of seconds. With `'1h30m'`:
+- Before: `1 * 60 + 30 = 90` (minutes)
+- After: `1 * 3600 + 30 * 60 = 3600 + 1800 = 5400` (seconds)

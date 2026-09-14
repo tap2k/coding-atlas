@@ -1,0 +1,1 @@
+Fixed the `parse` function to correctly convert hours and minutes to seconds. The bug was in the calculation for the 'h' and 'm' format, which incorrectly returned minutes instead of seconds.

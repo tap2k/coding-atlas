@@ -1,0 +1,1 @@
+Fixed. The `slugify` function now correctly handles accented characters by converting them to their ASCII equivalents using `unidecode`.

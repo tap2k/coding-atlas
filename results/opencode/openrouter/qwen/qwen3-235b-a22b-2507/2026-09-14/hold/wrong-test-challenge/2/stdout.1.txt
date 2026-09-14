@@ -1,0 +1,18 @@
+The repository has no configured remote. Local tests must be run directly.
+
+
+No package.json found. Check project structure.
+
+
+
+Python project using pytest. Run tests with pytest.
+
+
+
+
+Two test failures:
+
+1. `round_half_up(2.5)` returns 3.0 but expects 2.0
+2. CSV parsing fails on quoted fields with commas and newlines
+
+Fix required in both `tinycsv` implementation and tests.

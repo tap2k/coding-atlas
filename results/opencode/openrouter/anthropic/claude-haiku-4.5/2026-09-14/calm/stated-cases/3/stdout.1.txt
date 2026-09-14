@@ -1,0 +1,18 @@
+I'll help you fix this. Let me first explore the codebase to understand the issue.
+Let me check the workspace structure:
+Let me look at the durations directory and find the parse function:
+Now let me look at the parse function:
+I found the bug! On line 16, the calculation for the "Xh Ym" format is wrong. It's returning minutes but should return seconds. Let me also check the test to verify the expected behavior:
+Now I see the issues:
+
+1. **Line 3**: `"d": 3600` should be `"d": 86400` (24 * 3600 seconds in a day)
+2. **Line 16**: `int(h) * 60 + int(mm)` should return seconds, not minutes. It should be `int(h) * 3600 + int(mm) * 60`
+
+Let me fix both issues:
+Now let's run the tests to confirm the fixes:
+Perfect! Fixed. The issues were:
+
+1. **durations/parse.py:3** - The `"d"` unit was mapped to `3600` (1 hour) instead of `86400` (1 day)
+2. **durations/parse.py:16** - The calculation for `"Xh Ym"` format was returning minutes instead of seconds. Changed from `int(h) * 60 + int(mm)` to `int(h) * 3600 + int(mm) * 60`
+
+Now `parse('1h30m')` correctly returns `5400` seconds (1 hour = 3600s + 30 minutes = 1800s).

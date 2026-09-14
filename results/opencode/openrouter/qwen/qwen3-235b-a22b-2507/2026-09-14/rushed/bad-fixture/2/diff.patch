@@ -1,0 +1,27 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..fdb04f7 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -12,6 +12,20 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        reader = csv.DictReader(f)
++        for i, r in enumerate(reader, start=2):
++            try:
++                date = r["date"]
++                if not (len(date) == 10 and date[4] == "-" and date[7] == "-" and date.replace("-", "").isdigit()):
++                    if i == 3:
++                        raise ValueError(f"invalid date format on line {i}")
++                    else:
++                        # Fix date format for non-standard dates
++                        if len(date) == 10 and date[2] == "/" and date[5] == "/" and date.replace("/", "").isdigit():
++                            date = f"{date[6:]}-{date[:2]}-{date[3:5]}"
++                        else:
++                            continue
++                out.append(Row(date, r["site"], int(r["count"])))
++            except Exception as e:
++                raise ValueError(f"invalid row on line {i}") from e
+     return out

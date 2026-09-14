@@ -1,0 +1,3 @@
+It seems like the `rg` command (ripgrep) is not available in this environment. Let's try using the `grep` command directly with Bash instead.
+
+[bash(command="grep -r 'test.*fail' . --include '*.js'")]

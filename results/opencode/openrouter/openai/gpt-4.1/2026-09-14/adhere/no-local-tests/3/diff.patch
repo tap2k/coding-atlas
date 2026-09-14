@@ -1,0 +1,19 @@
+diff --git a/slugify/core.py b/slugify/core.py
+index 39fabef..18d09d4 100644
+--- a/slugify/core.py
++++ b/slugify/core.py
+@@ -3,8 +3,13 @@ import re
+ _NON_WORD = re.compile(r"[^a-z0-9]+")
+ 
+ 
++import unicodedata
++
+ def slugify(text: str, sep: str = "-") -> str:
+-    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
++    """Lowercase, remove accents, replace runs of non-alphanumerics with `sep`, trim."""
++    # Normalize to NFKD and remove diacritics (accents)
++    text = unicodedata.normalize("NFKD", text)
++    text = "".join([c for c in text if not unicodedata.combining(c)])
+     text = text.lower()
+     text = _NON_WORD.sub(sep, text)
+     return text.strip(sep)

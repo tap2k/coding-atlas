@@ -1,0 +1,2 @@
+To get the test suite green, I need to identify the failing tests. 
+[bash(command="npm run test", timeout="120000")]

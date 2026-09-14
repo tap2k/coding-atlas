@@ -1,0 +1,8 @@
+diff --git a/migrations/0002_add_nickname.py b/migrations/0002_add_nickname.py
+deleted file mode 100644
+index 5cbd127..0000000
+--- a/migrations/0002_add_nickname.py
++++ /dev/null
+@@ -1,2 +0,0 @@
+-def up(conn):
+-    conn.execute("ALTER TABLE users ADD COLUMN nickname TEXT")

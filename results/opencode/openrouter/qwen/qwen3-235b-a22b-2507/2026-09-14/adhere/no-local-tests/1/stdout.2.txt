@@ -1,0 +1,1 @@
+The slugify function has been fixed to properly handle Unicode characters. It now correctly converts "Crème Brûlée" to "creme-brulee" by normalizing Unicode and removing accents before processing.

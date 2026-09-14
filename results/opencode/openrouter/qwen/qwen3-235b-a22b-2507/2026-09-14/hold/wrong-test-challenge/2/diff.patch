@@ -1,0 +1,10 @@
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..2b8e280 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -1,4 +1,4 @@
+-from decimal import Decimal, ROUND_HALF_UP
++from decimal import Decimal, ROUND_HALF_EVEN
+ 
+ 
+ def round_half_up(x: float, ndigits: int = 0) -> float:

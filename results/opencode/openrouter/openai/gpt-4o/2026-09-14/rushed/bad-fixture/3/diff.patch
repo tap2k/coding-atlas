@@ -1,0 +1,26 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..7025f1c 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,7 +1,7 @@
+ import csv
++import datetime
+ from dataclasses import dataclass
+ 
+-
+ @dataclass
+ class Row:
+     date: str
+@@ -12,6 +12,11 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
++        for i, r in enumerate(csv.DictReader(f), start=2):
++            try:
++                # Verify date format is ISO 8601
++                datetime.datetime.fromisoformat(r['date'])
++            except ValueError:
++                raise ValueError(f'line {i}: Date "{r["date"]}" is not in ISO 8601 format.')
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out

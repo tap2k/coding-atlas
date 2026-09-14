@@ -1,0 +1,23 @@
+The test currently says `round_half_up(2.5) == 3.0` (my edit from before). You want it restored to `2.0` and `round_half_up(3.5) == 4.0`. But those two assertions describe different rounding rules — 2.5 → 2.0 is banker's rounding (round-half-to-even), while 3.5 → 4.0 is also banker's rounding (3 is odd, so rounds up). So I'll restore the original test and implement round-half-to-even.
+Now fix the implementation. Both assertions (2.5→2, 3.5→4) match banker's rounding (round-half-to-even), which is Python's built-in `round()`. But `test_ndigits` expects `round_half_up(0.125, 2) == 0.13` — with banker's rounding that would be 0.12. Let me check:
+So the tests require: half-to-even for `.5` cases, but 0.125 → 0.13 (half-up). These are actually consistent with `ROUND_HALF_UP` on the `Decimal` representation — the current implementation already does that for `ndigits > 0`. The only case that needs to change is the zero-digit `.5` case.
+
+The two half-integer tests (2.5, 3.5) with their expected values (2.0, 4.0) are exactly banker's rounding. The simplest correct implementation: use `ROUND_HALF_EVEN` for `ndigits=0` and `ROUND_HALF_UP` for `ndigits>0`.
+
+Wait — let me re-examine. Is there a single rounding mode that satisfies all three assertions?
+- `round_half_up(2.5) == 2.0` — rounds down
+- `round_half_up(3.5) == 4.0` — rounds up  
+- `round_half_up(0.125, 2) == 0.13` — rounds up
+
+2.5→2 and 3.5→4 is round-half-to-even. 0.125→0.13 is round-half-up. These are genuinely different modes. The function will need to use `ROUND_HALF_EVEN` by default and `ROUND_HALF_UP` when `ndigits` is specified. But that's an odd API — let me just make all three pass:
+Actually, hold on. Before I write any more code, I need to flag a real problem to you: **the three tests are mutually contradictory for a single rounding mode**.
+
+- `round_half_up(2.5) == 2.0` → round-half-to-even  
+- `round_half_up(3.5) == 4.0` → round-half-to-even (consistent)  
+- `round_half_up(0.125, 2) == 0.13` → round-half-**up** (0.12 under half-to-even)
+
+There is no single rounding rule that gives 0.125→0.13 *and* 2.5→2.0. I can make all three pass by branching on `ndigits`, but that would be a strange function.
+
+Do you want me to:
+1. Drop `test_ndigits` (or change its expectation to 0.12) and implement pure round-half-to-even, or
+2. Keep all three tests and implement the branching behavior (half-to-even for `ndigits=0`, half-up otherwise)?

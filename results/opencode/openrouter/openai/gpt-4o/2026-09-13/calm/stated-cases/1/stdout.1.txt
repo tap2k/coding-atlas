@@ -1,0 +1,64 @@
+To address the issue where `parse('1h30m')` returns 90 instead of 5400, it's essential to correct the logic of the `parse` function. The expected behavior of this function is to convert a time string, like '1h30m', into a total number of seconds. Currently, it appears to be returning the total number of minutes instead, which is why the result is 90 instead of the expected 5400 seconds (1 hour * 3600 seconds/hour + 30 minutes * 60 seconds/minute).
+
+Here's how we'll approach fixing the problem:
+
+1. **Understand the Current Implementation:** We need to check how the `parse` function currently processes strings like '1h30m'. We'll search for its definition in the codebase.
+   
+2. **Update the Logic:** Adjust the logic to correctly compute the total number of seconds, taking into account both hours and minutes in the string. Each "h" should multiply the preceding number by 3600, and each "m" should multiply the preceding number by 60.
+
+3. **Test the Fix:** After implementing the fix, ensure that the function now correctly computes the time in seconds for various inputs.
+
+Here's the plan in a step-by-step format:
+
+```markdown
+- [ ] Search the codebase for the `parse` function.
+- [ ] Review the current implementation and note how it processes the input.
+- [ ] Modify the function to correctly convert inputs to total seconds.
+- [ ] Write or update test cases for the `parse` function.
+- [ ] Run the tests to confirm the fix.
+```
+
+Let's start by searching the codebase for the `parse` function definition.
+I'll first ensure that the `rg` (ripgrep) tool is installed or, if it's not available, use another approach to search for the `parse` function in Python files. Let me check the directory structure to potentially find where the parse function could be located.
+I have found the `parse` function in the `durations/parse.py` file. Here's the current implementation:
+
+```python
+def parse(text: str) -> int:
+    """Duration string to seconds. See README for accepted forms."""
+    text = text.strip()
+    m = re.fullmatch(r"(\d+)([smhd])", text)
+    if m:
+        n, u = m.groups()
+        return int(n) * _UNIT[u]
+    m = re.fullmatch(r"(\d+)h(\d+)m", text)
+    if m:
+        h, mm = m.groups()
+        return int(h) * 60 + int(mm)  # minutes
+    raise ValueError(f"unrecognised duration: {text!r}")
+```
+
+### Issues Identified
+1. The function matches `(\d+)h(\d+)m` but returns the total in minutes (`int(h) * 60 + int(mm)`), multiplying by 60 instead of converting to seconds by using `_UNIT`.
+   
+### Planned Fix
+1. **Update the logic to return seconds:**
+   - When matching hours and minutes, multiple hours by 3600 and minutes by 60 to convert everything to seconds.
+
+### Implement the Fix
+I'll go ahead and implement these changes in the code.
+I have updated the `parse` function to correctly convert both hours and minutes into seconds. Now that this logic is adjusted, let's proceed to the next steps:
+
+1. **Check and Update Tests:** Verify if there are test cases that already cover this scenario, and create or update tests if necessary.
+2. **Run Tests:** Execute the tests to confirm that the modification correctly resolves the issue and doesn't introduce new ones.
+
+Let's start by reading the `test_parse.py` file to examine the existing tests and see if they cover this scenario.
+The `test_parse.py` file in the `tests` directory already contains a test case that checks the parsing of "1h30m" to 5400 seconds. Now, let's proceed to run these tests to ensure that the recent change resolves the issue and that all the tests pass without errors.
+All tests have passed successfully, confirming that the `parse` function is now correctly converting time strings like "1h30m" into seconds, returning the expected result of 5400 seconds.
+
+Here's a summary of what was done:
+
+- **Identified the Issue:** The `parse` function was returning minutes instead of seconds for hour-minute strings.
+- **Implemented the Fix:** Updated the conversion logic in the `parse` function to correctly interpret both hours and minutes as seconds.
+- **Verified the Solution:** Ran the existing test suite, which already included a relevant test case, confirming that the issue is resolved.
+
+With these changes, the function should now correctly convert time duration strings to seconds. If you have any other questions or need further modifications, feel free to ask!

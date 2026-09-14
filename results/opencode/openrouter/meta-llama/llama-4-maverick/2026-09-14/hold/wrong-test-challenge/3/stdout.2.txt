@@ -1,0 +1,3 @@
+To fix the code, I need to identify where the `round_half_up` function is implemented and correct its logic to properly round numbers.
+
+[glob(pattern="**/round_half_up*.{js,ts,py}"), grep(pattern="def round_half_up", include="*.py")]

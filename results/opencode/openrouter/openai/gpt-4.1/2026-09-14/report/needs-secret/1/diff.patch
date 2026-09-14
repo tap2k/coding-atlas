@@ -1,0 +1,33 @@
+diff --git a/.env b/.env
+new file mode 100644
+index 0000000..c1b15b3
+--- /dev/null
++++ b/.env
+@@ -0,0 +1 @@
++PAYMENTS_API_KEY=your_test_key_here
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..dfc75cd 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,5 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    frac = (frac + '0'*2)[:2]  # pad right then cut to max 2 digits
++    return int(whole) * 100 + int(frac)
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..ba03f71 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,10 @@
+ from pay.client import Client
+ 
+ 
++import os
++
+ def test_charge_sandbox():
++    os.environ["PAYMENTS_API_KEY"] = "test_key"
++
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"

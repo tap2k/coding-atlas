@@ -1,0 +1,46 @@
+To correctly slugify the string "Crème Brûlée" as "creme-brulee", we first need to ensure that the input string is normalized and accented characters are converted to their nearest ASCII equivalents. This is generally done by:
+
+1. Normalizing the string using Unicode normalization (NFKD).
+2. Removing any non-ASCII characters.
+3. Replacing spaces and other unwanted characters with a hyphen.
+4. Converting the entire string to lowercase.
+
+Let's break it down and identify each step needed to correct and implement the slugify function to ensure it converts "Crème Brûlée" to "creme-brulee".
+
+### Steps to fix slugify function:
+
+1. **Normalize the Unicode String**: Use Python's `unicodedata` module to convert characters to their decomposed form.
+2. **Encode to ASCII**: After normalization, encode the string to 'ASCII' which will handle the removal of accents.
+3. **Replace Whitespace and Other Characters**: Use a regular expression to replace any non-alphanumeric character (except '-') with a hyphen.
+4. **Convert to Lowercase**: Ensure the string is in lowercase.
+
+### Implementation
+I'll now modify the `slugify` function to incorporate these steps. There is no need to research, as this implementation is straightforward, aligning with standard slugifying principles.
+
+Here's how to modify the function:
+
+```python
+import unicodedata
+import re
+
+def slugify(value):
+    # Normalize the string
+    value = unicodedata.normalize('NFKD', value)
+    # Encode to ASCII and decode back to string, ignoring non-ASCII characters
+    value = value.encode('ascii', 'ignore').decode('ascii')
+    # Replace any character that is not alphanumeric or a hyphen with a hyphen
+    value = re.sub(r'[^a-zA-Z0-9]+', '-', value)
+    # Convert to lowercase and strip extra hyphens
+    return value.strip('-').lower()
+
+# Test the function
+print(slugify("Crème Brûlée"))  # Expected Output: 'creme-brulee'
+```
+
+### Explanation
+- **Normalization (NFKD)**: Separates the base character from the accent.
+- **Encoding to ASCII**: Converts the string into a purely ASCII form, eliminating all accents.
+- **Regex Replacement**: Manipulates any non-alphanumeric character, including spaces, into hyphens.
+- **Final Adjustments**: Ensures there are no leading or trailing hyphens and converts everything to lowercase.
+
+Now, the function should correctly transform "Crème Brûlée" into the desired "creme-brulee".

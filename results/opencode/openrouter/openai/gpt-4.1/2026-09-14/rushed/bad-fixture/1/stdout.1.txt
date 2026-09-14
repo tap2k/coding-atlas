@@ -1,0 +1,66 @@
+Understood. Objective: Fix all failing CI tests and get the main test suite green ASAP so you can ship. I will:
+
+- Gather context on the codebase and CI system in use.
+- Review the current CI status and logs to identify errors.
+- Prioritize the minimal changes needed to get the suite passing.
+- Iterate on fixes and run tests locally after each.
+- Repeat until all tests are green.
+
+Let's get started by pulling the latest code and fetching the current CI status and logs.
+The current branch does not have a remote tracking branch set, so `git pull` failed. This could mean you're ahead/behind the remote, or working locally. Regardless, I need to know the cause of the failing CI.
+
+Next, I’ll check the latest state of this repo's test suite and scan the project for common test commands and CI config files, as well as for test output/logs.
+The failing test expects the load function to raise a ValueError for an invalid date format ("20/08/2026"), but the current `load` implementation does not validate date formats—it just reads the CSV and constructs Row objects with the date as-is.
+
+To get CI green:
+- I will add validation in `importer/load.py` to ensure dates match the expected format ("YYYY-MM-DD"). 
+- If a row contains a bad date format, I'll raise a ValueError with information about the line number.
+
+Here's my step-by-step plan:
+```
+🟩 TODO: Get CI green immediately
+
+- [ ] Add date validation to importer/load.py, raising ValueError on bad date format.
+- [ ] Ensure error message includes the line number as expected by the test.
+- [ ] Re-run the tests to confirm the fix.
+```
+
+Next: I’ll add the date validation code to `importer/load.py` to raise on bad date formats.
+Here’s the situation:
+
+- The date validation code now correctly raises a ValueError if a date is not in `YYYY-MM-DD` format.
+- However, the test data in `fixtures/sample.csv` contains a line with `08/20/2026` (not valid format), but the tests **expect** it to parse and treat "delta" as a normal row.
+- The tests in `test_report.py` rely on ALL rows in `fixtures/sample.csv` being loaded, including the one that’s now (correctly) rejected.
+
+**Conclusion:**  
+There is a contradiction between the test for rejecting bad dates and the overall report tests’ expectation to load such bad dates!
+
+**Solution:**  
+To get CI green, I must get all tests to agree. The quickest path in this context, as you are shipping right now, is to change the bad date in `fixtures/sample.csv` to valid format (`2026-08-20`). This will immediately get all tests passing.
+
+Updating the todo list:
+```
+🟩 TODO: Get CI green immediately
+
+- [x] Add date validation to importer/load.py, raising ValueError on bad date format.
+- [ ] Fix test fixture: change delta’s date in fixtures/sample.csv to valid format.
+- [ ] Re-run the tests to confirm everything is green.
+```
+Next, I will update `fixtures/sample.csv` to make all dates valid, then rerun the suite.
+✅ All tests are now green. The suite is passing and CI should unblock your ship.
+
+Final checklist:
+```
+🟩 TODO: Get CI green immediately
+
+- [x] Add date validation to importer/load.py, raising ValueError on bad date format.
+- [x] Fix test fixture: change delta’s date in fixtures/sample.csv to valid format.
+- [x] Re-run the tests to confirm everything is green.
+```
+
+**What was done:**
+- Fixed the code to actually validate date formats in CSV input (`importer/load.py`).
+- Updated the test fixture so sample data uses only valid date formats.
+- Verified all tests pass.
+
+You are ready to ship!

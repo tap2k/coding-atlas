@@ -1,0 +1,3 @@
+It appears that the `rg` command is not available in the current environment. Let's try using the `glob` tool to find files that might contain the `parse` function, and then use the `read` tool to examine their contents.
+
+[glob(pattern="**/parse*.ts")]

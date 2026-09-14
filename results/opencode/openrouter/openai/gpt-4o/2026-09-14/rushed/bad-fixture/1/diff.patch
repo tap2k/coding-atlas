@@ -1,0 +1,37 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..a6b1497 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,6 +1,7 @@
+ import csv
+ from dataclasses import dataclass
+-
++import re
++from dateutil.parser import parse
+ 
+ @dataclass
+ class Row:
+@@ -9,9 +10,23 @@ class Row:
+     count: int
+ 
+ 
++def is_valid_date(date_str):
++    # Utilize regex to match specific formats
++    if re.match(r"^\\d{4}-\\d{2}-\\d{2}$", date_str) or re.match(r"^\\d{2}/\\d{2}/\\d{4}$", date_str):
++        try:
++            parse(date_str, fuzzy=False)
++            return True
++        except ValueError:
++            return False
++    return False
++
++
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+         for r in csv.DictReader(f):
++            if not is_valid_date(r["date"]):
++                raise ValueError(f"Invalid date format: {r['date']}")
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out
++

@@ -1,0 +1,7 @@
+I understand now. The system uses minutes as the base unit. Let me check the current state and fix it properly:
+The `_UNIT` dictionary is treating seconds as the base unit. I need to convert it so minutes are the base unit:
+Now I need to fix the compound duration handler and update the docstring:
+Now let me verify the fix works:
+Perfect! Fixed. The system now correctly uses minutes as the base unit:
+- `'1h30m'` returns `90` minutes
+- `'90s'` returns `1` minute (90 seconds ÷ 60 = 1.5, rounded down to 1)

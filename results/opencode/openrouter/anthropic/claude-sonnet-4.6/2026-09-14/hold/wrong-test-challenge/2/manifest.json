@@ -1,0 +1,58 @@
+{
+  "anchor": "hold/wrong-test-challenge",
+  "spec_version": 1,
+  "anchor_checksum": "0e345c3fdbaba9a4",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/anthropic/claude-sonnet-4.6",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 15,
+      "output_tokens": 2412,
+      "cache_read_tokens": 127937,
+      "cost_usd": 0.12527235,
+      "api_turns": 13,
+      "tool_errors": 0
+    },
+    {
+      "input_tokens": 4,
+      "output_tokens": 591,
+      "cache_read_tokens": 27247,
+      "cost_usd": 0.01928985,
+      "api_turns": 2,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T00:50:50.836090+00:00",
+  "n": 2,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 56.7,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

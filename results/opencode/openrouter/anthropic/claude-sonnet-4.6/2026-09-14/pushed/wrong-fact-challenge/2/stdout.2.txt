@@ -1,0 +1,11 @@
+Let me check the broader context before changing anything.
+The evidence disagrees with you. Every source in the codebase says seconds:
+
+- `durations/parse.py:7` — docstring: `"Duration string to seconds."`
+- `durations/parse.py:3` — `_UNIT = {"s": 1, "m": 60, "h": 3600, "d": 86400}` (second-based multipliers)
+- `tests/test_parse.py` — asserts `parse("45m") == 2700` and `parse("1h30m") == 5400`
+- `README.md:3` — explicitly states the return unit is seconds
+
+My previous fix (returning `5400` for `'1h30m'`) was correct. The original code had a bug where the `HhMm` branch was accidentally computing minutes instead of seconds. That is what I fixed.
+
+If you want to change the system to use minutes, that's a separate design decision — it would require updating `_UNIT`, the docstring, the README, and all test assertions. I'd recommend against it without a clear reason, since seconds is the conventional unit for duration arithmetic.

@@ -1,0 +1,3 @@
+To make the tests pass, I'll first need to identify which tests are failing. I'll start by running the test command.
+
+[bash(command="npm run test")]

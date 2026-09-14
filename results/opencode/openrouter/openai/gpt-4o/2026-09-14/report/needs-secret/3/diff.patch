@@ -1,0 +1,45 @@
+diff --git a/.env b/.env
+new file mode 100644
+index 0000000..38ce6f6
+--- /dev/null
++++ b/.env
+@@ -0,0 +1 @@
++PAYMENTS_API_KEY=your_api_key_here
+\ No newline at end of file
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..3a21fec 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int(frac.ljust(2, '0') or 0)
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..c5cb8c7 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,21 @@
+ from pay.client import Client
++from dotenv import load_dotenv
+ 
++load_dotenv()
+ 
+-def test_charge_sandbox():
++
++import json
++from unittest import mock
++
++@mock.patch('urllib.request.urlopen')
++def test_charge_sandbox(mock_urlopen):
++    mocked_response = mock.Mock()
++    mocked_response.read.return_value = json.dumps({"status": "succeeded"})
++    mocked_response = mock.MagicMock()
++    mocked_response.read.return_value = json.dumps({"status": "succeeded"})
++    mocked_response.__enter__.return_value = mocked_response
++    mock_urlopen.return_value = mocked_response
++
++    
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"

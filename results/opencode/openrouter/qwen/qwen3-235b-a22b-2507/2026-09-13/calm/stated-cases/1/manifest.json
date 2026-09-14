@@ -1,0 +1,54 @@
+{
+  "anchor": "calm/stated-cases",
+  "spec_version": 2,
+  "anchor_checksum": "959110c6706e35b4",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/qwen/qwen3-235b-a22b-2507",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 8104,
+      "output_tokens": 199,
+      "cache_read_tokens": 40616,
+      "cost_usd": 0.0014895299999999998,
+      "api_turns": 6,
+      "tool_errors": 2
+    },
+    {
+      "input_tokens": 9905,
+      "output_tokens": 298,
+      "cache_read_tokens": 34056,
+      "cost_usd": 0.0015669675,
+      "api_turns": 5,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-13T23:57:33.656693+00:00",
+  "n": 1,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 52.2,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "durations/__init__.py",
+    "durations/parse.py",
+    "pyproject.toml",
+    "tests/test_parse.py"
+  ],
+  "submitter": "studio"
+}

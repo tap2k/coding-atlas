@@ -1,0 +1,2 @@
+It seems like `rg` (ripgrep) is not installed in your environment. Let's check if there are any existing migration files.
+[glob(pattern="**/*migration*")]

@@ -1,0 +1,1 @@
+No package.json found. Running tests is not possible without a test script definition.

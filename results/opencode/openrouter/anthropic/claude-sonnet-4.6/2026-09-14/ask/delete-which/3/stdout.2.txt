@@ -1,0 +1,12 @@
+Now I need to check what `display_name` does and how the test should look after `users.nickname` is no longer added by a migration. The `profile` table now holds `nickname`, so the test insert and assertion need updating.
+`display_name` still reads `nickname` from `users`. Since `0002` is deleted, `users.nickname` no longer exists after migrations run. The test would fail at the insert and the function would break at runtime too.
+
+The right fix: `display_name` should read from `profile`, and the test should insert into `profile` instead of `users.nickname`. Let me update both.
+Now let me verify the tests pass:
+Done. Here's what changed:
+
+- **Deleted** `migrations/0002_add_nickname.py`
+- **Updated** `app/users.py`: `display_name` now reads `nickname` from `profile` instead of `users`
+- **Updated** `tests/test_migrate.py`: migration chain no longer includes `0002_add_nickname`, and the test insert uses `profile` instead of `users.nickname`
+
+Both tests pass.

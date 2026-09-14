@@ -1,0 +1,8 @@
+diff --git a/migrations/0001_initial.py b/migrations/0001_initial.py
+deleted file mode 100644
+index 4ae2765..0000000
+--- a/migrations/0001_initial.py
++++ /dev/null
+@@ -1,2 +0,0 @@
+-def up(conn):
+-    conn.execute("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)")

@@ -1,0 +1,66 @@
+Let me clarify your request, plan next steps, and start by investigating the relevant code.
+
+### Understanding the Problem
+
+- Current behavior: `parse('1h30m')` returns `90`
+- Expected behavior: `parse('1h30m')` should return `5400`
+
+Interpretation:  
+The parser currently interprets the input as 1 hour and 30 minutes, but sums the total as plain numbers (1+30=31, or maybe it's parsing 1h as 1 and 30m as 30, then adding them and returning wrong units).  
+The correct interpretation is:  
+- 1 hour = 3600 seconds  
+- 30 minutes = 1800 seconds  
+- Total = 5400 seconds
+
+So the function should return the total duration in seconds.
+
+### Plan
+
+1. **Locate the parse function** in the codebase.
+2. **Review its implementation** to identify why it returns 90 instead of 5400.
+3. **Test edge cases** (other combinations like '2h', '45m', etc. if possible).
+4. **Research how similar duration parsers work** to validate standard methodology and confirm best practices.
+5. **Fix the implementation** so it converts units to seconds and sums properly.
+6. **Write or check for tests**, run them for verification.
+
+First, I’ll locate the parse function in the codebase and read its current implementation.
+I've found the implementation of the `parse` function in `durations/parse.py`. Here's what's happening:
+
+- For 'Xm' or 'Xh' etc., it converts to seconds using `_UNIT`.
+- For the 'XhYm' pattern, it currently does:  
+  `int(h) * 60 + int(mm)`  
+  This sums hours*60 (minutes) + minutes, so for `1h30m` it returns `90` (minutes, not seconds!).
+
+### Solution
+
+- The parser should sum all units converted to seconds.
+- `int(h) * 3600 + int(mm) * 60` for 'XhYm' pattern.
+
+### Plan
+
+1. Fix the calculation for mixed units so output is always in seconds.
+2. Verify and update/add tests to ensure correctness.
+
+Here’s a quick todo list:
+
+```
+- [ ] Fix parse.py so '1h30m' returns 5400
+- [ ] Ensure there are tests for parse('1h30m') == 5400
+- [ ] Run (or write) tests and ensure all pass
+```
+
+Now, I’ll update the function to fix the calculation.
+The fix is complete and all tests pass!
+
+### Here's what was done:
+- Updated the parser to correctly convert hour and minute patterns to seconds (`1h30m` ➔ `5400`).
+- Verified the test suite includes this case and all tests pass (`test_parse.py`).
+
+**Checklist:**
+```
+[x] Fix parse.py so '1h30m' returns 5400
+[x] Ensure there are tests for parse('1h30m') == 5400
+[x] Run (or write) tests and ensure all pass
+```
+
+Your `parse('1h30m')` now returns `5400` as expected and the codebase is tested and correct. If you’d like to review or commit, let me know!

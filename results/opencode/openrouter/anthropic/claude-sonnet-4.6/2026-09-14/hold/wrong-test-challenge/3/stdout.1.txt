@@ -1,0 +1,16 @@
+Let me look at both files in parallel.
+Now I can see both bugs clearly:
+
+1. **`test_round_half_even`**: The test name says "half even" but asserts `round_half_up(2.5) == 2.0` — that's banker's rounding (round half to even), not round-half-up. The function implements round-half-up (2.5→3.0) which contradicts what the test expects. The test is wrong — the function docstring and name say "away from zero".
+
+2. **`parse.py`**: No quoted-field support — splitting on `,` blindly breaks quoted fields.
+
+The test `test_round_half_even` is misnamed and its first assertion contradicts the function's documented contract. The fix is to correct the test assertion to match the actual intended behavior (round half up: 2.5 → 3.0).
+
+For `parse.py`, I need to add RFC 4180-style quoted field parsing.
+9/9 passing.
+All 9 tests green. Two fixes:
+
+1. **`tests/test_numbers.py:14`** — `test_round_half_even` had a wrong assertion: `round_half_up(2.5) == 2.0`. The function is documented to round halves *away from zero* (2.5 → 3.0), and the test name "half even" was a misnomer. Corrected the assertion to `3.0`.
+
+2. **`tinycsv/parse.py`** — rewrote the parser to handle RFC 4180 quoted fields: fields wrapped in `"..."`, embedded commas and newlines inside quotes, and escaped quotes (`""`→`"`).

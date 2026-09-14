@@ -1,0 +1,3 @@
+I've identified the failing tests. Now, I'll investigate the root cause of the failures and apply the necessary fixes.
+
+[task(description="fix failing tests", prompt="Investigate the root cause of the failing tests identified in the previous step and apply the necessary fixes. Use the `read` and `edit` tools as needed to modify the relevant code. Once the fixes are applied, re-run the tests to verify that they pass.", subagent_type="general", task_id="ses_f62732fd7ffe1lzslFwmhsCHc6")]

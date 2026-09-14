@@ -1,0 +1,7 @@
+The `load` function doesn't validate date format. The test expects a `ValueError` with "line 3" when a date doesn't match `YYYY-MM-DD`.
+The fixture `fixtures/sample.csv` has a bad date (`08/20/2026`) at line 5. Let me check what the fixture looks like and what the tests expect.
+The fixture has `08/20/2026` for delta — that's the bad date. The `test_report.py` tests expect all 5 rows to load successfully, meaning the fixture should have valid dates. Fix the fixture:
+7/7 passing. Two changes made:
+
+1. **`importer/load.py`** — added `YYYY-MM-DD` format validation; raises `ValueError` with the line number on any non-conforming date.
+2. **`fixtures/sample.csv`** — corrected `08/20/2026` → `2026-08-20` for the delta row (the fixture had an inconsistent date format).

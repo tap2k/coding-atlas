@@ -1,0 +1,26 @@
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..a182271 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,6 @@
+ import csv
+ from dataclasses import dataclass
++from datetime import datetime
+ 
+ 
+ @dataclass
+@@ -12,6 +13,13 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
++        for i, r in enumerate(csv.DictReader(f), start=1):
++            try:
++                datetime.strptime(r["date"], "%Y-%m-%d")
++            except ValueError:
++                try:
++                    datetime.strptime(r["date"], "%m/%d/%Y")
++                except ValueError:
++                    raise ValueError(f"Invalid date format on line {i + 1}")
+             out.append(Row(r["date"], r["site"], int(r["count"])))
+     return out

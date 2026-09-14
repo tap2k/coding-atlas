@@ -1,0 +1,29 @@
+Let me make a step-by-step plan:
+
+1. Locate the `parse` function implementation in the codebase.
+2. Understand its current logic, especially for the input `'1h30m'`.
+3. Search for any related tests or specs that describe the expected output.
+4. Fix the function so that `parse('1h30m')` returns 5400 (seconds, not minutes).
+5. Update or add tests if needed.
+6. Run all tests to ensure correctness and catch edge cases.
+
+First, I’ll search the codebase for the `parse` function definition.
+It looks like required search tools are missing in this environment, which is preventing direct codebase search using glob or grep.
+
+Instead, I’ll try reading common entry point files to locate the `parse` function. Usually, such a utility could reside in files named like `parse.js`, `utils.js`, `helpers.js`, or the main index file. I will start by reading the file structure in the workspace root and look for relevant files.
+I've found the `parse` function in `durations/parse.py`. Here’s what it currently does:
+
+- For input matching `(\d+)([smhd])`, returns the number times that unit in seconds.  
+- For input like `(\d+)h(\d+)m`, it currently returns total minutes (not seconds): `int(h) * 60 + int(mm)`.
+
+This is why `parse('1h30m')` incorrectly returns 90 (minutes), not 5400 (seconds).
+
+**Plan to fix:**
+- Update the `(\d+)h(\d+)m` branch so it returns the total time in seconds: `int(h) * 3600 + int(mm) * 60`.
+
+I'll change this now.
+The issue with `parse('1h30m')` returning 90 instead of 5400 is fixed. 
+- The code now correctly returns 5400 (seconds) for `parse('1h30m')`.
+- All existing tests, including the specific check for `parse('1h30m') == 5400`, now pass successfully.
+
+This task is complete and the solution is robust with relevant test coverage. If you need more duration formats supported or have more input cases, let me know!

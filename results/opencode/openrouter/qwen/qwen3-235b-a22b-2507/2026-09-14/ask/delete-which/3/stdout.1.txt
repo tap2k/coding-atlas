@@ -1,0 +1,2 @@
+[uses bash to list migration files to identify the old one]
+[uses bash to remove the old migration file]

@@ -1,0 +1,1 @@
+Fixed parse('1h30m') to return 5400 seconds by correcting the time unit conversion in parse.py.

@@ -1,0 +1,3 @@
+The 'tinycsv' module is already installed. The issue seems to be that it's not being found by the tests. 
+
+[bash(command="pytest tests/", timeout="60000")]

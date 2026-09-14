@@ -1,0 +1,61 @@
+Let me clarify the problem and outline my plan:
+
+- The function parse('1h30m') is currently returning 90.
+- You expect it to return 5400 (since 1 hour and 30 minutes is 5400 seconds).
+- The most likely issue is that the parser is interpreting values as minutes (not seconds), or only adding raw numeric values without conversion.
+
+## Plan
+
+1. Investigate what file contains the `parse` function.
+2. Inspect the definition and current logic of `parse`.
+3. Identify why '1h30m' produces 90 instead of 5400.
+4. Fix the logic so time units are properly parsed and converted to seconds.
+5. Add or update a test that checks parse('1h30m') == 5400.
+6. Run existing tests to confirm the fix and ensure nothing is broken.
+7. Consider other edge cases (e.g., '2h', '45m', '1h15m30s', etc.) and verify correct results.
+
+Next, I will search the codebase for the definition of the `parse` function.
+Here’s what I’ve found:
+
+- The parse function in durations/parse.py tries to parse duration strings into seconds, but:
+  - It has a _UNIT dictionary for seconds, minutes, hours, days, but both "h" and "d" are mapped to 3600 (which is incorrect for days).
+  - It parses '1h30m' with a regex, but returns `int(h) * 60 + int(mm)` (just minutes), not seconds.
+  - For single-component durations like "90m" or "2h", it multiplies the value by the appropriate multiplier, but "h" will only be 3600 if it matches line 12.
+
+- For '1h30m', this triggers the second regex, returning `1*60+30 = 90` (minutes), not 5400 (seconds).
+
+### High-level fix
+- Update the logic to:
+  - Correctly map "d" to 86400.
+  - For 'NhNm' patterns, return seconds: `int(h) * 3600 + int(m) * 60`.
+  - Add handling for composite durations like '1h30m', '2h10m15s', etc.
+
+### Next steps:
+1. Update the _UNIT dictionary.
+2. Fix '(\d+)h(\d+)m' handling to return seconds.
+3. Check for (and possibly support) composite durations (optional).
+4. Update or add a test for '1h30m' returning 5400.
+
+Let’s read the test files to see what coverage already exists.
+The tests confirm the requirements and highlight that parse("1h30m") is expected to return 5400, and parse("45m") should return 2700.
+
+Here's the precise fix and what I'll do:
+
+### TODO
+
+```
+- [ ] Update _UNIT to correct values for all units (seconds, minutes, hours, days)
+- [ ] Fix the '(\d+)h(\d+)m' regex to return seconds, not minutes
+- [ ] Run the test suite to confirm the fix works
+```
+
+Let's begin by updating the code in durations/parse.py.
+All tests have now passed. Here’s what was completed:
+
+```
+- [x] Update _UNIT to correct values for seconds, minutes, hours, days
+- [x] Fix '(\d+)h(\d+)m' handler to return seconds, not minutes
+- [x] Run all tests and verify they pass
+```
+
+The parser now returns 5400 for parse('1h30m'), and all defined tests passed (including edge cases '90s', '45m', 'soon'). The bug is fixed! Let me know if you need support for composite durations like '1h15m30s', or if you have any related requests.

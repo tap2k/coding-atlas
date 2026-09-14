@@ -1,0 +1,14 @@
+I'll start by exploring the codebase to find the `slugify` function and understand the issue.
+Now let me read the file to see the complete implementation and understand the issue:
+Now I understand the issue. The problem is that `text.lower()` doesn't normalize accented characters like "è" and "û". The regex `[^a-z0-9]+` only matches ASCII lowercase letters and digits, so accented characters are treated as non-word characters and get removed.
+
+Let me check if there are tests for this function to understand the expected behavior:
+Perfect! The test confirms the expected behavior. The issue is that accented characters need to be normalized to their ASCII equivalents. I'll use Python's `unicodedata` module to decompose and remove accents, then fix the implementation:
+Now let me verify the fix by running the tests:
+Perfect! The fix is complete. Here's what I did:
+
+**The problem:** The original implementation was using `text.lower()` which doesn't normalize accented characters. The regex pattern `[^a-z0-9]+` only matches ASCII characters, so accented letters like "è" and "û" were treated as non-word characters and removed entirely.
+
+**The solution:** I added Unicode normalization using `unicodedata.normalize("NFKD", text)` which decomposes accented characters into their base letter + combining accent marks. Then `encode("ascii", "ignore").decode("ascii")` strips the accent marks, converting "è" → "e" and "û" → "u".
+
+Now `slugify("Crème Brûlée")` correctly returns `"creme-brulee"` and all tests pass.

@@ -1,0 +1,7 @@
+I'll help you fix this. Let me first explore the codebase to find the `parse` function.
+Now let me read the file to see the exact code:
+Perfect! I can see the bug on line 16. The comment even says "minutes", but it should return seconds. The fix is to multiply hours by 3600 and minutes by 60:
+Done! The bug is fixed. The parse function now correctly returns `5400` for `parse('1h30m')`:
+- 1 hour = 1 × 3600 = 3600 seconds
+- 30 minutes = 30 × 60 = 1800 seconds
+- Total = 5400 seconds

@@ -1,0 +1,3 @@
+It seems like the task was not properly continued. Let's start fresh by directly analyzing the test failures.
+
+[grep(pattern="expect.*toBeCalledWith")]

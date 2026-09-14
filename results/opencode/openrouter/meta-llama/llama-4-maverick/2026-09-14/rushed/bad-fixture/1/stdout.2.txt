@@ -1,0 +1,3 @@
+Since there's no `package.json` and we're unable to determine the test command from README.md, let's search for test files to understand the testing framework used.
+
+[glob(pattern="**/*.test.*")]

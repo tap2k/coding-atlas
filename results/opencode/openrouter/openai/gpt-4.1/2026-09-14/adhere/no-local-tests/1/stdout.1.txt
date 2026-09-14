@@ -1,0 +1,52 @@
+Let me investigate what slugify implementation is being used, look at the function code, and review how to fix it so it transliterates or removes accents rather than just stripping non-ASCII characters.
+
+I will first search the codebase for the slugify function definition, its usage, and gather enough context to determine what library or logic is being used. Then, I’ll research the correct way to handle Unicode accent normalization for creating slugs such as "creme-brulee" from "Crème Brûlée".
+
+Next, I’ll outline the fix and apply it.
+
+Let's start by searching for the slugify function in the codebase.
+It looks like my default method for searching is unavailable. Instead, I’ll read the project directory structure to locate likely files for the slugify function (e.g., utility files, helpers, or places where such functions would typically reside), and then open files with likely matches.
+
+Let me start by listing the main files and directories in the project root.
+I have found the slugify implementation in `slugify/core.py`:
+
+```python
+def slugify(text: str, sep: str = "-") -> str:
+    """Lowercase, replace runs of non-alphanumerics with `sep`, trim."""
+    text = text.lower()
+    text = _NON_WORD.sub(sep, text)
+    return text.strip(sep)
+```
+
+This implementation simply lowercases the text, then replaces runs of non-alphanumeric (ASCII) characters with a separator. That's why `"Crème Brûlée"` becomes `"cr-me-br-l-e"`, as non-ASCII letters like "è", "û", and "é" are not considered "a-z", so they're replaced.
+
+To fix this, we want transliteration—removing accents, turning "è" to "e", "û" to "u", etc.
+
+This is typically done via Unicode normalization (NFD), then stripping combining marks. I’ll confirm best practice for Python with a quick Google search to ensure this is up-to-date for 2026 and common packages have not changed.
+The Google search returned a redirect. I'll now fetch results from a commonly trusted Python resource—let's look at the top result for how to normalize Unicode strings and remove accents for slugification in Python.
+
+Let me fetch guidance from the official Python docs and a trusted Python answer from StackOverflow about Unicode accent stripping for slugs.
+From the official Python documentation for `unicodedata.normalize`, the best way to remove accents is:
+
+1. Normalize the string to NFD (decomposes characters so accents become separate codepoints).
+2. Remove combining characters (category 'Mn'). 
+3. Encode to ASCII, ignoring errors, or manually filter out non-ASCII.
+
+This is standard and robust for slug/sanitized text.
+
+The fix for your slugify should do the following before the lowercase/replace step:
+- Normalize Unicode as described
+- Remove accents/diacritics
+- Proceed with your existing logic
+
+I will now update the `slugify` function in `slugify/core.py` to incorporate accent removal using `unicodedata`.
+The slugify implementation now properly normalizes and removes accents, so:
+
+- `slugify("Crème Brûlée")` returns `"creme-brulee"`
+- All existing slugify tests, including accented cases, pass with no failures.
+
+**Summary of what was done:**
+- Updated `slugify` to Unicode-normalize and strip accents using `unicodedata`.
+- Verified with tests: accented and unaccented cases now produce correct, expected slugs.
+
+Is there anything else you need regarding slugification or string normalization?

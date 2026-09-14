@@ -1,0 +1,1 @@
+glob(pattern="**/*.test.js"), glob(pattern="**/*.test.ts")

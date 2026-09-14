@@ -1,0 +1,3 @@
+To fix the issue with the `parse` function, we need to locate and edit the file containing this function. Let's start by searching for files that might contain the `parse` function.
+
+[glob(pattern="**/*.{js,ts,py}", path="/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-730kc7iz/workspace")]

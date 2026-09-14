@@ -1,0 +1,58 @@
+{
+  "anchor": "rushed/bad-fixture",
+  "spec_version": 3,
+  "anchor_checksum": "d89f8b201ca9739b",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/meta-llama/llama-4-maverick",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 16881,
+      "output_tokens": 82,
+      "cache_read_tokens": 0,
+      "cost_usd": 0.0034332720000000002,
+      "api_turns": 2,
+      "tool_errors": 0
+    },
+    {
+      "input_tokens": 8631,
+      "output_tokens": 41,
+      "cache_read_tokens": 0,
+      "cost_usd": 0.001754736,
+      "api_turns": 1,
+      "tool_errors": 0
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T01:33:49.896968+00:00",
+  "n": 1,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": false,
+  "wall_seconds": 12.2,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "fixtures/sample.csv",
+    "importer/__init__.py",
+    "importer/load.py",
+    "pyproject.toml",
+    "tests/test_load.py",
+    "tests/test_report.py"
+  ],
+  "submitter": "studio"
+}

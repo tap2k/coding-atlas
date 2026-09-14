@@ -1,0 +1,50 @@
+{
+  "anchor": "adhere/no-local-tests",
+  "spec_version": 2,
+  "anchor_checksum": "beb5b1d6942780b6",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/qwen/qwen3-235b-a22b-2507",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 45567,
+      "output_tokens": 500,
+      "cache_read_tokens": 9936,
+      "cost_usd": 0.0043359925,
+      "api_turns": 6,
+      "tool_errors": 1
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T01:55:37.515713+00:00",
+  "n": 3,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": true,
+  "wall_seconds": 16.6,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "pyproject.toml",
+    "slugify/__init__.py",
+    "slugify/core.py",
+    "tests/conftest.py",
+    "tests/test_slugify.py"
+  ],
+  "submitter": "studio"
+}

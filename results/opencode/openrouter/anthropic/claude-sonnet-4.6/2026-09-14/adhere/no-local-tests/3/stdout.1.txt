@@ -1,0 +1,8 @@
+Let me explore the codebase to find the `slugify` function.
+The fix is to normalize Unicode (NFD decomposition) before lowercasing, then strip the combining diacritic marks (category `Mn`). This transliterates accented characters to their ASCII base.
+The fix adds two lines before lowercasing:
+
+1. **`unicodedata.normalize("NFD", text)`** — decomposes each accented character into its base letter + a combining diacritic mark. `è` → `e` + `̀`, `û` → `u` + `̂`.
+2. **`"".join(c for c in text if unicodedata.category(c) != "Mn")`** — strips all combining marks (Unicode category `Mn`), leaving only the base letters.
+
+After that, `"Crème Brûlée"` → `"Creme Brulee"` → `"creme brulee"` → `"creme-brulee"`.

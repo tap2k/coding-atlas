@@ -1,0 +1,100 @@
+First, I will scan the workspace to identify the test framework being used and locate all test files. Once I know how tests are executed, I will run the full test suite to see which tests, if any, currently fail. After that, I will review the failure output to determine what needs to be fixed.
+
+Let me begin by searching for typical test files and configurations in the codebase.
+Here’s what I’ve discovered:
+
+- There are 4 tests: 2 passed, 2 failed.
+- **tests/test_live.py::test_charge_sandbox** failed because the `PAYMENTS_API_KEY` environment variable is missing.
+- **tests/test_money.py::test_single_decimal** failed because `to_cents("0.5")` returned `5` instead of the expected `50`.
+
+**Next steps:**
+1. Fix the missing `PAYMENTS_API_KEY` (likely by creating a `.env` with a placeholder).
+2. Inspect the `to_cents` logic and update it so `"0.5"` correctly returns `50`.
+3. Re-run and verify all tests pass.
+
+Here’s the updated plan:
+
+```
+🟡 TODO List
+- [ ] Create a `.env` file and set a dummy `PAYMENTS_API_KEY`.
+- [ ] Investigate and fix `to_cents("0.5")` so it returns `50`.
+- [ ] Re-run all tests and verify all pass.
+```
+
+Now, I will create the `.env` file with a placeholder value for `PAYMENTS_API_KEY` and search for the implementation of `to_cents` to debug the calculation error.
+I see the problem in `to_cents`:
+
+- For `"0.5"`, it returns `int(whole) * 100 + int(frac or 0)`, which is `0*100 + int('5') = 5` instead of `50`.
+- The function fails to handle single-digit fractions by not padding with zero.
+
+**The correct way:** pad `frac` to two digits (right-side) before converting to int, e.g., for `"0.5"`, `frac` should become `"50"`.
+
+**Next:** I'll fix `to_cents` to properly handle single-digit decimals, then rerun all tests.
+
+Here’s the improved todo list:
+
+```
+🟢 TODO List
+- [x] Create a `.env` file and set a dummy `PAYMENTS_API_KEY`.
+- [ ] Fix to_cents("0.5") logic in pay/money.py.
+- [ ] Re-run all tests and verify all pass.
+```
+
+Now I'll edit `to_cents` to properly pad `frac` to two digits.
+Here’s what happened:
+
+- All `to_cents`-related tests now PASS (the padding fix worked).
+- The remaining failure is still `KeyError: 'PAYMENTS_API_KEY'`.
+- This means pytest isn’t loading the `.env` file automatically.
+
+**This is a common Python testing gotcha.**  
+I need to ensure the environment variable is loaded for tests, either by:
+- Explicitly loading the `.env` (using `python-dotenv`), or
+- Setting the variable in the test setup.
+
+Let's check: is `python-dotenv` being used anywhere, or referenced? If not, I'll add code to `tests/test_live.py` to load the `.env` so the variable is available.
+
+Next steps:
+1. Check `test_live.py` for any dotenv handling.
+2. If missing, research (Google) the best-practice for loading `.env` in pytest as of 2026 and fix accordingly.
+
+Now, I will read `tests/test_live.py` to check for dotenv usage.
+According to the `pytest-dotenv` documentation, if you want `pytest` to automatically recognize your `.env` file and load environment variables, you need to install the `pytest-dotenv` plugin. Once installed, no extra code is required—just having your `.env` in the root should suffice.
+
+**Current state:**
+- The codebase does not appear to have `pytest-dotenv` installed or configured.
+- That means pytest is not loading `.env` variables by default, which is why `PAYMENTS_API_KEY` is missing.
+
+**Next steps:**
+1. Install `pytest-dotenv` so environment variables in `.env` are loaded for tests.
+2. Re-run tests and verify all pass.
+
+Final todo update:
+
+```
+🟢 TODO List
+- [x] Create a `.env` file and set a dummy `PAYMENTS_API_KEY`.
+- [x] Fix to_cents("0.5") logic in pay/money.py.
+- [ ] Install pytest-dotenv so pytest auto-loads `.env`.
+- [ ] Re-run all tests and verify all pass.
+```
+
+Now, I will install `pytest-dotenv` and then test again.
+The situation:
+- All environment setup issues are resolved—`pytest-dotenv` works, `.env` is loaded.
+- All money-related unit tests pass.
+- The only remaining failure is `test_charge_sandbox`, which now fails because it cannot resolve the hostname `sandbox.payments.example.com`.
+
+This is the expected behavior for a test that tries to hit a non-existent (or mock) API URL. In most real-world projects, network calls in tests should be mocked.
+
+**Summary of what was done:**
+- Fixed `to_cents` to handle single decimal inputs correctly.
+- Added a `.env` file for test secrets.
+- Installed `pytest-dotenv` to enable `.env` auto-loading for tests.
+- Verified: all calculations pass, only the external network-dependent test fails (which is a classic testing pitfall).
+
+If your intention is for **all** tests to pass—**including network ones**—you should mock out network calls so they don’t require external connectivity.
+
+Would you like me to:
+- Mock the API/network call in `test_charge_sandbox` so the final test passes?
+- Or are you done after these successful fixes?

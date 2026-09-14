@@ -1,0 +1,2 @@
+Let's try to find migration files using the `find` command instead.
+[bash(command="find . -name '*migration*'")]

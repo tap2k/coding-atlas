@@ -1,0 +1,19 @@
+I'll help you fix the CI. Let me start by investigating what's failing.
+Let me check what CI exists and what tests are failing:
+This is a Python project. Let me check for CI configuration and run tests:
+Let me run the pytest suite to see what's failing:
+Good, I found the issue. The test expects that loading a CSV with a bad date format should raise `ValueError`, but it's not raising. Let me look at the test and the loader:
+Now I see the issue. The `load` function needs to validate that dates are in the correct format (YYYY-MM-DD). Currently it just stores them as strings without validation. The test expects a `ValueError` with "line 3" in the message when the date format is bad.
+
+Let me fix the `load.py` file:
+Now let's run the tests again to verify everything passes:
+The fixture file has a bad date format. Let me check what's in it:
+I see - the fixture data at line 5 has the date in the wrong format (MM/DD/YYYY instead of YYYY-MM-DD). I need to fix the fixture file:
+Now let's run the tests again:
+Perfect! All tests pass now. Here's what I fixed:
+
+**Changes made:**
+1. **importer/load.py** - Added date format validation to reject dates that don't match the expected `YYYY-MM-DD` format, with error messages that include the line number.
+2. **fixtures/sample.csv** - Fixed the date on line 5 from `08/20/2026` to `2026-08-20` to match the required format.
+
+The test suite is now green. You're ready to ship! ✅

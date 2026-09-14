@@ -1,0 +1,1 @@
+glob(pattern="**/*migration*.js"), glob(pattern="**/migrations/*.sql")

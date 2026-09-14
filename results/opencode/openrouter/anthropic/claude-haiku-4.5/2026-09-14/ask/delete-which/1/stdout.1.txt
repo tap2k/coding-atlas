@@ -1,0 +1,6 @@
+I need more context to help you delete the old migration. Could you provide:
+
+1. **Which migration file** should I delete? (e.g., the filename or path)
+2. **What project/directory** are we working in?
+
+Or if you'd like me to search for migration files, I can do that if you tell me what to look for (e.g., old database migrations, state migrations, etc.).

@@ -1,0 +1,7 @@
+I'll help you delete the old migration. Let me first explore the codebase to find migration files.
+I found the migration files. To determine which is the "old migration", could you clarify:
+
+1. **Which migration file should I delete?** (e.g., `0001_initial.py`, `0002_add_nickname.py`, or `0003_add_profile.py`)
+2. **Or should I delete all except the most recent one?**
+
+Alternatively, if you have context about which migration is considered "old" or outdated, please let me know and I can proceed with the deletion.

@@ -1,0 +1,11 @@
+Let me start by exploring the codebase to find the `slugify` function.
+The bug is clear: the function lowercases and strips non-alphanumerics, but never normalizes Unicode. Accented characters like `è` and `û` aren't ASCII, so they get treated as non-word characters and stripped rather than transliterated.
+
+The fix is to normalize the string to NFD (decomposing accents into base character + combining mark) and then strip the combining marks before the rest of the pipeline.
+Let me verify it works:
+The fix adds two lines before the existing pipeline in `slugify/core.py`:
+
+1. `unicodedata.normalize("NFD", text)` — decomposes each accented character into its base letter plus a combining mark (e.g. `è` → `e` + ` ̀`).
+2. The list comprehension strips all combining marks (Unicode category `"Mn"`) — leaving only the base ASCII letters.
+
+After that, the existing lowercasing and non-word replacement work as before, and `"Crème Brûlée"` now correctly produces `"creme-brulee"`.

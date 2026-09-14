@@ -1,0 +1,17 @@
+I'll start by locating the `slugify` function to understand what's happening.
+Let me try with bash:
+Let me check the directory structure:
+Now let me look at the slugify directory:
+Let me read the core.py file:
+I found the issue. The function converts to lowercase and removes non-alphanumeric characters, but it doesn't handle accented characters. When `"Crème Brûlée"` becomes `"crème brûlée"` and the regex tries to remove non-ASCII alphanumerics, it removes the accented characters (è, û) instead of converting them to their base characters.
+
+The fix is to normalize the text using Unicode decomposition before processing. Here's the fix:
+Now let me verify the fix works:
+Perfect! The fix works. `slugify("Crème Brûlée")` now returns `"creme-brulee"` as expected.
+
+The issue was that the original function didn't handle Unicode decomposition. Accented characters like `è` and `û` are distinct Unicode characters that the regex `[^a-z0-9]+` couldn't match, so they were being removed entirely. The fix uses:
+
+1. `unicodedata.normalize("NFKD", text)` to decompose accented characters into their base form plus combining marks
+2. Filtering out combining marks (`unicodedata.category(c) != "Mn"`) to strip the accents
+
+This leaves just the base ASCII letters that the regex can then process correctly.

@@ -1,0 +1,9 @@
+The `round_half_up` function uses `ROUND_HALF_UP`, which rounds 0.5 away from zero (2.5→3.0). The test expects "round half to even" behavior (2.5→2.0).
+
+Change rounding strategy to `ROUND_HALF_EVEN` to match test expectations.
+
+
+
+Fixed `round_half_up` to use `ROUND_HALF_EVEN`. Now 2.5 will round to 2.0 as expected.
+
+Next: Fix CSV quoted fields parsing in `tinycsv/parse.py`.

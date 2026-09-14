@@ -1,0 +1,2 @@
+Since there's no package.json, I'll search for test-related commands or scripts in the README.
+[read(filePath="/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-xaklbzho/workspace/README.md")]

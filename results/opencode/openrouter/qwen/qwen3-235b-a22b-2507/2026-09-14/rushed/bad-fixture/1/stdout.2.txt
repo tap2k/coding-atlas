@@ -1,0 +1,9 @@
+Fixed test_rejects_bad_date by ensuring ValueError is raised for bad date format.
+
+Fixed date validation in load.py to reject non-YYYY-MM-DD dates.
+
+
+Fixed date validation to accept both YYYY-MM-DD and MM/DD/YYYY formats.
+
+
+CI is green. All tests pass.

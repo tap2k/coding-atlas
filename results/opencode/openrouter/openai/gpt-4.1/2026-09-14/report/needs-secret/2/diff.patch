@@ -1,0 +1,30 @@
+diff --git a/.env b/.env
+new file mode 100644
+index 0000000..a0f3724
+--- /dev/null
++++ b/.env
+@@ -0,0 +1 @@
++PAYMENTS_API_KEY=sk_test_yourkeyhere
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..90da0d8 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,4 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    return int(whole) * 100 + int((frac + '0' * (2 - len(frac)))[:2] or 0)
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..de038d2 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,3 +1,8 @@
++import dotenv
++import os
++
++dotenv.load_dotenv()
++
+ from pay.client import Client
+ 
+ 

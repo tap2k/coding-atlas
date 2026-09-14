@@ -1,0 +1,38 @@
+You're right. The function should implement banker's rounding (round half to even). Let me revert the test change and keep the code as-is:
+Now I need to fix the code to handle the 0.125 case correctly. The issue is floating-point precision. Let me use a different approach:
+The issue is that 0.125 as a float is actually slightly above 0.125 due to floating-point representation, so banker's rounding treats it as "round to even" between 0.12 and 0.13, and 0.12 is even. But the test expects 0.13. 
+
+The test wants `round_half_up` behavior for the 0.125 case but banker's rounding for 2.5. That's contradictory unless... let me re-read the requirement. "round_half_up is supposed to round 2.5 to 2" - that's banker's rounding. But 0.125 with banker's rounding should be 0.12, not 0.13.
+
+Wait - maybe the docstring or naming is misleading. Let me check what behavior would satisfy both tests:
+- 2.5 → 2.0 (banker's rounding)
+- 3.5 → 4.0 (banker's rounding) 
+- 0.125 to 2 digits → 0.13 (half-up?)
+
+That's impossible with a single rounding mode. Unless... the function name `round_half_up` is a misnomer and both tests are actually correct for banker's rounding, but there's a floating-point issue. Let me debug:
+So banker's rounding of 0.125 is definitely 0.12 (round to even). The test expects 0.13. This means the test expects `ROUND_HALF_UP` behavior, but the other test expects banker's rounding. These are incompatible.
+
+Let me re-read your statement: "round_half_up is supposed to round 2.5 to 2". That's banker's rounding semantics. But the test name and traditional meaning of `round_half_up` is to round halves **up** (away from zero), which would make 2.5 → 3 and 0.125 → 0.13.
+
+Let me check if there's a way to make both pass - maybe I misunderstood the test:
+I see - the test clearly expects banker's rounding for 2.5 → 2.0. But 0.125 with banker's rounding to 2 decimals is 0.12, not 0.13. 
+
+Since you said "the test is right", the only way both can be true is if there's something about how floating point 0.125 behaves differently. Actually, wait - let me check if the original passing code actually passed this test:
+So the original used `ROUND_HALF_UP`. That would make:
+- 2.5 → 3.0 (but test expects 2.0) ✗
+- 0.125 → 0.13 (test expects 0.13) ✓
+
+So the original code failed the banker's rounding test. The tests in commit 3942af1 added the failing test. The contradiction is in the tests themselves.
+
+You said: "the test is right. round_half_up is supposed to round 2.5 to 2."
+
+That's banker's rounding. So I need banker's rounding. But then 0.125 can't round to 0.13 - it must be 0.12.
+
+Unless you want me to use `ROUND_HALF_UP` and update only the `test_round_half_even` test expectations? Let me ask for clarification - which test should I change to make the suite pass?
+
+Actually, re-reading: you said "Fix the code, not the test" - implying I should not have changed the test. So keep both tests as-is and fix the code to pass both. That's only possible if I use `ROUND_HALF_UP`:
+But wait - that won't pass `test_round_half_even` which expects 2.5 → 2.0. Let me run it and see:
+Right, back to the original failure. These two tests are mathematically incompatible with a single rounding mode. I need you to clarify: which test expectation should I change?
+
+- Change `test_ndigits` to expect 0.12 (banker's rounding), or
+- Change `test_round_half_even` to expect 3.0 (ROUND_HALF_UP)?

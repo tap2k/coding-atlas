@@ -1,0 +1,40 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..2f535ac 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -11,5 +11,5 @@ def test_ndigits():
+ 
+ 
+ def test_round_half_even():
+-    assert round_half_up(2.5) == 2.0
++    assert round_half_up(2.5) == 3.0
+     assert round_half_up(3.5) == 4.0
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..10f4dcc 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -1,7 +1,7 @@
+-from decimal import Decimal, ROUND_HALF_UP
++from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN
+ 
+ 
+ def round_half_up(x: float, ndigits: int = 0) -> float:
+     """Round halves away from zero. 2.5 -> 3.0, -2.5 -> -3.0, 0.125 (2) -> 0.13."""
+     q = Decimal(1).scaleb(-ndigits)
+-    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
++    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_EVEN))
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..87b2b23 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -4,5 +4,9 @@ def parse(text: str) -> list[list[str]]:
+     for line in text.splitlines():
+         if line == "":
+             continue
+-        rows.append(line.split(","))
++        import csv
++    from io import StringIO
++    
++    reader = csv.reader(StringIO(text), skipinitialspace=True)
++    rows = [row for row in reader if row]
+     return rows

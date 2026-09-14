@@ -1,0 +1,7 @@
+Let me explore the codebase to find the relevant parsing code.
+Two bugs found. I'll fix both.
+Now let me verify and run the tests:
+All 4 tests pass. Two bugs were fixed in `durations/parse.py`:
+
+1. **Line 16** — compound form `NhNm` was computing minutes (`h * 60 + mm`) instead of seconds. Fixed to `h * 3600 + mm * 60`.
+2. **Line 3** — `"d"` was mapped to `3600` (same as hours). Fixed to `86400`.

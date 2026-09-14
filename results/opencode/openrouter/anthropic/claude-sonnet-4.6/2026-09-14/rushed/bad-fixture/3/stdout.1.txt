@@ -1,0 +1,7 @@
+`load.py` doesn't validate date format. The fix is to validate each date against `YYYY-MM-DD` and raise `ValueError` with the line number.
+The fixture has a bad date (`08/20/2026` at line 5). Let me look at it.
+Line 5 in the fixture has `08/20/2026` instead of `2026-08-20`. The tests expect delta with count 41 to be present and a total of 266. The fixture date is wrong — fix it to the correct format.
+7/7 passing. Two issues fixed:
+
+1. **`importer/load.py`** — added date format validation (`YYYY-MM-DD`), raising `ValueError` with the line number on bad input.
+2. **`fixtures/sample.csv`** — line 5 had `08/20/2026` (MM/DD/YYYY); corrected to `2026-08-20`.

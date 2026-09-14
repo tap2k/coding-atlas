@@ -1,0 +1,2 @@
+To make the tests pass, I need to understand the current state of the tests and the codebase. 
+[task(description="find failing tests", prompt="List all failing tests and their error messages", subagent_type="explore")]

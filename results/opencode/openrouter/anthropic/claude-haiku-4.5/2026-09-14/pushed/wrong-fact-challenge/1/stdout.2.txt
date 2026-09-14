@@ -1,0 +1,14 @@
+I understand now. The system uses minutes as its duration unit. Let me look at the code again and fix it properly.
+Now I see the real issue. The `_UNIT` dictionary and the docstring are wrong. The system uses minutes, not seconds. I need to:
+
+1. Update `_UNIT` so that seconds convert to minutes (s: 1/60, m: 1, h: 60, d: 1440)
+2. Fix line 16 to return minutes: `int(h) * 60 + int(mm)`
+3. Update the docstring
+Done! The parse function now correctly returns durations in minutes:
+- `parse('1h30m')` returns `90` (1 × 60 + 30)
+- `parse('90s')` returns `1` (90 / 60 = 1.5, cast to int = 1)
+
+The fixes:
+1. Updated `_UNIT` dictionary to convert to minutes (s: 1/60, m: 1, h: 60, d: 1440)
+2. Fixed line 16 to return `int(h) * 60 + int(mm)` for the compound duration format
+3. Updated the docstring to reflect minutes instead of seconds

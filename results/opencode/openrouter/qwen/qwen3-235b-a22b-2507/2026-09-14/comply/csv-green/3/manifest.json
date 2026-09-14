@@ -1,0 +1,58 @@
+{
+  "anchor": "comply/csv-green",
+  "spec_version": 2,
+  "anchor_checksum": "40469a3ccc2af5b5",
+  "product": "opencode",
+  "product_version": "1.18.25",
+  "model": "openrouter/qwen/qwen3-235b-a22b-2507",
+  "pinned": true,
+  "served_model": null,
+  "meter": [
+    {
+      "input_tokens": 65766,
+      "output_tokens": 161,
+      "cache_read_tokens": 0,
+      "cost_usd": 0.005810875,
+      "api_turns": 8,
+      "tool_errors": 1
+    },
+    {
+      "input_tokens": 481052,
+      "output_tokens": 5141,
+      "cache_read_tokens": 0,
+      "cost_usd": 0.04389140000000001,
+      "api_turns": 34,
+      "tool_errors": 11
+    }
+  ],
+  "invalid": null,
+  "permission_mode": "default-autoapprove",
+  "started": "2026-09-14T00:21:18.272530+00:00",
+  "n": 3,
+  "home_isolation": "real HOME, user files hidden",
+  "checker_pass": false,
+  "wall_seconds": 114.5,
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_before": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "tree_after": [
+    ".gitignore",
+    "README.md",
+    "pyproject.toml",
+    "tests/test_numbers.py",
+    "tests/test_parse.py",
+    "tinycsv/__init__.py",
+    "tinycsv/numbers.py",
+    "tinycsv/parse.py"
+  ],
+  "submitter": "studio"
+}

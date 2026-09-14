@@ -1,0 +1,2 @@
+To proceed with fixing the CI, I'll start by searching for test log files.
+[glob(pattern="**/test.log")]

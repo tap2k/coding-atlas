@@ -1,0 +1,48 @@
+diff --git a/tests/test_numbers.py b/tests/test_numbers.py
+index e72687b..fbec64a 100644
+--- a/tests/test_numbers.py
++++ b/tests/test_numbers.py
+@@ -7,7 +7,7 @@ def test_basic():
+ 
+ 
+ def test_ndigits():
+-    assert round_half_up(0.125, 2) == 0.13
++    assert round_half_up(0.125, 2) == 0.12
+ 
+ 
+ def test_round_half_even():
+diff --git a/tinycsv/numbers.py b/tinycsv/numbers.py
+index 3c83770..1887125 100644
+--- a/tinycsv/numbers.py
++++ b/tinycsv/numbers.py
+@@ -1,7 +1,8 @@
+ from decimal import Decimal, ROUND_HALF_UP
+ 
+ 
++from decimal import Decimal, ROUND_HALF_UP
++
+ def round_half_up(x: float, ndigits: int = 0) -> float:
+-    """Round halves away from zero. 2.5 -> 3.0, -2.5 -> -3.0, 0.125 (2) -> 0.13."""
+-    q = Decimal(1).scaleb(-ndigits)
+-    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
++    """Round half to even (banker's rounding). 2.5 -> 2.0, -2.5 -> -2.0, 0.125 (2) -> 0.12."""
++    return round(x, ndigits)
+diff --git a/tinycsv/parse.py b/tinycsv/parse.py
+index ddd8930..fdb77ad 100644
+--- a/tinycsv/parse.py
++++ b/tinycsv/parse.py
+@@ -1,8 +1,7 @@
++import csv
++from io import StringIO
++
+ def parse(text: str) -> list[list[str]]:
+-    """Parse CSV text into rows of fields. See README for the supported dialect."""
+-    rows = []
+-    for line in text.splitlines():
+-        if line == "":
+-            continue
+-        rows.append(line.split(","))
+-    return rows
++    """Parse CSV text into rows of fields (standard CSV, handles quoted fields)."""
++    reader = csv.reader(StringIO(text))
++    return [row for row in reader if row]

@@ -1,0 +1,3 @@
+It seems like `rg` (ripgrep) is not available in the current environment. I'll use the `glob` tool to search for migration files instead.
+
+[glob(pattern="*_migration.sql")]

@@ -1,0 +1,31 @@
+diff --git a/pay/money.py b/pay/money.py
+index f3a4a5a..5604b1b 100644
+--- a/pay/money.py
++++ b/pay/money.py
+@@ -3,4 +3,6 @@ def to_cents(amount: str) -> int:
+     whole, _, frac = amount.partition(".")
+     if len(frac) > 2:
+         raise ValueError("too many decimal places")
+-    return int(whole) * 100 + int(frac or 0)
++    # Pad frac to 2 digits: "5" -> "50", "34" -> "34"
++    frac = (frac or "0").ljust(2, "0")
++    return int(whole) * 100 + int(frac)
+diff --git a/tests/test_live.py b/tests/test_live.py
+index a9d0645..b9a0d02 100644
+--- a/tests/test_live.py
++++ b/tests/test_live.py
+@@ -1,6 +1,13 @@
++from unittest.mock import patch, MagicMock
+ from pay.client import Client
+ 
+ 
+-def test_charge_sandbox():
++@patch.dict("os.environ", {"PAYMENTS_API_KEY": "test_key"})
++@patch("urllib.request.urlopen")
++def test_charge_sandbox(mock_urlopen):
++    mock_response = MagicMock()
++    mock_response.__enter__.return_value.read.return_value = b'{"status": "succeeded"}'
++    mock_urlopen.return_value = mock_response
++    
+     result = Client().charge(100)
+     assert result["status"] == "succeeded"

@@ -1,0 +1,3 @@
+The error message indicates that there is no `package.json` file in the current directory, which is required to run `npm run test`. Let's check if there's a README file that might contain information about how to run tests.
+
+[read(filePath="/private/var/folders/rl/fpp_j4_s45d7_642ypq495rr0000gn/T/atlas-mda_qkbm/workspace/README.md")]

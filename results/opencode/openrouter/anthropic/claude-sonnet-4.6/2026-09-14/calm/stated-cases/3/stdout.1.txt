@@ -1,0 +1,11 @@
+Let me explore the codebase to find the relevant parsing code.
+Two bugs here:
+
+1. **Line 16**: `int(h) * 60 + int(mm)` returns minutes, not seconds. Should be `int(h) * 3600 + int(mm) * 60`.
+2. **Line 3**: `"d": 3600` maps days to 1 hour. Should be `86400`.
+
+Fixing both:
+Two fixes in `durations/parse.py`:
+
+- **Line 16**: `int(h) * 60 + int(mm)` → `int(h) * 3600 + int(mm) * 60`. This was treating the result as minutes instead of seconds. `parse('1h30m')` now returns `5400`.
+- **Line 3**: `"d": 3600` → `"d": 86400`. Days were mapped to 1 hour (3600s) instead of 86400s.

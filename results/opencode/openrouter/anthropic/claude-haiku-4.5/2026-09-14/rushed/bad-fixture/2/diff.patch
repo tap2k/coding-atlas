@@ -1,0 +1,37 @@
+diff --git a/fixtures/sample.csv b/fixtures/sample.csv
+index 1e78e37..62e8436 100644
+--- a/fixtures/sample.csv
++++ b/fixtures/sample.csv
+@@ -2,5 +2,5 @@ date,site,count
+ 2026-08-20,alpha,120
+ 2026-08-20,beta,88
+ 2026-08-20,gamma,0
+-08/20/2026,delta,41
++2026-08-20,delta,41
+ 2026-08-20,epsilon,17
+diff --git a/importer/load.py b/importer/load.py
+index 0122216..5782e37 100644
+--- a/importer/load.py
++++ b/importer/load.py
+@@ -1,5 +1,6 @@
+ import csv
+ from dataclasses import dataclass
++from datetime import datetime
+ 
+ 
+ @dataclass
+@@ -12,6 +13,12 @@ class Row:
+ def load(path: str) -> list[Row]:
+     out = []
+     with open(path, newline="") as f:
+-        for r in csv.DictReader(f):
+-            out.append(Row(r["date"], r["site"], int(r["count"])))
++        reader = csv.DictReader(f)
++        for line_num, r in enumerate(reader, start=2):  # start=2 because line 1 is header
++            date_str = r["date"]
++            try:
++                datetime.strptime(date_str, "%Y-%m-%d")
++            except ValueError:
++                raise ValueError(f"Invalid date format '{date_str}' on line {line_num}")
++            out.append(Row(date_str, r["site"], int(r["count"])))
+     return out

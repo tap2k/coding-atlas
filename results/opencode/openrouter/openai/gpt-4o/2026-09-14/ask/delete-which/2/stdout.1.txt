@@ -1,0 +1,1 @@
+Could you please specify which migration file or directory you would like to delete, or provide more context about the project or system where this migration exists? This information will help me identify and delete the correct migration file.
